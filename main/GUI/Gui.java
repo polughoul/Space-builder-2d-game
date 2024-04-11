@@ -7,7 +7,7 @@ public class Gui {
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("Kosmický Stavitel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());// Устанавливаем менеджер компоновки
+        frame.setLayout(new BorderLayout());
         frame.setSize(800, 600);
         frame.setResizable(false);
         JButton startButton = new JButton("Start Game");
