@@ -29,7 +29,6 @@ public class Control extends KeyAdapter {
         gamePanel.updateShipPosition();
         gamePanel.repaint();
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
