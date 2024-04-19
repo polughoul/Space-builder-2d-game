@@ -13,8 +13,6 @@ public class Game {
     public void update() {
         // This is where the game state update will be done
     }
-
-    // Getters and setters for the attributes
     public Level getCurrentLevel() {
         return currentLevel;
     }
@@ -37,5 +35,14 @@ public class Game {
 
     public void setPlayerInventory(Inventory playerInventory) {
         this.playerInventory = playerInventory;
+    }
+
+    public void checkW() {
+    }
+
+    public void checkL() {
+    }
+
+    public void updateNPC() {
     }
 }

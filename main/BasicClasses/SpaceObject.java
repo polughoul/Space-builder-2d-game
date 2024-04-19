@@ -14,4 +14,10 @@ public abstract class SpaceObject {
     public void setResources(List<Resource> resources) {
         this.resources = resources;
     }
+
+    public void explore() {
+    }
+
+    public void collectResources(Player player) {
+    }
 }

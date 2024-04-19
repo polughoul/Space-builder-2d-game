@@ -24,4 +24,16 @@ public class SpaceStation {
     public void setProductionCapacity(int productionCapacity) {
         this.production = productionCapacity;
     }
+
+    public void buildStation(Player player, Resource requiredResource) {
+        if (player.hasEnoughResources(requiredResource)) {
+            player.decreaseResource(requiredResource);
+        }
+    }
+
+    public void upgradeStation(Player player, Resource requiredResource) {
+        if (player.hasEnoughResources(requiredResource)) {
+            player.decreaseResource(requiredResource);
+        }
+    }
 }

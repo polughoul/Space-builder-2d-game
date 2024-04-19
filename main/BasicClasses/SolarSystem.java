@@ -7,7 +7,6 @@ public class SolarSystem {
     private List<SpaceBuilderNpc> spaceBuilders;
     private List<SpaceBanditNpc> spaceBandits;
 
-    // Getters and setters for the attributes
     public List<SpaceObject> getSpaceObjects() {
         return spaceObjects;
     }

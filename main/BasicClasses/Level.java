@@ -9,8 +9,6 @@ public class Level {
     private List<SpaceBuilderNpc> spaceBuilder;
     private List<SpaceBanditNpc> spaceBandit;
     private List<SpaceStation> spaceStations;
-
-    // Getters and setters for the attributes
     public SolarSystem getSolarSystem() {
         return solarSystem;
     }

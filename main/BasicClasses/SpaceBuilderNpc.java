@@ -16,4 +16,11 @@ public class SpaceBuilderNpc extends SpaceShip {
     public void setResourced_focus(String resourced_focus) {
         this.resourced_focus = resourced_focus;
     }
+
+    public void tradeWithPlayer(Player player, Resource playerResource, Resource builderResource) {
+        if (player.hasEnoughResources(playerResource)) {
+            player.decreaseResource(playerResource);
+            player.increaseResource(builderResource);
+        }
+    }
 }

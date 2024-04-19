@@ -24,4 +24,9 @@ public class Item {
     public void setQuantity(int count) {
         this.count = count;
     }
+
+    public void use(Player player) {
+    }
+
+
 }

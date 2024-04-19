@@ -38,4 +38,11 @@ public class Technology {
     public void apply(SpaceShip ship) {
         //  apply technology to ship
     }
+
+    public void research(Player player) {
+
+        if (player.getMoney() >= this.getCost()) {
+            player.setMoney(player.getMoney() - this.getCost());
+        }
+    }
 }
