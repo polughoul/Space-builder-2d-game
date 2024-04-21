@@ -51,14 +51,6 @@ public abstract class SpaceObject {
         this.size = size;
     }
 
-    public void explore() {
-        // Здесь будет логика исследования космического объекта
-    }
-
-    public void collectResources(Player player) {
-        // Здесь будет логика сбора ресурсов игроком
-    }
-
     public SpaceObject(int x, int y) {
         this.x = x;
         this.y = y;
@@ -73,12 +65,7 @@ public abstract class SpaceObject {
     }
 
     public boolean isPlayerOnObject(int playerX, int playerY) {
-        // Проверяем, находятся ли координаты игрока внутри области объекта
         return playerX >= x && playerX <= x + 50 && playerY >= y && playerY <= y + 50;
-    }
-
-    public void collect(Player player) {
-        // Пустая реализация, которую можно переопределить в подклассах
     }
 
 }

@@ -36,13 +36,9 @@ public class Resource {
     }
     public void collect(Player player) {
         player.collectResource(this);
-        // Здесь вы можете добавить код для удаления ресурса с поля
         counts = 0;
     }
-
-    // В классе Resource
     public boolean isPlayerOnResource(int playerX, int playerY) {
-        // Проверяем, находятся ли координаты игрока внутри области ресурса
         return playerX >= x && playerX <= x + 50 && playerY >= y && playerY <= y + 50;
     }
 }

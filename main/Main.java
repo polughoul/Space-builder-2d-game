@@ -27,11 +27,11 @@ public class Main {
             panel gamePanel = new panel(game);
             Control control = new Control(gamePanel);
             gamePanel.addKeyListener(control);
-            gamePanel.setVisible(false); // Сначала делаем панель игры невидимой
+            gamePanel.setVisible(false);
             frame.getContentPane().add(gamePanel, BorderLayout.CENTER);
 
             startButton.addActionListener(e -> {
-                gamePanel.setVisible(true); // Делаем панель игры видимой после нажатия на кнопку "Start Game"
+                gamePanel.setVisible(true);
                 gamePanel.requestFocusInWindow();
                 frame.revalidate();
                 frame.repaint();
@@ -58,38 +58,32 @@ public class Main {
         Resource wood = new Resource("wood", 300, 300, 300);
         Resource iron = new Resource("iron", 400, 400, 400);
 
-        // Создаем списки ресурсов для астероидов и планет
+
         List<Resource> asteroidResources = Arrays.asList(gold, silver);
         List<Resource> planetResources = Arrays.asList(wood, iron);
 
-        // Создаем космических строителей и космических бандитов
+
         SpaceBuilderNpc spaceBuilder = new SpaceBuilderNpc("Builder", 1, new HashMap<>(), 500, 200);
         SpaceBanditNpc spaceBandit = new SpaceBanditNpc("Bandit", 1, 100, 10, 600, 300);
 
-        // Создаем списки космических строителей и космических бандитов для планет
+
         List<SpaceBuilderNpc> spaceBuilders = Arrays.asList(spaceBuilder);
         List<SpaceBanditNpc> spaceBandits = Arrays.asList(spaceBandit);
 
-        // Создаем астероиды и планеты
-        // В методе initializeGame()
+
         Asteroid asteroid1 = new Asteroid(asteroidResources, "Asteroid1", 100, 200, 200);
         Asteroid asteroid2 = new Asteroid(asteroidResources, "Asteroid2", 200, 300, 300);
         Planet planet1 = new Planet(planetResources, "Planet1", 300, spaceBuilders, spaceBandits, 400, 400);
         Planet planet2 = new Planet(planetResources, "Planet2", 400, spaceBuilders, spaceBandits, 500, 500);
 
-        // Добавляем астероиды и планеты в список космических объектов
         List<SpaceObject> spaceObjects = Arrays.asList(asteroid1, asteroid2, planet1, planet2);
 
-        // Создаем галактику
         Galaxy galaxy = new Galaxy("Galaxy 1", spaceObjects);
 
-        // Создаем игрока
         Player player = new Player(1000, 100);
 
-        // Создаем игру
         Game game = new Game(player, galaxy);
 
-        // Здесь вы можете добавить код для запуска игры
         return game;
     }
 }

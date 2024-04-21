@@ -83,7 +83,6 @@ public class panel extends JPanel {
         }
 
         if (!isOnAnyObject && isOnObject) {
-            // Если игрок больше не находится на currentObject, обновляем состояние
             isOnObject = false;
             currentObject = null;
             currentResource = null;
@@ -100,7 +99,6 @@ public class panel extends JPanel {
         g.fillOval(shipX, shipY, 50, 50);
 
         if (isOnObject) {
-            // Отрисовка дополнительных элементов, связанных с currentObject
             for (Resource resource : currentObject.getResources()) {
                 if (resource.getCounts() > 0) {
                     resource.draw(g);
@@ -116,7 +114,6 @@ public class panel extends JPanel {
                 }
             }
         } else {
-            // Отрисовка космических объектов
             for (SpaceObject outerSpaceObject : game.getGalaxy().getSpaceObjects()) {
                 g.setColor(Color.BLUE);
                 g.fillOval(outerSpaceObject.getX(), outerSpaceObject.getY(), 50, 50);

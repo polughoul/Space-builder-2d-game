@@ -49,7 +49,6 @@ public class Player {
         resources.put(resourceType, resources.getOrDefault(resourceType, 0) + count);
     }
 
-    // В классе Player
     public void collectResource(Resource resource) {
         String type = resource.getType();
         int count = resource.getCounts();
