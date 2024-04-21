@@ -2,14 +2,16 @@ package main.BasicClasses;
 
 import java.util.HashMap;
 
-public class Player extends SpaceShip {
+public class Player {
     private int money;
     private HashMap<String, Integer> resources;
 
-    public Player(String name, int fuel, int health, int capacity, int money) {
-        super(name, fuel, health, capacity);
+    private int health;
+
+    public Player(int money, int health) {
         this.money = money;
         this.resources = new HashMap<>();
+        this.health = health;
     }
 
     public int getMoney() {
@@ -20,20 +22,39 @@ public class Player extends SpaceShip {
         this.money = money;
     }
 
+    public HashMap<String, Integer> getResources() {
+        return resources;
+    }
+
+    public void setResources(HashMap<String, Integer> resources) {
+        this.resources = resources;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public void decreaseHealth(int damage) {
-        int newHealth = this.getHealth() - damage;
-        this.setHealth(Math.max(newHealth, 0));
+        this.health -= damage;
+        if (this.health < 0) {
+            this.health = 0;
+        }
     }
 
-    public boolean hasEnoughResources(Resource requiredResource) {
-        return resources.getOrDefault(requiredResource.getType(), 0) >= requiredResource.getCounts();
+    public void increaseResource(String resourceType, int count) {
+        resources.put(resourceType, resources.getOrDefault(resourceType, 0) + count);
     }
 
-    public void decreaseResource(Resource resource) {
-        resources.put(resource.getType(), resources.getOrDefault(resource.getType(), 0) - resource.getCounts());
-    }
-
-    public void increaseResource(Resource resource) {
-        resources.put(resource.getType(), resources.getOrDefault(resource.getType(), 0) + resource.getCounts());
+    // В классе Player
+    public void collectResource(Resource resource) {
+        String type = resource.getType();
+        int count = resource.getCounts();
+        resources.put(type, resources.getOrDefault(type, 0) + count);
+        resource.setCounts(0);
+        System.out.println("Collected " + count + " " + type); // Выводим сообщение о сборе ресурса
     }
 }

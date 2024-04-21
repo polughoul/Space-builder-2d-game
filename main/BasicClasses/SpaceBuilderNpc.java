@@ -1,26 +1,57 @@
 package main.BasicClasses;
 
-public class SpaceBuilderNpc extends SpaceShip {
+import java.awt.*;
 
-    private String resourced_focus;
+import java.util.HashMap;
 
-    public SpaceBuilderNpc(String name, int fuel, int health, int capacity, int money, String resourced_focus) {
-        super(name, fuel, health, capacity);
-            this.resourced_focus = resourced_focus;
+public class SpaceBuilderNpc {
+    private String name;
+    private int level;
+    private HashMap<String, Integer> resources;
+    private int x;
+    private int y;
+
+
+    public SpaceBuilderNpc(String name, int level, HashMap<String, Integer> resources, int x, int y) {
+        this.name = name;
+        this.level = level;
+        this.resources = resources;
+        this.x = x;
+        this.y = y;
+    }
+    public void draw(Graphics g) {
+        g.setColor(Color.RED);
+        g.drawString(name, x, y);
     }
 
-    public String getResourced_focus() {
-        return resourced_focus;
+    public String getName() {
+        return name;
     }
 
-    public void setResourced_focus(String resourced_focus) {
-        this.resourced_focus = resourced_focus;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void tradeWithPlayer(Player player, Resource playerResource, Resource builderResource) {
-        if (player.hasEnoughResources(playerResource)) {
-            player.decreaseResource(playerResource);
-            player.increaseResource(builderResource);
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public HashMap<String, Integer> getResources() {
+        return resources;
+    }
+
+    public void setResources(HashMap<String, Integer> resources) {
+        this.resources = resources;
+    }
+
+    public void trade(Player player, String resourceType, int count) {
+        if (resources.containsKey(resourceType) && resources.get(resourceType) >= count) {
+            resources.put(resourceType, resources.get(resourceType) - count);
+            player.increaseResource(resourceType, count);
         }
     }
 }

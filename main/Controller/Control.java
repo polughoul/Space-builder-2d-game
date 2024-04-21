@@ -1,4 +1,4 @@
-package main.BasicClasses;
+package main.Controller;
 
 import main.GUI.panel;
 import java.awt.event.KeyAdapter;

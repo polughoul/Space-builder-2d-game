@@ -1,48 +1,27 @@
 package main.BasicClasses;
 
 public class Game {
-    private Level currentLevel;
-    private SpaceShip playerShip;
-    private Inventory playerInventory;
+    private Player player;
+    private Galaxy galaxy;
 
-    public Game(Level currentLevel, SpaceShip playerShip, Inventory playerInventory) {
-        this.currentLevel = currentLevel;
-        this.playerShip = playerShip;
-        this.playerInventory = playerInventory;
-    }
-    public void update() {
-        // This is where the game state update will be done
-    }
-    public Level getCurrentLevel() {
-        return currentLevel;
+    public Game(Player player, Galaxy galaxy) {
+        this.player = player;
+        this.galaxy = galaxy;
     }
 
-    public void setCurrentLevel(Level currentLevel) {
-        this.currentLevel = currentLevel;
+    public Player getPlayer() {
+        return player;
     }
 
-    public SpaceShip getPlayerShip() {
-        return playerShip;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
-    public void setPlayerShip(SpaceShip playerShip) {
-        this.playerShip = playerShip;
+    public Galaxy getGalaxy() {
+        return galaxy;
     }
 
-    public Inventory getPlayerInventory() {
-        return playerInventory;
-    }
-
-    public void setPlayerInventory(Inventory playerInventory) {
-        this.playerInventory = playerInventory;
-    }
-
-    public void checkW() {
-    }
-
-    public void checkL() {
-    }
-
-    public void updateNPC() {
+    public void setGalaxy(Galaxy galaxy) {
+        this.galaxy = galaxy;
     }
 }

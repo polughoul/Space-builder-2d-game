@@ -1,24 +1,29 @@
 package main.BasicClasses;
 
 import java.util.List;
-
 public class Planet extends SpaceObject {
-    private List<SpaceBuilderNpc> spaceBuilder;
-    private List<SpaceBanditNpc> spaceBandit;
+    private List<SpaceBuilderNpc> spaceBuilders;
+    private List<SpaceBanditNpc> spaceBandits;
 
-    public List<SpaceBuilderNpc> getSpaceBuilder() {
-        return spaceBuilder;
+    public Planet(List<Resource> resources, String name, int size, List<SpaceBuilderNpc> spaceBuilders, List<SpaceBanditNpc> spaceBandits, int x, int y) {
+        super(resources, name, size, x, y);
+        this.spaceBuilders = spaceBuilders;
+        this.spaceBandits = spaceBandits;
     }
 
-    public void setSpaceBuilder(List<SpaceBuilderNpc> spaceBuilder) {
-        this.spaceBuilder = spaceBuilder;
+    public List<SpaceBuilderNpc> getSpaceBuilders() {
+        return spaceBuilders;
     }
 
-    public List<SpaceBanditNpc> getSpaceBandit() {
-        return spaceBandit;
+    public void setSpaceBuilders(List<SpaceBuilderNpc> spaceBuilders) {
+        this.spaceBuilders = spaceBuilders;
     }
 
-    public void setSpaceBandit(List<SpaceBanditNpc> spaceBandit) {
-        this.spaceBandit = spaceBandit;
+    public List<SpaceBanditNpc> getSpaceBandits() {
+        return spaceBandits;
+    }
+
+    public void setSpaceBandits(List<SpaceBanditNpc> spaceBandits) {
+        this.spaceBandits = spaceBandits;
     }
 }
