@@ -55,8 +55,4 @@ public class SpaceBanditNpc {
         this.damage = damage;
     }
 
-    public void attack(Player player) {
-        int damage = this.getLevel() * 10;
-        player.decreaseHealth(damage);
-    }
 }

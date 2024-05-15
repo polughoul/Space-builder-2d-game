@@ -8,6 +8,14 @@ public class Resource {
     private int x;
     private int y;
 
+    public boolean isPlayerOnResource(int playerX, int playerY) {
+        int dx = this.x - playerX;
+        int dy = this.y - playerY;
+        int distance = (int) Math.sqrt(dx * dx + dy * dy);
+        int resourceSize = 10; // Замените это на реальный размер ресурса
+        return distance <= resourceSize;
+    }
+
     public Resource(String type, int counts, int x, int y){
         this.type = type;
         this.counts = counts;
@@ -15,7 +23,7 @@ public class Resource {
         this.y = y;
     }
     public void draw(Graphics g) {
-        g.setColor(Color.YELLOW);
+        g.setColor(Color.BLACK);
         g.drawString(type + ": " + counts, x, y);
     }
 
@@ -34,11 +42,5 @@ public class Resource {
     public void setCounts(int counts) {
         this.counts = counts;
     }
-    public void collect(Player player) {
-        player.collectResource(this);
-        counts = 0;
-    }
-    public boolean isPlayerOnResource(int playerX, int playerY) {
-        return playerX >= x && playerX <= x + 50 && playerY >= y && playerY <= y + 50;
-    }
+
 }

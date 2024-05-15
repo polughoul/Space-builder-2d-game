@@ -48,10 +48,4 @@ public class SpaceBuilderNpc {
         this.resources = resources;
     }
 
-    public void trade(Player player, String resourceType, int count) {
-        if (resources.containsKey(resourceType) && resources.get(resourceType) >= count) {
-            resources.put(resourceType, resources.get(resourceType) - count);
-            player.increaseResource(resourceType, count);
-        }
-    }
 }

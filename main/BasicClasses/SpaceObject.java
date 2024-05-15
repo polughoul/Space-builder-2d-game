@@ -1,6 +1,8 @@
 package main.BasicClasses;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class SpaceObject {
     private List<Resource> resources;
@@ -9,23 +11,18 @@ public abstract class SpaceObject {
     private int x;
     private int y;
 
-    private Resource resource;
-
-    public Resource getResource() {
-        return resource;
-    }
-
-    public void setResource(Resource resource) {
-        this.resource = resource;
-    }
-
-    public SpaceObject(List<Resource> resources, String name, int size, int x, int y){
-        this.resources = resources;
+    public SpaceObject(String name, int size, int x, int y){
         this.name = name;
         this.size = size;
         this.x = x;
         this.y = y;
+        resources = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < 5; i++) {
+            resources.add(new Resource("Resource" + i, random.nextInt(100), x + random.nextInt(size), y + random.nextInt(size)));
+        }
     }
+
 
     public List<Resource> getResources() {
         return resources;

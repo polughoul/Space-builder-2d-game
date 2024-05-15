@@ -6,7 +6,7 @@ public class Planet extends SpaceObject {
     private List<SpaceBanditNpc> spaceBandits;
 
     public Planet(List<Resource> resources, String name, int size, List<SpaceBuilderNpc> spaceBuilders, List<SpaceBanditNpc> spaceBandits, int x, int y) {
-        super(resources, name, size, x, y);
+        super(name, size, x, y);
         this.spaceBuilders = spaceBuilders;
         this.spaceBandits = spaceBandits;
     }

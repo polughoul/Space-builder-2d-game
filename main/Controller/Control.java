@@ -1,12 +1,19 @@
 package main.Controller;
 
+import main.BasicClasses.*;
 import main.GUI.panel;
+
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class Control extends KeyAdapter {
+    private Player player;
     private panel gamePanel;
-    public Control(panel gamePanel) {
+    private boolean moveUp, moveDown, moveLeft, moveRight;
+
+    public Control(Player player, panel gamePanel) {
+        this.player = player;
         this.gamePanel = gamePanel;
     }
 
@@ -14,38 +21,73 @@ public class Control extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
-                gamePanel.setUpPressed(true);
-                break;
-            case KeyEvent.VK_S:
-                gamePanel.setDownPressed(true);
+                moveUp = true;
                 break;
             case KeyEvent.VK_A:
-                gamePanel.setLeftPressed(true);
+                moveLeft = true;
+                break;
+            case KeyEvent.VK_S:
+                moveDown = true;
                 break;
             case KeyEvent.VK_D:
-                gamePanel.setRightPressed(true);
+                moveRight = true;
                 break;
         }
-        gamePanel.updateShipPosition();
-        gamePanel.repaint();
+
+        if (e.getKeyCode() == KeyEvent.VK_E) {
+            SpaceObject spaceObject = gamePanel.getCurrentSpaceObject();
+            if (spaceObject instanceof Asteroid) {
+                for (Resource resource : spaceObject.getResources()) {
+                    if (resource.isPlayerOnResource(player.getX(), player.getY())) {
+                        player.collectResource(resource);
+                        ((Asteroid) spaceObject).removeResource(resource);
+                        break;
+                    }
+                }
+            }
+        }
     }
+
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
-                gamePanel.setUpPressed(false);
-                break;
-            case KeyEvent.VK_S:
-                gamePanel.setDownPressed(false);
+                moveUp = false;
                 break;
             case KeyEvent.VK_A:
-                gamePanel.setLeftPressed(false);
+                moveLeft = false;
+                break;
+            case KeyEvent.VK_S:
+                moveDown = false;
                 break;
             case KeyEvent.VK_D:
-                gamePanel.setRightPressed(false);
+                moveRight = false;
                 break;
         }
-        gamePanel.updateShipPosition();
-        gamePanel.repaint();
+    }
+
+    public void movePlayer() {
+        if (moveUp) {
+            player.moveUp();
+        }
+        if (moveDown) {
+            player.moveDown();
+        }
+        if (moveLeft) {
+            player.moveLeft();
+        }
+        if (moveRight) {
+            player.moveRight();
+        }
+        for (SpaceObject spaceObject : gamePanel.getSpaceObjects()) {
+            if (spaceObject.isPlayerOnObject(player.getX(), player.getY())) {
+                // Если игрок уже находится на астероиде, не меняем currentSpaceObject
+                if (!(gamePanel.getCurrentSpaceObject() instanceof Asteroid)) {
+                    gamePanel.setCurrentSpaceObject(spaceObject);
+                }
+                break;
+            }
+        }
+
     }
 }

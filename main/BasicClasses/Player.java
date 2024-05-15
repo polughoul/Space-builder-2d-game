@@ -1,12 +1,52 @@
 package main.BasicClasses;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Player {
     private int money;
     private HashMap<String, Integer> resources;
+    private int x;
+    private int y;
+    private List<Resource> collectedResources = new ArrayList<>();
 
     private int health;
+
+    public void moveUp() {
+        if (y > 0) {
+            y -= 1;
+            System.out.println("Move up");
+        }
+    }
+
+    public void moveDown() {
+        if (y < 580) {
+            y += 1;
+            System.out.println("Move down");
+        }
+    }
+
+    public void moveLeft() {
+        if (x > 0) {
+            x -= 1;
+            System.out.println("Move left");
+        }
+    }
+
+    public void moveRight() {
+        if (x < 780) {
+            x += 1;
+            System.out.println("Move right");
+        }
+    }
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 
     public Player(int money, int health) {
         this.money = money;
@@ -38,22 +78,8 @@ public class Player {
         this.health = health;
     }
 
-    public void decreaseHealth(int damage) {
-        this.health -= damage;
-        if (this.health < 0) {
-            this.health = 0;
-        }
-    }
-
-    public void increaseResource(String resourceType, int count) {
-        resources.put(resourceType, resources.getOrDefault(resourceType, 0) + count);
-    }
-
     public void collectResource(Resource resource) {
-        String type = resource.getType();
-        int count = resource.getCounts();
-        resources.put(type, resources.getOrDefault(type, 0) + count);
-        resource.setCounts(0);
-        System.out.println("Collected " + count + " " + type); // Выводим сообщение о сборе ресурса
+        collectedResources.add(resource);
     }
+
 }

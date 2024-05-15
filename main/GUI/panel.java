@@ -5,144 +5,74 @@ import main.BasicClasses.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class panel extends JPanel {
+    private Player player;
+    private Control control;
+    private Timer timer;
+    private List<SpaceObject> spaceObjects;
+    private SpaceObject currentSpaceObject;
 
-    private Game game;
-    private int shipX = 400;
-    private int shipY = 300;
-    private boolean upPressed = false;
-    private boolean downPressed = false;
-    private boolean leftPressed = false;
-    private boolean rightPressed = false;
-    private SpaceObject currentObject = null;
-    private Resource currentResource = null;
-    private boolean isOnObject = false;
-    private JButton collectButton;
 
-    public panel(Game game) {
-        this.game = game;
-        setFocusable(true);
-        addKeyListener(new Control(this));
+    public panel() {
+        player = new Player(100, 100); // создаем игрока с начальными параметрами
+        control = new Control(player, this); // создаем контроллер, передавая в него игрока
+        addKeyListener(control); // добавляем контроллер как слушателя клавиатуры
+        setFocusable(true); // делаем панель способной получать фокус, чтобы она могла принимать ввод с клавиатуры
+        requestFocusInWindow(); // Запрашиваем фокус ввода в окне
 
-        JButton leaveButton = new JButton("Leave");
-        leaveButton.addActionListener(e -> onLeaveButtonClick());
-        add(leaveButton);
-
-        collectButton = new JButton("Collect Resource");
-        collectButton.setVisible(false);
-        collectButton.addActionListener(e -> {
-            if (isOnObject && currentResource != null) {
-                currentResource.collect(game.getPlayer());
-                currentObject.getResources().remove(currentResource);
-                currentResource = null;
-                collectButton.setVisible(false);
-                repaint();
-                requestFocusInWindow();
-            }
+        // Создаем таймер для игрового цикла
+        timer = new Timer(1000 / 60, e -> {
+            control.movePlayer(); // Перемещаем игрока
+            repaint(); // Перерисовываем панель
         });
-        add(collectButton);
+        timer.start(); // Запускаем таймер
+
+        spaceObjects = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < 3; i++) {
+            spaceObjects.add(new Asteroid( "Asteroid" + i, 20, random.nextInt(800), random.nextInt(600)));
+        }
+        for (int i = 0; i < 3; i++) {
+            spaceObjects.add(new Planet(new ArrayList<>(), "Planet" + i, 40, new ArrayList<>(), new ArrayList<>(), random.nextInt(800), random.nextInt(600)));
+        }
+    }
+    public void setCurrentSpaceObject(SpaceObject spaceObject) {
+        this.currentSpaceObject = spaceObject;
     }
 
-    public void updateShipPosition() {
-        if (upPressed && shipY > 0) {
-            shipY -= 5;
-        }
-        if (downPressed && shipY < getHeight() - 50) {
-            shipY += 5;
-        }
-        if (leftPressed && shipX > 0) {
-            shipX -= 5;
-        }
-        if (rightPressed && shipX < getWidth() - 50) {
-            shipX += 5;
-        }
 
-        boolean isOnAnyObject = false;
-        for (SpaceObject spaceObject : game.getGalaxy().getSpaceObjects()) {
-            if (spaceObject.isPlayerOnObject(shipX, shipY)) {
-                isOnAnyObject = true;
-                currentObject = spaceObject;
-                if (currentObject != spaceObject) {
-                    boolean isOnAnyResource = false;
-                    for (Resource resource : currentObject.getResources()) {
-                        if (resource.isPlayerOnResource(shipX, shipY)) {
-                            currentResource = resource;
-                            collectButton.setVisible(true);
-                            isOnAnyResource = true;
-                            break;
-                        }
-                    }
-                    if (!isOnAnyResource) {
-                        currentResource = null;
-                        collectButton.setVisible(false);
-                    }
-                }
-                break;
-            }
-        }
+    public SpaceObject getCurrentSpaceObject() {
+        return currentSpaceObject;
+    }
 
-        if (!isOnAnyObject && isOnObject) {
-            isOnObject = false;
-            currentObject = null;
-            currentResource = null;
-            collectButton.setVisible(false);
-        }
-
-        repaint();
+    public List<SpaceObject> getSpaceObjects() {
+        return spaceObjects;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.GREEN);
-        g.fillOval(shipX, shipY, 50, 50);
-
-        if (isOnObject) {
-            for (Resource resource : currentObject.getResources()) {
-                if (resource.getCounts() > 0) {
+        // Рисуем игрока
+        g.fillRect(player.getX(), player.getY(), 40, 40);
+        // Если игрок находится на космическом объекте, рисуем объекты на этом космическом объекте
+        if (currentSpaceObject != null && currentSpaceObject instanceof Asteroid) {
+            List<Resource> resources = currentSpaceObject.getResources();
+            if (resources != null) {
+                for (Resource resource : resources) {
                     resource.draw(g);
                 }
             }
-            if (currentObject instanceof Planet) {
-                Planet planet = (Planet) currentObject;
-                for (SpaceBuilderNpc builder : planet.getSpaceBuilders()) {
-                    builder.draw(g);
-                }
-                for (SpaceBanditNpc bandit : planet.getSpaceBandits()) {
-                    bandit.draw(g);
-                }
-            }
         } else {
-            for (SpaceObject outerSpaceObject : game.getGalaxy().getSpaceObjects()) {
-                g.setColor(Color.BLUE);
-                g.fillOval(outerSpaceObject.getX(), outerSpaceObject.getY(), 50, 50);
-                g.setColor(Color.WHITE);
-                g.drawString(outerSpaceObject.getName(), outerSpaceObject.getX(), outerSpaceObject.getY());
+            // Иначе рисуем космические объекты
+            for (SpaceObject spaceObject : spaceObjects) {
+                g.drawOval(spaceObject.getX(), spaceObject.getY(), spaceObject.getSize(), spaceObject.getSize());
             }
         }
     }
-    public void onLeaveButtonClick() {
-        isOnObject = false;
-        currentObject = null;
-        currentResource = null;
-        repaint();
-        requestFocusInWindow();
-    }
 
-    public void setUpPressed(boolean upPressed) {
-        this.upPressed = upPressed;
-    }
-
-    public void setDownPressed(boolean downPressed) {
-        this.downPressed = downPressed;
-    }
-
-    public void setLeftPressed(boolean leftPressed) {
-        this.leftPressed = leftPressed;
-    }
-
-    public void setRightPressed(boolean rightPressed) {
-        this.rightPressed = rightPressed;
-    }
+    // ... остальной код ...
 }
