@@ -10,33 +10,35 @@ public class Player {
     private int x;
     private int y;
     private List<Resource> collectedResources = new ArrayList<>();
+    private int speed = 5;
+
 
     private int health;
 
     public void moveUp() {
         if (y > 0) {
-            y -= 1;
+            y -= speed;
             System.out.println("Move up");
         }
     }
 
     public void moveDown() {
-        if (y < 580) {
-            y += 1;
+        if (y < 900) {
+            y += speed;
             System.out.println("Move down");
         }
     }
 
     public void moveLeft() {
         if (x > 0) {
-            x -= 1;
+            x -= speed;
             System.out.println("Move left");
         }
     }
 
     public void moveRight() {
-        if (x < 780) {
-            x += 1;
+        if (x < 1250) {
+            x += speed;
             System.out.println("Move right");
         }
     }
@@ -80,6 +82,9 @@ public class Player {
 
     public void collectResource(Resource resource) {
         collectedResources.add(resource);
+        System.out.println("Collected resource: " + resource.getType());
     }
-
+    public List<Resource> getCollectedResources() {
+        return collectedResources;
+    }
 }

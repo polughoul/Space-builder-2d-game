@@ -2,25 +2,26 @@ package main.BasicClasses;
 
 import java.awt.*;
 
-public class SpaceBanditNpc {
+public class Bandit {
     private String name;
     private int level;
     private int health;
     private int damage;
     private int x;
     private int y;
-    public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        g.drawString(name, x, y);
-    }
 
-    public SpaceBanditNpc(String name, int level, int health, int damage, int x, int y) {
+    public Bandit(String name, int level, int health, int damage, int x, int y) {
         this.name = name;
         this.level = level;
         this.health = health;
         this.damage = damage;
         this.x = x;
         this.y = y;
+    }
+
+    public void draw(Graphics g) {
+        g.setColor(Color.GREEN);
+        g.drawString(  "bandit " , x - 10 / 2, y - 10 / 2);
     }
 
     public String getName() {

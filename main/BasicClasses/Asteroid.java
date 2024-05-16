@@ -15,15 +15,15 @@ public class Asteroid extends SpaceObject {
         resources.remove(resource);
     }
 
-
-
     @Override
     public List<Resource> getResources() {
         if (resources == null) {
             resources = new ArrayList<>();
             Random random = new Random();
             for (int i = 0; i < 5; i++) {
-                resources.add(new Resource("Resource" + i, random.nextInt(100), getX() + random.nextInt(getSize() * 20), getY() + random.nextInt(getSize() * 20)));
+                int resourceX = random.nextInt(1240);
+                int resourceY = random.nextInt(900);
+                resources.add(new Resource("Resource" + i, random.nextInt(100), resourceX, resourceY));
             }
         }
         return resources;

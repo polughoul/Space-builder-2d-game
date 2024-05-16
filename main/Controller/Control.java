@@ -33,19 +33,6 @@ public class Control extends KeyAdapter {
                 moveRight = true;
                 break;
         }
-
-        if (e.getKeyCode() == KeyEvent.VK_E) {
-            SpaceObject spaceObject = gamePanel.getCurrentSpaceObject();
-            if (spaceObject instanceof Asteroid) {
-                for (Resource resource : spaceObject.getResources()) {
-                    if (resource.isPlayerOnResource(player.getX(), player.getY())) {
-                        player.collectResource(resource);
-                        ((Asteroid) spaceObject).removeResource(resource);
-                        break;
-                    }
-                }
-            }
-        }
     }
 
     @Override
@@ -81,8 +68,7 @@ public class Control extends KeyAdapter {
         }
         for (SpaceObject spaceObject : gamePanel.getSpaceObjects()) {
             if (spaceObject.isPlayerOnObject(player.getX(), player.getY())) {
-                // Если игрок уже находится на астероиде, не меняем currentSpaceObject
-                if (!(gamePanel.getCurrentSpaceObject() instanceof Asteroid)) {
+                if (!(gamePanel.getCurrentSpaceObject() instanceof Asteroid) && !(gamePanel.getCurrentSpaceObject() instanceof Planet)) {
                     gamePanel.setCurrentSpaceObject(spaceObject);
                 }
                 break;

@@ -4,7 +4,7 @@ import java.awt.*;
 
 import java.util.HashMap;
 
-public class SpaceBuilderNpc {
+public class Builder {
     private String name;
     private int level;
     private HashMap<String, Integer> resources;
@@ -12,7 +12,7 @@ public class SpaceBuilderNpc {
     private int y;
 
 
-    public SpaceBuilderNpc(String name, int level, HashMap<String, Integer> resources, int x, int y) {
+    public Builder(String name, int level, HashMap<String, Integer> resources, int x, int y) {
         this.name = name;
         this.level = level;
         this.resources = resources;
@@ -21,7 +21,7 @@ public class SpaceBuilderNpc {
     }
     public void draw(Graphics g) {
         g.setColor(Color.RED);
-        g.drawString(name, x, y);
+        g.drawString( "buildder " , x - 10 / 2, y - 10 / 2);
     }
 
     public String getName() {

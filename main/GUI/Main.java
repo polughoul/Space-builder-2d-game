@@ -5,14 +5,12 @@ import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-        // Создаем новый фрейм (окно)
-        JFrame frame = new JFrame("Game Title");
+        JFrame frame = new JFrame("Kosmický stavitel");
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Создаем панель для кнопок
         JPanel buttonPanel = new JPanel(new GridLayout(1, 3));
 
-        // Создаем кнопки
         JButton startButton = new JButton("Start Game");
         startButton.setFocusable(false);
         JButton loadButton = new JButton("Load Game");
@@ -20,25 +18,32 @@ public class Main {
         JButton exitButton = new JButton("Exit Game");
         exitButton.setFocusable(false);
 
-
         buttonPanel.add(startButton);
         buttonPanel.add(loadButton);
         buttonPanel.add(exitButton);
 
-        // Создаем игровую панель
         panel gamePanel = new panel();
+        gamePanel.setVisible(false);
 
         JButton returnButton = new JButton("Return to Galaxy");
         returnButton.setFocusable(false);
         returnButton.addActionListener(e -> gamePanel.setCurrentSpaceObject(null));
         buttonPanel.add(returnButton);
 
-        // Добавляем панели на фрейм
         frame.getContentPane().add(buttonPanel, BorderLayout.NORTH);
         frame.getContentPane().add(gamePanel, BorderLayout.CENTER);
 
-        // Устанавливаем размер фрейма и делаем его видимым
-        frame.setSize(800, 600);
+        startButton.addActionListener(e -> {
+            gamePanel.setVisible(true);
+            gamePanel.requestFocusInWindow();
+        });
+
+        exitButton.addActionListener(e -> {
+            System.exit(0);
+        });
+
+        frame.setSize(1280, 960);
         frame.setVisible(true);
+        frame.setResizable(false);
     }
 }

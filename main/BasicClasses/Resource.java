@@ -12,8 +12,7 @@ public class Resource {
         int dx = this.x - playerX;
         int dy = this.y - playerY;
         int distance = (int) Math.sqrt(dx * dx + dy * dy);
-        int resourceSize = 10; // Замените это на реальный размер ресурса
-        return distance <= resourceSize;
+        return distance <= 10 / 2;
     }
 
     public Resource(String type, int counts, int x, int y){
@@ -24,9 +23,8 @@ public class Resource {
     }
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
-        g.drawString(type + ": " + counts, x, y);
+        g.drawString(type + ": " + counts, x - 10 / 2, y - 10 / 2);
     }
-
     public String getType() {
         return type;
     }

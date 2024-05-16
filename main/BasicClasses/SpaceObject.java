@@ -16,11 +16,6 @@ public abstract class SpaceObject {
         this.size = size;
         this.x = x;
         this.y = y;
-        resources = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 5; i++) {
-            resources.add(new Resource("Resource" + i, random.nextInt(100), x + random.nextInt(size), y + random.nextInt(size)));
-        }
     }
 
 
@@ -62,7 +57,10 @@ public abstract class SpaceObject {
     }
 
     public boolean isPlayerOnObject(int playerX, int playerY) {
-        return playerX >= x && playerX <= x + 50 && playerY >= y && playerY <= y + 50;
+        int dx = this.x - playerX;
+        int dy = this.y - playerY;
+        int distance = (int) Math.sqrt(dx * dx + dy * dy);
+        return distance <= this.size / 2;
     }
 
 }
