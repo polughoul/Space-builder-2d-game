@@ -31,15 +31,9 @@ public class panel extends JPanel {
         });
         timer.start();
 
-        spaceObjects = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 3; i++) {
-            spaceObjects.add(new Asteroid( "Asteroid" + i, 20, random.nextInt(1240), random.nextInt(900)));
-        }
-
-        for (int i = 0; i < 3; i++) {
-            spaceObjects.add(new Planet("Planet" + i, 40,random.nextInt(1240), random.nextInt(900)));
-        }
+        Galaxy galaxy = new Galaxy("My Galaxy");
+        galaxy.createSpaceObjects();
+        spaceObjects = galaxy.getSpaceObjects();
 
         collectButton = new JButton("Collect Resource");
         collectButton.setBounds(100, 100, 200, 50);
