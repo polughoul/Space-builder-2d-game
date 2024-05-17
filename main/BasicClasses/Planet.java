@@ -1,5 +1,7 @@
 package main.BasicClasses;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,7 @@ public class Planet extends SpaceObject {
             for (int i = 0; i < 5; i++) {
                 int banditX = random.nextInt(1240);
                 int banditY = random.nextInt(900);
-                bandits.add(new Bandit("Bandit" + i, 1, 100, 50, banditX, banditY));
+                bandits.add(new Bandit(1, 100, 10, banditX, banditY, 2));
             }
         }
         return bandits;
@@ -82,10 +84,14 @@ public class Planet extends SpaceObject {
         buildings.add(building);
     }
 
-    public void drawBuildings(Graphics g) {
+    public void drawBuildings(GraphicsContext gc) {
         for (Building building : buildings) {
-            g.drawRect(building.getX(), building.getY(), 40, 40);
+            gc.strokeRect(building.getX(), building.getY(), 40, 40);
         }
     }
+    public void removeBandit(Bandit bandit) {
+        bandits.remove(bandit);
+    }
+
 
 }

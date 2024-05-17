@@ -9,10 +9,11 @@ import java.util.ArrayList;
 public class Player {
     private int money;
     private HashMap<String, Integer> resources;
+    private int damage;
     private int x;
     private int y;
     private List<Resource> collectedResources = new ArrayList<>();
-    private int speed = 5;
+    private int speed = 2;
 
 
     private int health;
@@ -52,10 +53,11 @@ public class Player {
         return y;
     }
 
-    public Player(int money, int health) {
+    public Player(int money, int health, int damage) {
         this.money = money;
         this.resources = new HashMap<>();
         this.health = health;
+        this.damage = damage;
     }
 
     public int getMoney() {
@@ -109,5 +111,36 @@ public class Player {
             }
         }
         return true;
+    }
+
+    public void attack(Bandit bandit, Planet currentPlanet) {
+        int newHealth = bandit.getHealth() - this.damage;
+        bandit.setHealth(newHealth);
+        System.out.println("Игрок нанес урон - " + this.damage + ", у бандита осталось здоровья: " + newHealth);
+        if (newHealth <= 0) {
+            // Если здоровье бандита достигло 0 или меньше, удалить бандита
+            currentPlanet.removeBandit(bandit);
+        }
+    }
+
+    public void attackNearestBandit(Planet currentPlanet) {
+        Bandit nearestBandit = null;
+        double nearestDistance = Double.MAX_VALUE;
+
+        for (Bandit bandit : currentPlanet.getBandits()) {
+            double dx = this.x - bandit.getX();
+            double dy = this.y - bandit.getY();
+            double distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < nearestDistance) {
+                nearestBandit = bandit;
+                nearestDistance = distance;
+            }
+        }
+
+        // Если ближайший бандит находится на расстоянии атаки, атаковать его
+        if (nearestBandit != null && nearestDistance <= 5) { // 5 - это расстояние атаки
+            this.attack(nearestBandit, currentPlanet);
+        }
     }
 }

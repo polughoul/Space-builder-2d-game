@@ -1,5 +1,7 @@
 package main.BasicClasses;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.awt.*;
 
 import java.util.HashMap;
@@ -19,9 +21,9 @@ public class Builder {
         this.x = x;
         this.y = y;
     }
-    public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        g.drawString( "buildder " , x - 10 / 2, y - 10 / 2);
+    public void draw(GraphicsContext gc) {
+        gc.setFill(javafx.scene.paint.Color.RED);
+        gc.fillText("builder", x - 10 / 2, y - 10 / 2);
     }
 
     public String getName() {

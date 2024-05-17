@@ -1,5 +1,7 @@
 package main.BasicClasses;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.awt.*;
 
 public class Resource {
@@ -21,9 +23,9 @@ public class Resource {
         this.x = x;
         this.y = y;
     }
-    public void draw(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.drawString(type + ": " + counts, x - 10 / 2, y - 10 / 2);
+    public void draw(GraphicsContext gc) {
+        gc.setFill(javafx.scene.paint.Color.BLACK);
+        gc.fillText(type + ": " + counts, x - 10 / 2, y - 10 / 2);
     }
     public String getType() {
         return type;

@@ -1,49 +1,62 @@
 package main.GUI;
 
-import javax.swing.*;
-import java.awt.*;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application {
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Kosmický stavitel");
+        launch(args);
+    }
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Kosmický stavitel");
 
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 3));
+        HBox buttonPanel = new HBox();
 
-        JButton startButton = new JButton("Start Game");
-        startButton.setFocusable(false);
-        JButton loadButton = new JButton("Load Game");
-        loadButton.setFocusable(false);
-        JButton exitButton = new JButton("Exit Game");
-        exitButton.setFocusable(false);
+        Button startButton = new Button("Start Game");
+        Button loadButton = new Button("Load Game");
+        Button exitButton = new Button("Exit Game");
 
-        buttonPanel.add(startButton);
-        buttonPanel.add(loadButton);
-        buttonPanel.add(exitButton);
+        buttonPanel.getChildren().addAll(startButton, loadButton, exitButton);
 
         GameView gameGameView = new GameView();
         gameGameView.setVisible(false);
 
-        JButton returnButton = new JButton("Return to Galaxy");
-        returnButton.setFocusable(false);
-        returnButton.addActionListener(e -> gameGameView.setCurrentSpaceObject(null));
-        buttonPanel.add(returnButton);
-
-        frame.getContentPane().add(buttonPanel, BorderLayout.NORTH);
-        frame.getContentPane().add(gameGameView, BorderLayout.CENTER);
-
-        startButton.addActionListener(e -> {
-            gameGameView.setVisible(true);
-            gameGameView.requestFocusInWindow();
+        Button returnButton = new Button("Return to Galaxy");
+        HBox.setHgrow(startButton, Priority.ALWAYS);
+        HBox.setHgrow(loadButton, Priority.ALWAYS);
+        HBox.setHgrow(exitButton, Priority.ALWAYS);
+        HBox.setHgrow(returnButton, Priority.ALWAYS);
+        returnButton.setOnAction(e -> {
+            gameGameView.setCurrentSpaceObject(null);
+            gameGameView.requestFocus();
         });
 
-        exitButton.addActionListener(e -> {
+        buttonPanel.getChildren().add(returnButton);
+
+        BorderPane root = new BorderPane();
+        root.setTop(buttonPanel);
+        root.setCenter(gameGameView);
+
+        startButton.setOnAction(e -> {
+            gameGameView.setVisible(true);
+            gameGameView.requestFocus();
+        });
+
+        exitButton.setOnAction(e -> {
             System.exit(0);
         });
 
-        frame.setSize(1280, 960);
-        frame.setVisible(true);
-        frame.setResizable(false);
+
+        Scene scene = new Scene(root, 1280, 960);
+        primaryStage.setResizable(false);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
