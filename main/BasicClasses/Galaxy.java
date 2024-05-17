@@ -1,8 +1,6 @@
 package main.BasicClasses;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Galaxy {
     private String name;
@@ -36,7 +34,33 @@ public class Galaxy {
         }
 
         for (int i = 0; i < 3; i++) {
-            spaceObjects.add(new Planet("Planet" + i, 40,random.nextInt(1024), random.nextInt(724)));
+            List<Building> buildings = new ArrayList<>();
+            buildings.add(new Building("building1", createBuilding1Cost()));
+            buildings.add(new Building("building2", createBuilding2Cost()));
+            buildings.add(new Building("building3", createBuilding3Cost()));
+
+            spaceObjects.add(new Planet("Planet" + i, 40,random.nextInt(1024), random.nextInt(724), new ArrayList<>(buildings)));
         }
+    }
+
+    private Map<String, Integer> createBuilding1Cost() {
+        Map<String, Integer> building1Cost = new HashMap<>();
+        building1Cost.put("Resource1", 50);
+        building1Cost.put("Resource2", 30);
+        return building1Cost;
+    }
+
+    private Map<String, Integer> createBuilding2Cost() {
+        Map<String, Integer> building2Cost = new HashMap<>();
+        building2Cost.put("Resource2", 70);
+        building2Cost.put("Resource3", 40);
+        return building2Cost;
+    }
+
+    private Map<String, Integer> createBuilding3Cost() {
+        Map<String, Integer> building3Cost = new HashMap<>();
+        building3Cost.put("Resource1", 20);
+        building3Cost.put("Resource3", 60);
+        return building3Cost;
     }
 }

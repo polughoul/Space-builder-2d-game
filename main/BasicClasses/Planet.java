@@ -12,10 +12,25 @@ public class Planet extends SpaceObject {
     private List<Builder> builders;
     private List<Building> buildings = new ArrayList<>();
 
+    private List<Building> availableBuildings = new ArrayList<>();
 
-    public Planet(String name, int size, int x, int y)
+    public List<Building> getAvailableBuildings() {
+        return availableBuildings;
+    }
+
+    public void setAvailableBuildings(List<Building> availableBuildings) {
+        this.availableBuildings = availableBuildings;
+    }
+
+    public void removeAvailableBuilding(Building building) {
+        availableBuildings.remove(building);
+    }
+
+    public Planet(String name, int size, int x, int y, List<Building> buildings)
     {
         super(name, size, x, y);
+        availableBuildings.addAll(buildings);
+
     }
 
     public void removeResource(Resource resource) {

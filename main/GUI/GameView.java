@@ -5,17 +5,11 @@ import main.BasicClasses.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
-import javax.swing.JButton;
 
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.Timer;
-
-public class panel extends JPanel {
+public class GameView extends JPanel {
     private Player player;
     private Control control;
     private Timer timer;
@@ -24,19 +18,13 @@ public class panel extends JPanel {
     private JButton collectButton;
     private JComboBox<Building> buildingsComboBox;
     private JButton buildButton;
+    private boolean isBuilding = false;
+    private Building selectedBuilding;
 
-    public panel() {
+    public GameView() {
         player = new Player(100, 100);
-        control = new Control(player, this);
-        addKeyListener(control);
         setFocusable(true);
         requestFocusInWindow();
-
-        timer = new Timer(1000 / 60, e -> {
-            control.movePlayer();
-            repaint();
-        });
-        timer.start();
 
         Galaxy galaxy = new Galaxy("My Galaxy");
         galaxy.createSpaceObjects();
@@ -45,74 +33,69 @@ public class panel extends JPanel {
         collectButton = new JButton("Collect Resource");
         collectButton.setBounds(100, 100, 200, 50);
         collectButton.setVisible(false);
-        collectButton.addActionListener(e -> {
-            if (currentSpaceObject instanceof Asteroid || currentSpaceObject instanceof Planet) {
-                for (Resource resource : currentSpaceObject.getResources()) {
-                    if (resource.isPlayerOnResource(player.getX(), player.getY())) {
-                        player.collectResource(resource);
-                        if (currentSpaceObject instanceof Planet) {
-                            ((Planet) currentSpaceObject).removeResource(resource);
-                        } else if (currentSpaceObject instanceof Asteroid) {
-                            ((Asteroid) currentSpaceObject).removeResource(resource);
-                        }
-                        System.out.println("Collected resources: " + player.getCollectedResources());
-                        break;
-                    }
-                }
-            }
-        });
         add(collectButton);
-
-        Map<String, Integer> building1Cost = new HashMap<>();
-        building1Cost.put("Resource1", 50);
-        building1Cost.put("Resource2", 30);
-        Building building1 = new Building("building1", building1Cost);
-
-        Map<String, Integer> building2Cost = new HashMap<>();
-        building2Cost.put("Resource2", 70);
-        building2Cost.put("Resource3", 40);
-        Building building2 = new Building("building2", building2Cost);
-
-        Map<String, Integer> building3Cost = new HashMap<>();
-        building3Cost.put("Resource1", 20);
-        building3Cost.put("Resource3", 60);
-        Building building3 = new Building("building3", building3Cost);
-
 
         buildingsComboBox = new JComboBox<>();
         buildingsComboBox.setVisible(false);
-        buildingsComboBox.addItem(building1);
-        buildingsComboBox.addItem(building2);
-        buildingsComboBox.addItem(building3);
-        buildingsComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                requestFocusInWindow();
-            }
-        });
+        buildingsComboBox.addActionListener(e -> requestFocusInWindow());
         add(buildingsComboBox);
 
         buildButton = new JButton("Construct a building");
         buildButton.setVisible(false);
-        buildButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                requestFocusInWindow();
+        add(buildButton);
 
-                Building selectedBuilding = (Building) buildingsComboBox.getSelectedItem();
-                if (player.hasEnoughResources(selectedBuilding)) {
+        control = new Control(player, this);
+        addKeyListener(control);
+
+        timer = new Timer(1000 / 60, e -> {
+            control.movePlayer();
+            repaint();
+        });
+        timer.start();
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (isBuilding && currentSpaceObject instanceof Planet && selectedBuilding != null) {
+                    selectedBuilding.setX(e.getX());
+                    selectedBuilding.setY(e.getY());
                     player.buildBuilding(selectedBuilding, (Planet) currentSpaceObject);
+                    isBuilding = false;
                     repaint();
-                } else {
-                    JOptionPane.showMessageDialog(null, "You don't have enough resources to build this building");
                 }
             }
         });
-        add(buildButton);
+    }
+
+    public JButton getCollectButton() {
+        return collectButton;
+    }
+
+    public JButton getBuildButton() {
+        return buildButton;
+    }
+
+    public JComboBox<Building> getBuildingsComboBox() {
+        return buildingsComboBox;
     }
 
     public void setCurrentSpaceObject(SpaceObject spaceObject) {
         this.currentSpaceObject = spaceObject;
+        updateBuildingsComboBox();
+    }
+
+    public void setSelectedBuilding(Building building) {
+        this.selectedBuilding = building;
+    }
+
+    private void updateBuildingsComboBox() {
+        buildingsComboBox.removeAllItems();
+        if (currentSpaceObject instanceof Planet) {
+            Planet currentPlanet = (Planet) currentSpaceObject;
+            for (Building building : currentPlanet.getAvailableBuildings()) {
+                buildingsComboBox.addItem(building);
+            }
+        }
     }
 
     public SpaceObject getCurrentSpaceObject() {
@@ -123,6 +106,9 @@ public class panel extends JPanel {
         return spaceObjects;
     }
 
+    public void setIsBuilding(boolean isBuilding) {
+        this.isBuilding = isBuilding;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

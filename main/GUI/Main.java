@@ -22,20 +22,20 @@ public class Main {
         buttonPanel.add(loadButton);
         buttonPanel.add(exitButton);
 
-        panel gamePanel = new panel();
-        gamePanel.setVisible(false);
+        GameView gameGameView = new GameView();
+        gameGameView.setVisible(false);
 
         JButton returnButton = new JButton("Return to Galaxy");
         returnButton.setFocusable(false);
-        returnButton.addActionListener(e -> gamePanel.setCurrentSpaceObject(null));
+        returnButton.addActionListener(e -> gameGameView.setCurrentSpaceObject(null));
         buttonPanel.add(returnButton);
 
         frame.getContentPane().add(buttonPanel, BorderLayout.NORTH);
-        frame.getContentPane().add(gamePanel, BorderLayout.CENTER);
+        frame.getContentPane().add(gameGameView, BorderLayout.CENTER);
 
         startButton.addActionListener(e -> {
-            gamePanel.setVisible(true);
-            gamePanel.requestFocusInWindow();
+            gameGameView.setVisible(true);
+            gameGameView.requestFocusInWindow();
         });
 
         exitButton.addActionListener(e -> {

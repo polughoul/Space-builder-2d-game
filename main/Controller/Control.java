@@ -1,20 +1,53 @@
 package main.Controller;
 
 import main.BasicClasses.*;
-import main.GUI.panel;
+import main.GUI.GameView;
 
 
+import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class Control extends KeyAdapter {
     private Player player;
-    private panel gamePanel;
+    private GameView gameGameView;
     private boolean moveUp, moveDown, moveLeft, moveRight;
 
-    public Control(Player player, panel gamePanel) {
+    public Control(Player player, GameView gameGameView) {
         this.player = player;
-        this.gamePanel = gamePanel;
+        this.gameGameView = gameGameView;
+
+        gameGameView.getCollectButton().addActionListener(e -> {
+            if (gameGameView.getCurrentSpaceObject() instanceof Asteroid || gameGameView.getCurrentSpaceObject() instanceof Planet) {
+                for (Resource resource : gameGameView.getCurrentSpaceObject().getResources()) {
+                    if (resource.isPlayerOnResource(player.getX(), player.getY())) {
+                        player.collectResource(resource);
+                        if (gameGameView.getCurrentSpaceObject() instanceof Planet) {
+                            ((Planet) gameGameView.getCurrentSpaceObject()).removeResource(resource);
+                        } else if (gameGameView.getCurrentSpaceObject() instanceof Asteroid) {
+                            ((Asteroid) gameGameView.getCurrentSpaceObject()).removeResource(resource);
+                        }
+                        System.out.println("Collected resources: " + player.getCollectedResources());
+                        break;
+                    }
+                }
+            }
+        });
+
+        gameGameView.getBuildButton().addActionListener(e -> {
+            gameGameView.requestFocusInWindow();
+
+            Building selectedBuilding = (Building) gameGameView.getBuildingsComboBox().getSelectedItem();
+            if (player.hasEnoughResources(selectedBuilding) && gameGameView.getCurrentSpaceObject() instanceof Planet) {
+                Planet currentPlanet = (Planet) gameGameView.getCurrentSpaceObject();
+                gameGameView.setIsBuilding(true);
+                gameGameView.setSelectedBuilding(selectedBuilding);
+                gameGameView.getBuildingsComboBox().removeItem(selectedBuilding);
+                currentPlanet.removeAvailableBuilding(selectedBuilding);
+            } else {
+                JOptionPane.showMessageDialog(null, "You don't have enough resources to build this building");
+            }
+        });
     }
 
     @Override
@@ -66,10 +99,10 @@ public class Control extends KeyAdapter {
         if (moveRight) {
             player.moveRight();
         }
-        for (SpaceObject spaceObject : gamePanel.getSpaceObjects()) {
+        for (SpaceObject spaceObject : gameGameView.getSpaceObjects()) {
             if (spaceObject.isPlayerOnObject(player.getX(), player.getY())) {
-                if (!(gamePanel.getCurrentSpaceObject() instanceof Asteroid) && !(gamePanel.getCurrentSpaceObject() instanceof Planet)) {
-                    gamePanel.setCurrentSpaceObject(spaceObject);
+                if (!(gameGameView.getCurrentSpaceObject() instanceof Asteroid) && !(gameGameView.getCurrentSpaceObject() instanceof Planet)) {
+                    gameGameView.setCurrentSpaceObject(spaceObject);
                 }
                 break;
             }
