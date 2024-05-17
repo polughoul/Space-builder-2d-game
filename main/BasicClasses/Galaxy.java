@@ -32,11 +32,11 @@ public class Galaxy {
     public void createSpaceObjects() {
         Random random = new Random();
         for (int i = 0; i < 3; i++) {
-            spaceObjects.add(new Asteroid( "Asteroid" + i, 20, random.nextInt(1240), random.nextInt(900)));
+            spaceObjects.add(new Asteroid( "Asteroid" + i, 20, random.nextInt(1024), random.nextInt(724)));
         }
 
         for (int i = 0; i < 3; i++) {
-            spaceObjects.add(new Planet("Planet" + i, 40,random.nextInt(1240), random.nextInt(900)));
+            spaceObjects.add(new Planet("Planet" + i, 40,random.nextInt(1024), random.nextInt(724)));
         }
     }
 }

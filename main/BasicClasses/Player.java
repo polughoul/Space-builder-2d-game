@@ -1,5 +1,7 @@
 package main.BasicClasses;
 
+
+import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class Player {
     }
 
     public void moveDown() {
-        if (y < 900) {
+        if (y < 860) {
             y += speed;
             System.out.println("Move down");
         }
@@ -37,7 +39,7 @@ public class Player {
     }
 
     public void moveRight() {
-        if (x < 1250) {
+        if (x < 1230) {
             x += speed;
             System.out.println("Move right");
         }
@@ -82,9 +84,30 @@ public class Player {
 
     public void collectResource(Resource resource) {
         collectedResources.add(resource);
+        String resourceType = resource.getType();
+        int resourceAmount = resource.getCounts();
+        resources.put(resourceType, resources.getOrDefault(resourceType, 0) + resourceAmount);
         System.out.println("Collected resource: " + resource.getType());
     }
     public List<Resource> getCollectedResources() {
         return collectedResources;
+    }
+
+    public void buildBuilding(Building building, Planet planet) {
+        if (hasEnoughResources(building)) {
+            planet.addBuilding(building);
+            for (Map.Entry<String, Integer> entry : building.getCost().entrySet()) {
+                resources.put(entry.getKey(), resources.get(entry.getKey()) - entry.getValue());
+            }
+        }
+    }
+
+    public boolean hasEnoughResources(Building building) {
+        for (Map.Entry<String, Integer> entry : building.getCost().entrySet()) {
+            if (!resources.containsKey(entry.getKey()) || resources.get(entry.getKey()) < entry.getValue()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

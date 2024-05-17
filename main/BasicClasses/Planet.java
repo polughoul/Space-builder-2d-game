@@ -1,5 +1,6 @@
 package main.BasicClasses;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +10,8 @@ public class Planet extends SpaceObject {
     private List<Resource> resources;
     private List<Bandit> bandits;
     private List<Builder> builders;
+    private List<Building> buildings = new ArrayList<>();
+
 
     public Planet(String name, int size, int x, int y)
     {
@@ -26,7 +29,7 @@ public class Planet extends SpaceObject {
             for (int i = 0; i < 5; i++) {
                 int resourceX = random.nextInt(1240);
                 int resourceY = random.nextInt(900);
-                resources.add(new Resource("Wood" + i, random.nextInt(100), resourceX, resourceY));
+                resources.add(new Resource("Resource" + i, random.nextInt(100), resourceX, resourceY));
             }
         }
         return resources;
@@ -60,12 +63,14 @@ public class Planet extends SpaceObject {
         return builders;
     }
 
-    public void addBandit(Bandit bandit) {
-        bandits.add(bandit);
+    public void addBuilding(Building building) {
+        buildings.add(building);
     }
 
-    public void addBuilder(Builder builder) {
-        builders.add(builder);
+    public void drawBuildings(Graphics g) {
+        for (Building building : buildings) {
+            g.drawRect(building.getX(), building.getY(), 40, 40);
+        }
     }
 
 }
