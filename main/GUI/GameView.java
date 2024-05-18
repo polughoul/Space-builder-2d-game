@@ -2,6 +2,7 @@ package main.GUI;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,6 +24,9 @@ public class GameView extends Pane {
     private boolean isBuilding = false;
     private Building selectedBuilding;
     private Canvas canvas;
+
+    private Label moneyLabel;
+    private Label resourcesLabel;
 
     private Pane overlayPane;
 
@@ -61,6 +65,10 @@ public class GameView extends Pane {
         tradeButton.setFocusTraversable(false);
         tradeButton.setOnAction(e -> openTradeWindow());
         overlayPane.getChildren().add(tradeButton);
+
+        moneyLabel = new Label();
+        resourcesLabel = new Label();
+        overlayPane.getChildren().addAll(moneyLabel, resourcesLabel);
 
 
         control = new Control(player, this);
@@ -219,5 +227,13 @@ public class GameView extends Pane {
             buildButton.setVisible(false);
         }
         collectButton.setVisible(false);
+
+        moneyLabel.setText("Money: " + player.getMoney());
+        resourcesLabel.setText("Resources: " + player.getResources());
+
+        moneyLabel.setLayoutX(10);
+        moneyLabel.setLayoutY(canvas.getHeight() - 80);
+        resourcesLabel.setLayoutX(10);
+        resourcesLabel.setLayoutY(canvas.getHeight() - 60);
     }
 }
