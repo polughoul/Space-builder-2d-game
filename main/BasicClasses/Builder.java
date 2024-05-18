@@ -18,13 +18,18 @@ public class Builder {
         this.x = x;
         this.y = y;
         this.resourcePrices = new HashMap<>();
-        this.money = 100;
+        this.money = 15;
         this.sellPrices = new HashMap<>();
 
         Map<String, Integer> woodPrice = new HashMap<>();
         woodPrice.put("coins", 20);
         woodPrice.put("Resource1", 50);
         this.resourcePrices.put("wood", woodPrice);
+
+        Map<String, Integer> Resource1Price = new HashMap<>();
+        Resource1Price.put("coins", 20);
+        Resource1Price.put("wood", 50);
+        this.resourcePrices.put("Resource1", Resource1Price);
 
         Map<String, Integer> Resource1SellPrice = new HashMap<>();
         Resource1SellPrice.put("coins", 15);

@@ -28,6 +28,9 @@ public class SellDialog {
         Stage stage = new Stage();
         stage.setTitle("Sell " + resourceToTrade);
 
+        Label playerMoneyLabel = new Label("You have " + player.getMoney() + " coins");
+        Label builderMoneyLabel = new Label("Builder has " + builder.getMoney() + " coins");
+
         ListView<String> playerResources = new ListView<>();
         for (Map.Entry<String, Integer> entry : prices.entrySet()) {
             playerResources.getItems().add(entry.getKey() + ": " + entry.getValue());
@@ -39,7 +42,7 @@ public class SellDialog {
             int price = prices.get(selectedCurrency);
             int playerResourceCount = player.getResources().get(resourceToTrade);
 
-            if (playerResourceCount > 0) {
+            if (playerResourceCount > 0 && builder.getMoney() >= price) {
                 player.getResources().put(resourceToTrade, playerResourceCount - 1);
                 player.setMoney(player.getMoney() + price);
                 builder.getResources().put(resourceToTrade, builder.getResources().getOrDefault(resourceToTrade, 0) + 1);
@@ -48,12 +51,16 @@ public class SellDialog {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("You do not have any " + resourceToTrade + " to sell.");
+                if (playerResourceCount <= 0) {
+                    alert.setContentText("You do not have any " + resourceToTrade + " to sell.");
+                } else {
+                    alert.setContentText("The builder does not have enough money to buy " + resourceToTrade + ".");
+                }
                 alert.showAndWait();
             }
         });
 
-        VBox vbox = new VBox(new Label("Select a resource to sell for " + resourceToTrade), playerResources, tradeButton);
+        VBox vbox = new VBox(new Label("Select a resource to sell for " + resourceToTrade), playerMoneyLabel, builderMoneyLabel, playerResources, tradeButton);
 
         Scene scene = new Scene(vbox, 300, 200);
         stage.setScene(scene);
