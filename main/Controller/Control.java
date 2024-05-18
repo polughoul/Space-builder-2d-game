@@ -1,5 +1,6 @@
 package main.Controller;
 
+import javafx.scene.control.Alert;
 import main.BasicClasses.*;
 import main.GUI.GameView;
 
@@ -45,7 +46,11 @@ public class Control {
             gameGameView.getBuildingsComboBox().getItems().remove(selectedBuilding);
             currentPlanet.removeAvailableBuilding(selectedBuilding);
         } else {
-            System.out.println("You don't have enough resources to build this building");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("You don't have enough resources to build this building");
+            alert.showAndWait();
         }
     }
 

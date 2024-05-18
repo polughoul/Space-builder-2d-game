@@ -12,6 +12,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.Controller.Control;
 import main.BasicClasses.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GameView extends Pane {
@@ -27,16 +30,20 @@ public class GameView extends Pane {
     private boolean isBuilding = false;
     private Building selectedBuilding;
     private Canvas canvas;
+    private List<Projectile> projectiles = new ArrayList<>();
 
     private boolean gameOver = false;
 
     private Label moneyLabel;
     private Label resourcesLabel;
 
+    private double mouseX;
+    private double mouseY;
+
     private Pane overlayPane;
 
     public GameView() {
-        player = new Player(100, 400, 50);
+        player = new Player(100, 50, 50, this );
         setFocusTraversable(true);
 
         Galaxy galaxy = new Galaxy("My Galaxy");
@@ -80,11 +87,26 @@ public class GameView extends Pane {
         setOnKeyPressed(control::handle);
         setOnKeyReleased(control::handle);
 
+        setOnMouseMoved(e -> {
+            mouseX = e.getSceneX();
+            mouseY = e.getSceneY();
+        });
+
+        setOnKeyPressed(e -> {
+            switch (e.getCode()) {
+                case SPACE:
+                    player.fire(mouseX, mouseY);
+                    break;
+                // Другие обработчики клавиш...
+            }
+        });
+
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 control.movePlayer();
                 update();
+                update_projectiles();
                 draw();
             }
         };
@@ -147,7 +169,7 @@ public class GameView extends Pane {
         timer.stop();
 
         // Reset the game state
-        player = new Player(100, 400, 50);
+        player = new Player(100, 400, 50, this);
         Galaxy galaxy = new Galaxy("My Galaxy");
         galaxy.createSpaceObjects();
         spaceObjects = galaxy.getSpaceObjects();
@@ -241,6 +263,47 @@ public class GameView extends Pane {
         this.isBuilding = isBuilding;
     }
 
+    public void addProjectile(Projectile projectile) {
+        projectiles.add(projectile);
+    }
+
+    public void update_projectiles() {
+        Iterator<Projectile> iterator = projectiles.iterator();
+        while (iterator.hasNext()) {
+            Projectile projectile = iterator.next();
+            projectile.move();
+
+            // Check if the projectile hits a bandit
+            if (currentSpaceObject instanceof Planet) {
+                Planet planet = (Planet) currentSpaceObject;
+                List<Bandit> bandits = planet.getBandits();
+                for (Bandit bandit : bandits) {
+                    if (Math.hypot(projectile.getX() - bandit.getX(), projectile.getY() - bandit.getY()) <  10) {
+                        // The projectile hit the bandit, remove the projectile and damage the bandit
+                        if (projectile.getOwner() != bandit) {
+                            // The projectile hit the bandit, remove the projectile and damage the bandit
+                            iterator.remove();
+                            bandit.setHealth(bandit.getHealth() - 10); // Assuming the damage is 10
+                            System.out.println("Bandit was hit. Bandit's health: " + bandit.getHealth());
+                            break;
+                        }
+                    }
+                    // Check if the projectile hits the player
+                    if (Math.hypot(projectile.getX() - player.getX(), projectile.getY() - player.getY()) <  10) {
+                        // The projectile hit the player, remove the projectile and damage the player
+                        if (projectile.getOwner() == bandit) {
+                            iterator.remove();
+                            player.setHealth(player.getHealth() - bandit.getDamage());
+                            System.out.println("Player was hit. Player's health: " + player.getHealth());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     protected void draw() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -265,7 +328,7 @@ public class GameView extends Pane {
                 }
                 if (bandits != null) {
                     for (Bandit bandit : bandits) {
-                        bandit.move(player, (Planet) currentSpaceObject);
+                        bandit.move(player, (Planet) currentSpaceObject, this);
                         bandit.draw(gc);
                     }
                 }
@@ -303,6 +366,10 @@ public class GameView extends Pane {
             displayVictoryWindow();
         }
 
+        for (Projectile projectile : projectiles) {
+            projectile.draw(gc);
+        }
+
         collectButton.setVisible(false);
 
         moneyLabel.setText("Money: " + player.getMoney());
@@ -314,3 +381,4 @@ public class GameView extends Pane {
         resourcesLabel.setLayoutY(canvas.getHeight() - 60);
     }
 }
+

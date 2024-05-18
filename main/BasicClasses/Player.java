@@ -1,4 +1,6 @@
 package main.BasicClasses;
+import main.GUI.GameView;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +14,7 @@ public class Player {
     private int y;
     private List<Resource> collectedResources = new ArrayList<>();
     private int speed = 2;
+    private GameView gameView;
 
 
     private int health;
@@ -51,11 +54,12 @@ public class Player {
         return y;
     }
 
-    public Player(int money, int health, int damage) {
+    public Player(int money, int health, int damage, GameView gameView) {
         this.money = money;
         this.resources = new HashMap<>();
         this.health = health;
         this.damage = damage;
+        this.gameView = gameView;
     }
 
     public int getMoney() {
@@ -111,13 +115,10 @@ public class Player {
         return true;
     }
 
-    public void attack(Bandit bandit, Planet currentPlanet) {
-        int newHealth = bandit.getHealth() - this.damage;
-        bandit.setHealth(newHealth);
-        System.out.println("Player give damage - " + this.damage + ", bandit health: " + newHealth);
-        if (newHealth <= 0) {
-            currentPlanet.removeBandit(bandit);
-        }
+    public void fire(double targetX, double targetY) {
+        Projectile projectile = new Projectile(this.x, this.y, targetX, targetY, this);
+        gameView.addProjectile(projectile);
+        System.out.println("Player fired a projectile at (" + targetX + ", " + targetY + ")");
     }
 
     public void attackNearestBandit(Planet currentPlanet) {
@@ -135,8 +136,8 @@ public class Player {
             }
         }
 
-        if (nearestBandit != null && nearestDistance <= 5) {
-            this.attack(nearestBandit, currentPlanet);
+        if (nearestBandit != null && nearestDistance <= 20) {
+            this.fire(nearestBandit.getX(), nearestBandit.getY());
         }
     }
 }

@@ -1,6 +1,8 @@
 package main.BasicClasses;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import main.GUI.GameView;
 
 import javax.swing.*;
 public class Bandit {
@@ -28,7 +30,7 @@ public class Bandit {
         gc.fillOval(x - 10 / 2, y - 10 / 2, 10, 10);
     }
 
-    public void move(Player player, Planet currentPlanet) {
+    public void move(Player player, Planet currentPlanet, GameView gameView) {
         if (currentPlanet.getBandits().contains(this)) {
             double dx = player.getX() - this.x;
             double dy = player.getY() - this.y;
@@ -40,12 +42,10 @@ public class Bandit {
             this.x += directionX * speed;
             this.y += directionY * speed;
 
-            if (distance <= 5) {
-                long currentTime = System.currentTimeMillis();
-                if (currentTime - lastAttackTime >= attackDelay) {
-                    this.attack(player);
-                    lastAttackTime = currentTime;
-                }
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastAttackTime >= attackDelay) {
+                this.attack(player, gameView);
+                lastAttackTime = currentTime;
             }
 
             if (this.health <= 0) {
@@ -83,14 +83,10 @@ public class Bandit {
         return y;
     }
 
-    public void attack(Player player) {
-        int newHealth = player.getHealth() - this.damage;
-        player.setHealth(newHealth);
-        System.out.println("bandit damaged you - " + this.damage + ", your health: " + newHealth);
-        if (newHealth <= 0) {
-            JOptionPane.showMessageDialog(null, "You have lost. Press the 'New Game' button to start again.");
-            // here i need implement the game over logic
-        }
+    // В классе Bandit
+    public void attack(Player player, GameView gameView) {
+        Projectile projectile = new Projectile(this.x, this.y, player.getX(), player.getY(), this);
+        gameView.addProjectile(projectile);
     }
 
 }
