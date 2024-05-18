@@ -2,8 +2,6 @@ package main.BasicClasses;
 
 import javafx.scene.canvas.GraphicsContext;
 
-import java.awt.*;
-
 public class Resource {
     private String type;
     private int counts;

@@ -8,9 +8,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.animation.AnimationTimer;
 import main.Controller.Control;
 import main.BasicClasses.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class GameView extends Pane {
@@ -22,6 +19,7 @@ public class GameView extends Pane {
     private Button collectButton;
     private ComboBox<Building> buildingsComboBox;
     private Button buildButton;
+    private Button tradeButton;
     private boolean isBuilding = false;
     private Building selectedBuilding;
     private Canvas canvas;
@@ -56,6 +54,15 @@ public class GameView extends Pane {
         buildButton.setOnAction(e -> control.buildBuilding());
         overlayPane.getChildren().add(buildButton);
 
+        tradeButton = new Button("Trade");
+        tradeButton.setLayoutX(100);
+        tradeButton.setLayoutY(150);
+        tradeButton.setVisible(false);
+        tradeButton.setFocusTraversable(false);
+        tradeButton.setOnAction(e -> openTradeWindow());
+        overlayPane.getChildren().add(tradeButton);
+
+
         control = new Control(player, this);
         setOnKeyPressed(control::handle);
         setOnKeyReleased(control::handle);
@@ -64,6 +71,7 @@ public class GameView extends Pane {
             @Override
             public void handle(long now) {
                 control.movePlayer();
+                update();
                 draw();
             }
         };
@@ -82,6 +90,32 @@ public class GameView extends Pane {
         canvas = new Canvas(1280, 960);
 
         getChildren().addAll(canvas, overlayPane);
+    }
+
+    public void update() {
+        if (currentSpaceObject instanceof Planet) {
+            Planet planet = (Planet) currentSpaceObject;
+            for (Builder builder : planet.getBuilders()) {
+                if (builder.isPlayerOnBuilder(player.getX(), player.getY())) {
+                    tradeButton.setVisible(true);
+                    return;
+                }
+            }
+        }
+        tradeButton.setVisible(false);
+    }
+
+    private void openTradeWindow() {
+        if (currentSpaceObject instanceof Planet) {
+            Planet planet = (Planet) currentSpaceObject;
+            for (Builder builder : planet.getBuilders()) {
+                if (builder.isPlayerOnBuilder(player.getX(), player.getY())) {
+                    TradeWindow tradeWindow = new TradeWindow(player, builder);
+                    tradeWindow.show();
+                    return;
+                }
+            }
+        }
     }
 
     public Button getCollectButton() {

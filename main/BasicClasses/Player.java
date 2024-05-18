@@ -1,6 +1,4 @@
 package main.BasicClasses;
-
-
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +24,7 @@ public class Player {
     }
 
     public void moveDown() {
-        if (y < 860) {
+        if (y < 900) {
             y += speed;
             System.out.println("Move down");
         }
@@ -40,7 +38,7 @@ public class Player {
     }
 
     public void moveRight() {
-        if (x < 1230) {
+        if (x < 1240) {
             x += speed;
             System.out.println("Move right");
         }
@@ -116,9 +114,8 @@ public class Player {
     public void attack(Bandit bandit, Planet currentPlanet) {
         int newHealth = bandit.getHealth() - this.damage;
         bandit.setHealth(newHealth);
-        System.out.println("Игрок нанес урон - " + this.damage + ", у бандита осталось здоровья: " + newHealth);
+        System.out.println("Player give damage - " + this.damage + ", bandit health: " + newHealth);
         if (newHealth <= 0) {
-            // Если здоровье бандита достигло 0 или меньше, удалить бандита
             currentPlanet.removeBandit(bandit);
         }
     }
@@ -138,8 +135,7 @@ public class Player {
             }
         }
 
-        // Если ближайший бандит находится на расстоянии атаки, атаковать его
-        if (nearestBandit != null && nearestDistance <= 5) { // 5 - это расстояние атаки
+        if (nearestBandit != null && nearestDistance <= 5) {
             this.attack(nearestBandit, currentPlanet);
         }
     }

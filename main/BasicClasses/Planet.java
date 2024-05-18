@@ -1,8 +1,6 @@
 package main.BasicClasses;
 
 import javafx.scene.canvas.GraphicsContext;
-
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -56,7 +54,7 @@ public class Planet extends SpaceObject {
         if (bandits == null) {
             bandits = new ArrayList<>();
             Random random = new Random();
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 1; i++) {
                 int banditX = random.nextInt(1240);
                 int banditY = random.nextInt(900);
                 bandits.add(new Bandit(1, 100, 10, banditX, banditY, 2));
@@ -74,7 +72,7 @@ public class Planet extends SpaceObject {
                 int builderY = random.nextInt(900);
                 HashMap<String, Integer> builderResources = new HashMap<>();
                 builderResources.put("wood", 10);
-                builders.add(new Builder("Builder" + i, 1, builderResources, builderX, builderY));
+                builders.add(new Builder(1, builderResources, builderX, builderY));
             }
         }
         return builders;
