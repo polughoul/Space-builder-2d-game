@@ -72,7 +72,8 @@ public class Planet extends SpaceObject {
                 int builderY = random.nextInt(900);
                 HashMap<String, Integer> builderResources = new HashMap<>();
                 builderResources.put("wood", 10);
-                builders.add(new Builder(1, builderResources, builderX, builderY));
+                builderResources.put("Resource1", 10);
+                builders.add(new Builder( builderResources, builderX, builderY));
             }
         }
         return builders;
