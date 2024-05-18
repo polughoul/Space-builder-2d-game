@@ -1,5 +1,6 @@
 package main.GUI;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -7,6 +8,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.animation.AnimationTimer;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import main.Controller.Control;
 import main.BasicClasses.*;
 import java.util.List;
@@ -98,6 +101,41 @@ public class GameView extends Pane {
         canvas = new Canvas(1280, 960);
 
         getChildren().addAll(canvas, overlayPane);
+    }
+
+    public boolean checkVictory() {
+        for (SpaceObject spaceObject : spaceObjects) {
+            if (spaceObject instanceof Planet) {
+                Planet planet = (Planet) spaceObject;
+                if (planet.getBuildings().size() < 3) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void displayVictoryWindow() {
+        Stage victoryStage = new Stage();
+        victoryStage.setTitle("Victory!");
+
+        Label victoryLabel = new Label("Congratulations! You have won the game!");
+
+        Button newGameButton = new Button("Start New Game");
+        newGameButton.setOnAction(e -> {
+            // Implement the logic to start a new game
+        });
+
+        Button exitButton = new Button("Exit Game");
+        exitButton.setOnAction(e -> {
+            // Implement the logic to exit the game
+        });
+
+        VBox vbox = new VBox(victoryLabel, newGameButton, exitButton);
+        Scene scene = new Scene(vbox, 300, 200);
+        victoryStage.setScene(scene);
+
+        victoryStage.show();
     }
 
     public void update() {
@@ -226,6 +264,12 @@ public class GameView extends Pane {
             buildingsComboBox.setVisible(false);
             buildButton.setVisible(false);
         }
+
+        if (checkVictory()) {
+            // Display victory message and options to start a new game or exit
+            displayVictoryWindow();
+        }
+
         collectButton.setVisible(false);
 
         moneyLabel.setText("Money: " + player.getMoney());

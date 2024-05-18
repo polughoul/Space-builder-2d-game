@@ -17,6 +17,9 @@ public class Planet extends SpaceObject {
     public List<Building> getAvailableBuildings() {
         return availableBuildings;
     }
+    public List<Building> getBuildings() {
+        return buildings;
+    }
 
     public void setAvailableBuildings(List<Building> availableBuildings) {
         this.availableBuildings = availableBuildings;

@@ -45,22 +45,22 @@ public class Galaxy {
 
     private Map<String, Integer> createBuilding1Cost() {
         Map<String, Integer> building1Cost = new HashMap<>();
-        building1Cost.put("Resource1", 50);
-        building1Cost.put("Resource2", 30);
+        building1Cost.put("Resource1", 10);
+        building1Cost.put("Resource2", 10);
         return building1Cost;
     }
 
     private Map<String, Integer> createBuilding2Cost() {
         Map<String, Integer> building2Cost = new HashMap<>();
-        building2Cost.put("Resource2", 70);
-        building2Cost.put("Resource3", 40);
+        building2Cost.put("Resource2", 10);
+        building2Cost.put("Resource3", 10);
         return building2Cost;
     }
 
     private Map<String, Integer> createBuilding3Cost() {
         Map<String, Integer> building3Cost = new HashMap<>();
-        building3Cost.put("Resource1", 20);
-        building3Cost.put("Resource3", 60);
+        building3Cost.put("Resource1", 10);
+        building3Cost.put("Resource3", 10);
         return building3Cost;
     }
 }
