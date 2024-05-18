@@ -28,6 +28,8 @@ public class GameView extends Pane {
     private Building selectedBuilding;
     private Canvas canvas;
 
+    private boolean gameOver = false;
+
     private Label moneyLabel;
     private Label resourcesLabel;
 
@@ -112,6 +114,7 @@ public class GameView extends Pane {
                 }
             }
         }
+        gameOver = true;
         return true;
     }
 
@@ -123,12 +126,13 @@ public class GameView extends Pane {
 
         Button newGameButton = new Button("Start New Game");
         newGameButton.setOnAction(e -> {
-            // Implement the logic to start a new game
+            victoryStage.close();
+            resetGame();
         });
 
         Button exitButton = new Button("Exit Game");
         exitButton.setOnAction(e -> {
-            // Implement the logic to exit the game
+            System.exit(0);
         });
 
         VBox vbox = new VBox(victoryLabel, newGameButton, exitButton);
@@ -136,6 +140,36 @@ public class GameView extends Pane {
         victoryStage.setScene(scene);
 
         victoryStage.show();
+    }
+
+    public void resetGame() {
+        // Stop the current game
+        timer.stop();
+
+        // Reset the game state
+        player = new Player(100, 400, 50);
+        Galaxy galaxy = new Galaxy("My Galaxy");
+        galaxy.createSpaceObjects();
+        spaceObjects = galaxy.getSpaceObjects();
+        currentSpaceObject = null;
+        isBuilding = false;
+        selectedBuilding = null;
+        gameOver = false;
+
+        // Reset the UI elements
+        collectButton.setVisible(false);
+        buildingsComboBox.getItems().clear();
+        buildingsComboBox.setVisible(false);
+        buildButton.setVisible(false);
+        tradeButton.setVisible(false);
+        moneyLabel.setText("");
+        resourcesLabel.setText("");
+
+        // Start the new game
+        control = new Control(player, this);
+        setOnKeyPressed(control::handle);
+        setOnKeyReleased(control::handle);
+        timer.start();
     }
 
     public void update() {
@@ -265,8 +299,7 @@ public class GameView extends Pane {
             buildButton.setVisible(false);
         }
 
-        if (checkVictory()) {
-            // Display victory message and options to start a new game or exit
+        if (!gameOver && checkVictory()) {
             displayVictoryWindow();
         }
 
