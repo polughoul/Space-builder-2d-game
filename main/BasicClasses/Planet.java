@@ -72,10 +72,11 @@ public class Planet extends SpaceObject {
         if (bandits == null) {
             bandits = new ArrayList<>();
             Random random = new Random();
+            String[] banditImages = {"main/assets/bandit.png", "main/assets/bandit1.png", "main/assets/bandit2.png", "main/assets/bandit3.png", "main/assets/bandit4.png", "main/assets/bandit5.png", "main/assets/bandit6.png", "main/assets/bandit7.png", "main/assets/bandit8.png", "main/assets/bandit9.png", "main/assets/bandit10.png" };
             for (int i = 0; i < 1; i++) {
                 int banditX = random.nextInt(1240);
                 int banditY = random.nextInt(900);
-                bandits.add(new Bandit(1, 100, 10, banditX, banditY, 2, "main/assets/bandit.png"));
+                bandits.add(new Bandit(1, 100, 10, banditX, banditY, 2, banditImages));
             }
         }
         return bandits;

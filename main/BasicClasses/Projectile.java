@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 public class Projectile {
     private double x, y;
     private double directionX, directionY;
-    private double speed = 5;
+    private double speed = 4;
     private Object owner;
 
     public Projectile(double startX, double startY, double targetX, double targetY, Object owner) {

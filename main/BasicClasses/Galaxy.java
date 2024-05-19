@@ -32,10 +32,10 @@ public class Galaxy {
     public void createSpaceObjects() {
         Random random = new Random();
         for (int i = 0; i < 3; i++) {
-            spaceObjects.add(new Asteroid( "Asteroid" + i, 20, random.nextInt(1024), random.nextInt(724), "main/assets/Asteroid1.jpg"));
+            spaceObjects.add(new Asteroid( "Asteroid" + i, 40, random.nextInt(1024), random.nextInt(724), "main/assets/11.png"));
         }
 
-        List<String> planetImages = Arrays.asList("main/assets/Planet1.png", "main/assets/Planet2.png", "main/assets/Planet3.png");
+        List<String> planetImages = Arrays.asList("main/assets/14.png", "main/assets/16.png", "main/assets/17.png");
         List<String> buildingImages = Arrays.asList("main/assets/Building1.png", "main/assets/Building2.png", "main/assets/Building3.png");
 
         for (int i = 0; i < 3; i++) {
@@ -46,7 +46,7 @@ public class Galaxy {
 
             String planetImage = planetImages.get(i);
 
-            spaceObjects.add(new Planet("Planet" + i, 40,random.nextInt(1024), random.nextInt(724), new ArrayList<>(buildings), planetImage));
+            spaceObjects.add(new Planet("Planet" + i, 60,random.nextInt(1024), random.nextInt(724), new ArrayList<>(buildings), planetImage));
         }
     }
 

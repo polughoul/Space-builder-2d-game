@@ -2,6 +2,7 @@ package main.BasicClasses;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.paint.Color;
 import main.GUI.GameView;
 import javafx.scene.image.Image;
 
@@ -13,23 +14,35 @@ public class Bandit {
     private int speed;
     private int x;
     private int y;
-    private Image image;
+    private Image[] images;
+    private int currentImageIndex = 0;
+
+    private int maxHealth;
+
 
     private long lastAttackTime = 0;
-    private long attackDelay = 5000;
+    private long attackDelay = 1000;
 
-    public Bandit(int level, int health, int damage, int x, int y, int speed, String imagePath) {
+    public Bandit(int level, int health, int damage, int x, int y, int speed, String[] imagePaths) {
         this.level = level;
         this.health = health;
         this.damage = damage;
         this.speed = speed;
         this.x = x;
         this.y = y;
-        this.image = new Image("file:" + imagePath);
+        this.maxHealth = health;
+        this.images = new Image[imagePaths.length];
+        for (int i = 0; i < imagePaths.length; i++) {
+            this.images[i] = new Image("file:" + imagePaths[i]);
+        }
     }
 
     public void draw(GraphicsContext gc) {
-        gc.drawImage(image, x - 60 / 2, y - 60 / 2, 60, 60);
+        gc.drawImage(images[currentImageIndex], x - 60 / 2, y - 60 / 2, 60, 60);
+        gc.setFill(Color.RED);
+        gc.fillRect(x - 30, y - 40, 60, 5);
+        gc.setFill(Color.GREEN);
+        gc.fillRect(x - 30, y - 40, 60 * ((double) health / maxHealth), 5);
     }
 
     public void move(Player player, Planet currentPlanet, GameView gameView) {
@@ -51,6 +64,7 @@ public class Bandit {
             }
 
             if (this.health <= 0) {
+                currentImageIndex = images.length - 1; // Show the last image
                 currentPlanet.removeBandit(this);
             }
         }
@@ -63,6 +77,11 @@ public class Bandit {
 
     public void setHealth(int health) {
         this.health = health;
+        if (this.health <= 0) {
+            currentImageIndex = images.length - 1; // Show the last image
+        } else if (currentImageIndex < images.length - 1) {
+            currentImageIndex++; // Show the next image
+        }
     }
 
     public int getLevel() {

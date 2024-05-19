@@ -1,5 +1,6 @@
 package main.BasicClasses;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import main.GUI.GameView;
 
 import java.util.Map;
@@ -20,8 +21,7 @@ public class Player {
     private int speed = 2;
     private GameView gameView;
     private ImageView imageView;
-
-
+    private int maxHealth;
     private int health;
 
     public void moveUp() {
@@ -69,6 +69,7 @@ public class Player {
         this.health = health;
         this.damage = damage;
         this.gameView = gameView;
+        this.maxHealth = health;
 
         Image image = new Image("file:main/assets/player.png");
 
@@ -80,6 +81,10 @@ public class Player {
     public void draw(GraphicsContext gc) {
         // Замените текущий код отрисовки на следующий:
         gc.drawImage(imageView.getImage(), x - imageView.getFitWidth() / 2, y - imageView.getFitHeight()/2, imageView.getFitWidth(), imageView.getFitHeight());
+        gc.setFill(Color.GREEN);
+        gc.fillRect(x - 30, y - 40, 60 * ((double) health / maxHealth), 5);
+        gc.setFill(Color.RED);
+        gc.fillRect(x - 30 + 60 * ((double) health / maxHealth), y - 40, 60 * (1 - (double) health / maxHealth), 5);
     }
 
     public int getDamage() {

@@ -11,6 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.Controller.Control;
 import main.BasicClasses.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -152,7 +154,7 @@ public class GameView extends Pane {
     }
 
     private void resetPlayer() {
-        player = new Player(100, 20, 50, this);
+        player = new Player(100, 100, 10, this);
         control = new Control(player, this);
         this.setOnKeyPressed(control::handle);
         this.setOnKeyReleased(control::handle);
@@ -383,6 +385,18 @@ public class GameView extends Pane {
         }
 
         collectButton.setVisible(false);
+
+        Font font = new Font("Arial", 20); // Замените "Arial" на желаемый шрифт и 20 на желаемый размер
+        Color color = Color.YELLOW;
+
+        moneyLabel.setFont(font);
+        moneyLabel.setTextFill(color);
+
+        resourcesLabel.setFont(font);
+        resourcesLabel.setTextFill(color);
+
+        healthLabel.setFont(font);
+        healthLabel.setTextFill(color);
 
         moneyLabel.setText("Money: " + player.getMoney());
         resourcesLabel.setText("Resources: " + player.getResources());
