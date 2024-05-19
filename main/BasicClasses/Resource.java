@@ -1,12 +1,14 @@
 package main.BasicClasses;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 public class Resource {
     private String type;
     private int counts;
     private int x;
     private int y;
+    private Image image;
 
     public boolean isPlayerOnResource(int playerX, int playerY) {
         int dx = this.x - playerX;
@@ -15,15 +17,15 @@ public class Resource {
         return distance <= 10 / 2;
     }
 
-    public Resource(String type, int counts, int x, int y){
+    public Resource(String type, int counts, int x, int y, Image image){
         this.type = type;
         this.counts = counts;
         this.x = x;
         this.y = y;
+        this.image = image;
     }
     public void draw(GraphicsContext gc) {
-        gc.setFill(javafx.scene.paint.Color.BLACK);
-        gc.fillText(type + ": " + counts, x - 10 / 2, y - 10 / 2);
+        gc.drawImage(image, x - 40 / 2, y - 40 / 2, 40, 40);
     }
     public String getType() {
         return type;

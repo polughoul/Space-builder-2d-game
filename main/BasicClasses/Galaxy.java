@@ -1,5 +1,7 @@
 package main.BasicClasses;
 
+import javafx.scene.image.Image;
+
 import java.util.*;
 
 public class Galaxy {
@@ -30,16 +32,21 @@ public class Galaxy {
     public void createSpaceObjects() {
         Random random = new Random();
         for (int i = 0; i < 3; i++) {
-            spaceObjects.add(new Asteroid( "Asteroid" + i, 20, random.nextInt(1024), random.nextInt(724)));
+            spaceObjects.add(new Asteroid( "Asteroid" + i, 20, random.nextInt(1024), random.nextInt(724), "main/assets/Asteroid1.jpg"));
         }
+
+        List<String> planetImages = Arrays.asList("main/assets/Planet1.png", "main/assets/Planet2.png", "main/assets/Planet3.png");
+        List<String> buildingImages = Arrays.asList("main/assets/Building1.png", "main/assets/Building2.png", "main/assets/Building3.png");
 
         for (int i = 0; i < 3; i++) {
             List<Building> buildings = new ArrayList<>();
-            buildings.add(new Building("building1", createBuilding1Cost()));
-            buildings.add(new Building("building2", createBuilding2Cost()));
-            buildings.add(new Building("building3", createBuilding3Cost()));
+            buildings.add(new Building("building1", createBuilding1Cost(), new Image("file:" + buildingImages.get(0))));
+            buildings.add(new Building("building2", createBuilding2Cost(), new Image("file:" + buildingImages.get(1))));
+            buildings.add(new Building("building3", createBuilding3Cost(), new Image("file:" + buildingImages.get(2))));
 
-            spaceObjects.add(new Planet("Planet" + i, 40,random.nextInt(1024), random.nextInt(724), new ArrayList<>(buildings)));
+            String planetImage = planetImages.get(i);
+
+            spaceObjects.add(new Planet("Planet" + i, 40,random.nextInt(1024), random.nextInt(724), new ArrayList<>(buildings), planetImage));
         }
     }
 

@@ -1,16 +1,17 @@
 package main.BasicClasses;
 
 import javafx.scene.canvas.GraphicsContext;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.HashMap;
+import javafx.scene.image.Image;
+
+import java.util.*;
 
 public class Planet extends SpaceObject {
     private List<Resource> resources;
     private List<Bandit> bandits;
     private List<Builder> builders;
     private List<Building> buildings = new ArrayList<>();
+    private Image image;
+
 
     private List<Building> availableBuildings = new ArrayList<>();
 
@@ -29,11 +30,15 @@ public class Planet extends SpaceObject {
         availableBuildings.remove(building);
     }
 
-    public Planet(String name, int size, int x, int y, List<Building> buildings)
+    public Planet(String name, int size, int x, int y, List<Building> buildings, String imagePath)
     {
         super(name, size, x, y);
         availableBuildings.addAll(buildings);
+        this.image = new Image("file:" + imagePath);
 
+    }
+    public Image getImage() {
+        return image;
     }
 
     public void removeResource(Resource resource) {
@@ -44,10 +49,20 @@ public class Planet extends SpaceObject {
         if (resources == null) {
             resources = new ArrayList<>();
             Random random = new Random();
-            for (int i = 0; i < 5; i++) {
+            Map<String, Image> resourceImages = new HashMap<>();
+            resourceImages.put("silver", new Image("file:main/assets/silver.png"));
+            resourceImages.put("ruby", new Image("file:main/assets/rubin.png"));
+            resourceImages.put("obsidian", new Image("file:main/assets/obsidian.png"));
+            resourceImages.put("nephrite", new Image("file:main/assets/nefrit.png"));
+            resourceImages.put("iron", new Image("file:main/assets/metal.png"));
+            resourceImages.put("gold", new Image("file:main/assets/gold.png"));
+            resourceImages.put("lazurite", new Image("file:main/assets/lazurit.png"));
+            List<String> resourceTypes = new ArrayList<>(resourceImages.keySet());
+            for (int i = 0; i < 7; i++) {
                 int resourceX = random.nextInt(1240);
                 int resourceY = random.nextInt(900);
-                resources.add(new Resource("Resource" + i, random.nextInt(100), resourceX, resourceY));
+                String resourceType = resourceTypes.get(random.nextInt(resourceTypes.size()));
+                resources.add(new Resource(resourceType, random.nextInt(100), resourceX, resourceY, resourceImages.get(resourceType)));
             }
         }
         return resources;
@@ -60,7 +75,7 @@ public class Planet extends SpaceObject {
             for (int i = 0; i < 1; i++) {
                 int banditX = random.nextInt(1240);
                 int banditY = random.nextInt(900);
-                bandits.add(new Bandit(1, 100, 10, banditX, banditY, 2));
+                bandits.add(new Bandit(1, 100, 10, banditX, banditY, 2, "main/assets/bandit.png"));
             }
         }
         return bandits;
@@ -76,7 +91,7 @@ public class Planet extends SpaceObject {
                 HashMap<String, Integer> builderResources = new HashMap<>();
                 builderResources.put("wood", 10);
                 builderResources.put("Resource1", 10);
-                builders.add(new Builder( builderResources, builderX, builderY));
+                builders.add(new Builder( builderResources, builderX, builderY, "main/assets/builder.png"));
             }
         }
         return builders;
@@ -86,14 +101,13 @@ public class Planet extends SpaceObject {
         buildings.add(building);
     }
 
+    // В классе Planet
     public void drawBuildings(GraphicsContext gc) {
         for (Building building : buildings) {
-            gc.strokeRect(building.getX(), building.getY(), 40, 40);
+            gc.drawImage(building.getImage(), building.getX(), building.getY(), 40, 40);
         }
     }
     public void removeBandit(Bandit bandit) {
         bandits.remove(bandit);
     }
-
-
 }

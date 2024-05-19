@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.HashMap;
 import java.util.Map;
+import javafx.scene.image.Image;
 
 public class Builder {
     private int money;
@@ -12,14 +13,16 @@ public class Builder {
     private Map<String, Map<String, Integer>> sellPrices;
     private int x;
     private int y;
+    private Image image;
 
-    public Builder(HashMap<String, Integer> resources, int x, int y) {
+    public Builder(HashMap<String, Integer> resources, int x, int y, String imagePath) {
         this.resources = resources;
         this.x = x;
         this.y = y;
         this.resourcePrices = new HashMap<>();
         this.money = 15;
         this.sellPrices = new HashMap<>();
+        this.image = new Image("file:" + imagePath);
 
         Map<String, Integer> woodPrice = new HashMap<>();
         woodPrice.put("coins", 20);
@@ -37,8 +40,7 @@ public class Builder {
 
     }
     public void draw(GraphicsContext gc) {
-        gc.setFill(javafx.scene.paint.Color.PURPLE);
-        gc.fillRect(x - 10 / 2, y - 10 / 2, 10, 10);
+        gc.drawImage(image, x - 60 / 2, y - 60 / 2, 60, 60);
     }
 
     public boolean isPlayerOnBuilder(int playerX, int playerY) {

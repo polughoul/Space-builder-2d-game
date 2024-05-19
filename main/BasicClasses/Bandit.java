@@ -3,6 +3,7 @@ package main.BasicClasses;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import main.GUI.GameView;
+import javafx.scene.image.Image;
 
 import javax.swing.*;
 public class Bandit {
@@ -12,22 +13,23 @@ public class Bandit {
     private int speed;
     private int x;
     private int y;
+    private Image image;
 
     private long lastAttackTime = 0;
     private long attackDelay = 5000;
 
-    public Bandit(int level, int health, int damage, int x, int y, int speed) {
+    public Bandit(int level, int health, int damage, int x, int y, int speed, String imagePath) {
         this.level = level;
         this.health = health;
         this.damage = damage;
         this.speed = speed;
         this.x = x;
         this.y = y;
+        this.image = new Image("file:" + imagePath);
     }
 
     public void draw(GraphicsContext gc) {
-        gc.setFill(javafx.scene.paint.Color.GREEN);
-        gc.fillOval(x - 10 / 2, y - 10 / 2, 10, 10);
+        gc.drawImage(image, x - 60 / 2, y - 60 / 2, 60, 60);
     }
 
     public void move(Player player, Planet currentPlanet, GameView gameView) {

@@ -70,16 +70,16 @@ public class Player {
         this.damage = damage;
         this.gameView = gameView;
 
-        Image image = new Image("file:main/assets/Move-split.png");
+        Image image = new Image("file:main/assets/player.png");
 
         imageView = new ImageView(image);
-        imageView.setFitWidth(50); // Установите нужные размеры
-        imageView.setFitHeight(50);
+        imageView.setFitWidth(80); // Установите нужные размеры
+        imageView.setFitHeight(80);
     }
 
     public void draw(GraphicsContext gc) {
         // Замените текущий код отрисовки на следующий:
-        gc.drawImage(imageView.getImage(), x, y, imageView.getFitWidth(), imageView.getFitHeight());
+        gc.drawImage(imageView.getImage(), x - imageView.getFitWidth() / 2, y - imageView.getFitHeight()/2, imageView.getFitWidth(), imageView.getFitHeight());
     }
 
     public int getDamage() {

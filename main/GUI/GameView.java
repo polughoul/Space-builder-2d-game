@@ -348,7 +348,11 @@ public class GameView extends Pane {
             }
         } else {
             for (SpaceObject spaceObject : spaceObjects) {
-                gc.fillOval(spaceObject.getX() - spaceObject.getSize() / 2, spaceObject.getY() - spaceObject.getSize() / 2, spaceObject.getSize(), spaceObject.getSize());
+                if (spaceObject instanceof Planet) {
+                    gc.drawImage(((Planet) spaceObject).getImage(), spaceObject.getX() - spaceObject.getSize() / 2, spaceObject.getY() - spaceObject.getSize() / 2, spaceObject.getSize(), spaceObject.getSize());
+                } else if (spaceObject instanceof Asteroid) {
+                    gc.drawImage(((Asteroid) spaceObject).getImage(), spaceObject.getX() - spaceObject.getSize() / 2, spaceObject.getY() - spaceObject.getSize() / 2, spaceObject.getSize(), spaceObject.getSize());
+                }
             }
         }
 

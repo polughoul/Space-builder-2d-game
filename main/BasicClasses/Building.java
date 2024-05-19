@@ -1,17 +1,24 @@
 package main.BasicClasses;
 
 import java.util.Map;
+import javafx.scene.image.Image;
 
 public class Building {
     private String type;
     private Map<String, Integer> cost;
     int x;
     int y;
+    private Image image;
 
 
-    public Building(String type, Map<String, Integer> cost) {
+    public Building(String type, Map<String, Integer> cost,  Image image) {
         this.type = type;
         this.cost = cost;
+        this.image = image;
+    }
+
+    public Image getImage() {
+        return image;
     }
 
     public String getType() {

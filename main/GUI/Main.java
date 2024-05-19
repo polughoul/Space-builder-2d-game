@@ -7,6 +7,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -16,6 +18,16 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Kosmický stavitel");
+        BorderPane root = new BorderPane();
+        Image image = new Image("file:main/assets/BG.png");
+
+        ImageView imageView = new ImageView(image);
+
+        imageView.setFitWidth(1280); // Замените на нужную ширину
+        imageView.setFitHeight(960); // Замените на нужную высоту
+        imageView.setX(0); // Замените на нужное положение по X
+        imageView.setY(0);
+        root.getChildren().add(imageView);
 
         HBox buttonPanel = new HBox();
 
@@ -40,7 +52,6 @@ public class Main extends Application {
 
         buttonPanel.getChildren().add(returnButton);
 
-        BorderPane root = new BorderPane();
         root.setTop(buttonPanel);
         root.setCenter(gameGameView);
 
