@@ -1,10 +1,14 @@
 package main.BasicClasses;
+import javafx.scene.canvas.GraphicsContext;
 import main.GUI.GameView;
 
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Player {
     private int money;
@@ -15,6 +19,7 @@ public class Player {
     private List<Resource> collectedResources = new ArrayList<>();
     private int speed = 2;
     private GameView gameView;
+    private ImageView imageView;
 
 
     private int health;
@@ -22,6 +27,7 @@ public class Player {
     public void moveUp() {
         if (y > 0) {
             y -= speed;
+            imageView.setRotate(270);
             System.out.println("Move up");
         }
     }
@@ -29,6 +35,7 @@ public class Player {
     public void moveDown() {
         if (y < 900) {
             y += speed;
+            imageView.setRotate(90);
             System.out.println("Move down");
         }
     }
@@ -36,6 +43,7 @@ public class Player {
     public void moveLeft() {
         if (x > 0) {
             x -= speed;
+            imageView.setRotate(180);
             System.out.println("Move left");
         }
     }
@@ -43,6 +51,7 @@ public class Player {
     public void moveRight() {
         if (x < 1240) {
             x += speed;
+            imageView.setRotate(0);
             System.out.println("Move right");
         }
     }
@@ -60,6 +69,17 @@ public class Player {
         this.health = health;
         this.damage = damage;
         this.gameView = gameView;
+
+        Image image = new Image("file:main/assets/Move-split.png");
+
+        imageView = new ImageView(image);
+        imageView.setFitWidth(50); // Установите нужные размеры
+        imageView.setFitHeight(50);
+    }
+
+    public void draw(GraphicsContext gc) {
+        // Замените текущий код отрисовки на следующий:
+        gc.drawImage(imageView.getImage(), x, y, imageView.getFitWidth(), imageView.getFitHeight());
     }
 
     public int getDamage() {

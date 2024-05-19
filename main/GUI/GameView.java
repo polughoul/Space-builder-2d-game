@@ -315,7 +315,7 @@ public class GameView extends Pane {
     protected void draw() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        gc.fillRect(player.getX() , player.getY() , 40, 40);
+        player.draw(gc);
         if (currentSpaceObject != null) {
             if (currentSpaceObject instanceof Asteroid) {
                 List<Resource> resources = currentSpaceObject.getResources();
