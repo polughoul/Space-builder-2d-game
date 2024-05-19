@@ -60,7 +60,7 @@ public class Planet extends SpaceObject {
             for (int i = 0; i < 1; i++) {
                 int banditX = random.nextInt(1240);
                 int banditY = random.nextInt(900);
-                bandits.add(new Bandit(1, 100, 10, banditX, banditY, 1));
+                bandits.add(new Bandit(1, 100, 10, banditX, banditY, 2));
             }
         }
         return bandits;

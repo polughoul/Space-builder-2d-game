@@ -1,9 +1,8 @@
 package main.GUI;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -36,6 +35,7 @@ public class GameView extends Pane {
 
     private Label moneyLabel;
     private Label resourcesLabel;
+    private Label healthLabel;
 
     private double mouseX;
     private double mouseY;
@@ -43,9 +43,8 @@ public class GameView extends Pane {
     private Pane overlayPane;
 
     public GameView() {
-        player = new Player(100, 50, 50, this );
         setFocusTraversable(true);
-
+        resetPlayer();
         Galaxy galaxy = new Galaxy("My Galaxy");
         galaxy.createSpaceObjects();
         spaceObjects = galaxy.getSpaceObjects();
@@ -80,25 +79,13 @@ public class GameView extends Pane {
 
         moneyLabel = new Label();
         resourcesLabel = new Label();
-        overlayPane.getChildren().addAll(moneyLabel, resourcesLabel);
+        healthLabel = new Label();
 
-
-        control = new Control(player, this);
-        setOnKeyPressed(control::handle);
-        setOnKeyReleased(control::handle);
+        overlayPane.getChildren().addAll(moneyLabel, resourcesLabel, healthLabel);
 
         setOnMouseMoved(e -> {
             mouseX = e.getSceneX();
             mouseY = e.getSceneY();
-        });
-
-        setOnKeyPressed(e -> {
-            switch (e.getCode()) {
-                case SPACE:
-                    player.fire(mouseX, mouseY);
-                    break;
-                // Другие обработчики клавиш...
-            }
         });
 
         timer = new AnimationTimer() {
@@ -164,12 +151,25 @@ public class GameView extends Pane {
         victoryStage.show();
     }
 
+    private void resetPlayer() {
+        player = new Player(100, 20, 50, this);
+        control = new Control(player, this);
+        this.setOnKeyPressed(control::handle);
+        this.setOnKeyReleased(control::handle);
+
+        this.setOnKeyPressed(e -> {
+            switch (e.getCode()) {
+                case SPACE:
+                    player.fire(mouseX, mouseY);
+                    break;
+            }
+        });
+    }
+
     public void resetGame() {
-        // Stop the current game
         timer.stop();
 
-        // Reset the game state
-        player = new Player(100, 400, 50, this);
+        resetPlayer();
         Galaxy galaxy = new Galaxy("My Galaxy");
         galaxy.createSpaceObjects();
         spaceObjects = galaxy.getSpaceObjects();
@@ -178,7 +178,6 @@ public class GameView extends Pane {
         selectedBuilding = null;
         gameOver = false;
 
-        // Reset the UI elements
         collectButton.setVisible(false);
         buildingsComboBox.getItems().clear();
         buildingsComboBox.setVisible(false);
@@ -186,11 +185,8 @@ public class GameView extends Pane {
         tradeButton.setVisible(false);
         moneyLabel.setText("");
         resourcesLabel.setText("");
-
-        // Start the new game
-        control = new Control(player, this);
-        setOnKeyPressed(control::handle);
-        setOnKeyReleased(control::handle);
+        projectiles.clear();
+        isPlayerAlive = true;
         timer.start();
     }
 
@@ -266,9 +262,17 @@ public class GameView extends Pane {
     public void addProjectile(Projectile projectile) {
         projectiles.add(projectile);
     }
+    private boolean isPlayerAlive = true;
 
     public void update_projectiles() {
         Iterator<Projectile> iterator = projectiles.iterator();
+
+        if (!isPlayerAlive) {
+            return;
+        }
+        if (player.getHealth() <= 0) {
+            isPlayerAlive = false;
+        }
         while (iterator.hasNext()) {
             Projectile projectile = iterator.next();
             projectile.move();
@@ -279,22 +283,27 @@ public class GameView extends Pane {
                 List<Bandit> bandits = planet.getBandits();
                 for (Bandit bandit : bandits) {
                     if (Math.hypot(projectile.getX() - bandit.getX(), projectile.getY() - bandit.getY()) <  10) {
-                        // The projectile hit the bandit, remove the projectile and damage the bandit
                         if (projectile.getOwner() != bandit) {
-                            // The projectile hit the bandit, remove the projectile and damage the bandit
                             iterator.remove();
-                            bandit.setHealth(bandit.getHealth() - 10); // Assuming the damage is 10
+                            bandit.setHealth(bandit.getHealth() - player.getDamage());
                             System.out.println("Bandit was hit. Bandit's health: " + bandit.getHealth());
                             break;
                         }
                     }
-                    // Check if the projectile hits the player
                     if (Math.hypot(projectile.getX() - player.getX(), projectile.getY() - player.getY()) <  10) {
-                        // The projectile hit the player, remove the projectile and damage the player
                         if (projectile.getOwner() == bandit) {
                             iterator.remove();
                             player.setHealth(player.getHealth() - bandit.getDamage());
-                            System.out.println("Player was hit. Player's health: " + player.getHealth());
+                            System.out.println("You were hit. Your health: " + player.getHealth());
+                            if (player.getHealth() <= 0) {
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You died! The game will now restart.", ButtonType.OK);
+                                    alert.showAndWait();
+                                    if (alert.getResult() == ButtonType.OK) {
+                                        resetGame();
+                                    }
+                                });
+                            }
                             break;
                         }
                     }
@@ -302,7 +311,6 @@ public class GameView extends Pane {
             }
         }
     }
-
 
     protected void draw() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -374,11 +382,15 @@ public class GameView extends Pane {
 
         moneyLabel.setText("Money: " + player.getMoney());
         resourcesLabel.setText("Resources: " + player.getResources());
+        healthLabel.setText("Health: " + player.getHealth());
 
         moneyLabel.setLayoutX(10);
-        moneyLabel.setLayoutY(canvas.getHeight() - 80);
+        moneyLabel.setLayoutY(canvas.getHeight() - 100);
         resourcesLabel.setLayoutX(10);
-        resourcesLabel.setLayoutY(canvas.getHeight() - 60);
+        resourcesLabel.setLayoutY(canvas.getHeight() - 80);
+        healthLabel.setLayoutX(10);
+        healthLabel.setLayoutY(canvas.getHeight() - 60);
+
     }
 }
 

@@ -62,6 +62,10 @@ public class Player {
         this.gameView = gameView;
     }
 
+    public int getDamage() {
+        return damage;
+    }
+
     public int getMoney() {
         return money;
     }
@@ -118,7 +122,6 @@ public class Player {
     public void fire(double targetX, double targetY) {
         Projectile projectile = new Projectile(this.x, this.y, targetX, targetY, this);
         gameView.addProjectile(projectile);
-        System.out.println("Player fired a projectile at (" + targetX + ", " + targetY + ")");
     }
 
     public void attackNearestBandit(Planet currentPlanet) {
