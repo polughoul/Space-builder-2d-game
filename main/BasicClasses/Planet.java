@@ -15,6 +15,10 @@ public class Planet extends SpaceObject {
 
     private List<Building> availableBuildings = new ArrayList<>();
 
+    public void addBandit(Bandit bandit) {
+        bandits.add(bandit);
+    }
+
     public List<Building> getAvailableBuildings() {
         return availableBuildings;
     }
@@ -35,6 +39,7 @@ public class Planet extends SpaceObject {
         super(name, size, x, y);
         availableBuildings.addAll(buildings);
         this.image = new Image("file:" + imagePath);
+        this.bandits = new ArrayList<>();
 
     }
     public Image getImage() {

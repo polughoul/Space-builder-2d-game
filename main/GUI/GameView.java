@@ -1,5 +1,9 @@
 package main.GUI;
 
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,7 +17,6 @@ import main.Controller.Control;
 import main.BasicClasses.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +35,7 @@ public class GameView extends Pane {
     private Building selectedBuilding;
     private Canvas canvas;
     private List<Projectile> projectiles = new ArrayList<>();
+    private ScheduledExecutorService banditSpawner;
 
     private boolean gameOver = false;
 
@@ -85,6 +89,9 @@ public class GameView extends Pane {
 
         overlayPane.getChildren().addAll(moneyLabel, resourcesLabel, healthLabel);
 
+        banditSpawner = Executors.newSingleThreadScheduledExecutor();
+        banditSpawner.scheduleAtFixedRate(this::spawnBandits, 0, 1, TimeUnit.MINUTES);
+
         setOnMouseMoved(e -> {
             mouseX = e.getSceneX();
             mouseY = e.getSceneY();
@@ -127,6 +134,22 @@ public class GameView extends Pane {
         }
         gameOver = true;
         return true;
+    }
+
+    private void spawnBandits() {
+        Platform.runLater(() -> {
+            for (SpaceObject spaceObject : spaceObjects) {
+                if (spaceObject instanceof Planet) {
+                    Planet planet = (Planet) spaceObject;
+                    Random random = new Random();
+                    int banditX = random.nextInt(1240);
+                    int banditY = random.nextInt(900);
+                    String[] banditImages = {"main/assets/bandit.png", "main/assets/bandit1.png", "main/assets/bandit2.png", "main/assets/bandit3.png", "main/assets/bandit4.png", "main/assets/bandit5.png", "main/assets/bandit6.png", "main/assets/bandit7.png", "main/assets/bandit8.png", "main/assets/bandit9.png", "main/assets/bandit10.png" };
+                    Bandit newBandit = new Bandit(1, 100, 10, banditX, banditY, 2, banditImages);
+                    planet.addBandit(newBandit);
+                }
+            }
+        });
     }
 
     public void displayVictoryWindow() {

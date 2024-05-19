@@ -1,12 +1,10 @@
 package main.BasicClasses;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import main.GUI.GameView;
 import javafx.scene.image.Image;
 
-import javax.swing.*;
 public class Bandit {
     private int level;
     private int health;
