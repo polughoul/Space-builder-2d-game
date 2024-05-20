@@ -40,9 +40,9 @@ public class Galaxy {
 
         for (int i = 0; i < 3; i++) {
             List<Building> buildings = new ArrayList<>();
-            buildings.add(new Building("building1", createBuilding1Cost(), new Image("file:" + buildingImages.get(0))));
-            buildings.add(new Building("building2", createBuilding2Cost(), new Image("file:" + buildingImages.get(1))));
-            buildings.add(new Building("building3", createBuilding3Cost(), new Image("file:" + buildingImages.get(2))));
+            buildings.add(new Building("building1", createBuilding1Cost(), new Image("file:" + buildingImages.get(0)), 100));
+            buildings.add(new Building("building2", createBuilding2Cost(), new Image("file:" + buildingImages.get(1)), 100));
+            buildings.add(new Building("building3", createBuilding3Cost(), new Image("file:" + buildingImages.get(2)), 100));
 
             String planetImage = planetImages.get(i);
 
@@ -52,22 +52,22 @@ public class Galaxy {
 
     private Map<String, Integer> createBuilding1Cost() {
         Map<String, Integer> building1Cost = new HashMap<>();
-        building1Cost.put("Resource1", 10);
-        building1Cost.put("Resource2", 10);
+        building1Cost.put("iron", 10);
+        building1Cost.put("lazurite", 10);
         return building1Cost;
     }
 
     private Map<String, Integer> createBuilding2Cost() {
         Map<String, Integer> building2Cost = new HashMap<>();
-        building2Cost.put("Resource2", 10);
-        building2Cost.put("Resource3", 10);
+        building2Cost.put("gold", 10);
+        building2Cost.put("ruby", 10);
         return building2Cost;
     }
 
     private Map<String, Integer> createBuilding3Cost() {
         Map<String, Integer> building3Cost = new HashMap<>();
-        building3Cost.put("Resource1", 10);
-        building3Cost.put("Resource3", 10);
+        building3Cost.put("silver", 10);
+        building3Cost.put("obsidian", 10);
         return building3Cost;
     }
 }

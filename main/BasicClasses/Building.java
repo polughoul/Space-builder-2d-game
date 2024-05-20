@@ -6,15 +6,32 @@ import javafx.scene.image.Image;
 public class Building {
     private String type;
     private Map<String, Integer> cost;
+    private int health;
+    private int maxHealth;
     int x;
     int y;
     private Image image;
 
 
-    public Building(String type, Map<String, Integer> cost,  Image image) {
+    public Building(String type, Map<String, Integer> cost,  Image image, int health ) {
         this.type = type;
         this.cost = cost;
         this.image = image;
+        this.health = health;
+        this.maxHealth = health;
+
+    }
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public Image getImage() {
@@ -49,4 +66,6 @@ public class Building {
     public void setY(int y) {
         this.y = y;
     }
+
+
 }

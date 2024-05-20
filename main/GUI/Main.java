@@ -23,9 +23,9 @@ public class Main extends Application {
 
         ImageView imageView = new ImageView(image);
 
-        imageView.setFitWidth(1280); // Замените на нужную ширину
-        imageView.setFitHeight(960); // Замените на нужную высоту
-        imageView.setX(0); // Замените на нужное положение по X
+        imageView.setFitWidth(1280);
+        imageView.setFitHeight(960);
+        imageView.setX(0);
         imageView.setY(0);
         root.getChildren().add(imageView);
 

@@ -302,7 +302,6 @@ public class GameView extends Pane {
             Projectile projectile = iterator.next();
             projectile.move();
 
-            // Check if the projectile hits a bandit
             if (currentSpaceObject instanceof Planet) {
                 Planet planet = (Planet) currentSpaceObject;
                 List<Bandit> bandits = planet.getBandits();
@@ -328,6 +327,21 @@ public class GameView extends Pane {
                                         resetGame();
                                     }
                                 });
+                            }
+                            break;
+                        }
+                    }
+                }
+                List<Building> buildings = planet.getBuildings();
+                for (Building building : buildings) {
+                    if (Math.hypot(projectile.getX() - building.getX(), projectile.getY() - building.getY()) <  10) {
+                        if (projectile.getOwner() instanceof Bandit) {
+                            iterator.remove();
+                            building.setHealth(building.getHealth() - ((Bandit) projectile.getOwner()).getDamage());
+                            System.out.println("Building was hit. Building's health: " + building.getHealth());
+                            if (building.getHealth() <= 0) {
+                                planet.removeBuilding(building);
+                                planet.addAvailableBuilding(building);
                             }
                             break;
                         }
@@ -409,7 +423,7 @@ public class GameView extends Pane {
 
         collectButton.setVisible(false);
 
-        Font font = new Font("Arial", 20); // Замените "Arial" на желаемый шрифт и 20 на желаемый размер
+        Font font = new Font("Arial", 20);
         Color color = Color.YELLOW;
 
         moneyLabel.setFont(font);
@@ -431,7 +445,6 @@ public class GameView extends Pane {
         resourcesLabel.setLayoutY(canvas.getHeight() - 80);
         healthLabel.setLayoutX(10);
         healthLabel.setLayoutY(canvas.getHeight() - 60);
-
     }
 }
 

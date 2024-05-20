@@ -45,30 +45,38 @@ public class Bandit {
 
     public void move(Player player, Planet currentPlanet, GameView gameView) {
         if (currentPlanet.getBandits().contains(this)) {
-            double dx = player.getX() - this.x;
-            double dy = player.getY() - this.y;
-            double distance = Math.sqrt(dx * dx + dy * dy);
-
-            double directionX = dx / distance;
-            double directionY = dy / distance;
-
-            this.x += directionX * speed;
-            this.y += directionY * speed;
-
             long currentTime = System.currentTimeMillis();
-            if (currentTime - lastAttackTime >= attackDelay) {
-                this.attack(player, gameView);
+            if (currentPlanet.getBuildings().size() > 0 && currentTime - lastAttackTime >= attackDelay) {
+                Building targetBuilding = currentPlanet.getBuildings().get(0);
+                this.attack(targetBuilding, gameView);
+                if (targetBuilding.getHealth() <= 0) {
+                    currentPlanet.removeBuilding(targetBuilding);
+                    currentPlanet.addAvailableBuilding(targetBuilding);
+                }
                 lastAttackTime = currentTime;
+            } else {
+                double dx = player.getX() - this.x;
+                double dy = player.getY() - this.y;
+                double distance = Math.sqrt(dx * dx + dy * dy);
+
+                double directionX = dx / distance;
+                double directionY = dy / distance;
+
+                this.x += directionX * speed;
+                this.y += directionY * speed;
+
+                if (currentTime - lastAttackTime >= attackDelay) {
+                    this.attack(player, gameView);
+                    lastAttackTime = currentTime;
+                }
             }
 
             if (this.health <= 0) {
-                currentImageIndex = images.length - 1; // Show the last image
+                currentImageIndex = images.length - 1;
                 currentPlanet.removeBandit(this);
             }
         }
     }
-
-    // геттеры и сеттеры
     public int getHealth() {
         return health;
     }
@@ -76,9 +84,9 @@ public class Bandit {
     public void setHealth(int health) {
         this.health = health;
         if (this.health <= 0) {
-            currentImageIndex = images.length - 1; // Show the last image
+            currentImageIndex = images.length - 1;
         } else if (currentImageIndex < images.length - 1) {
-            currentImageIndex++; // Show the next image
+            currentImageIndex++;
         }
     }
 
@@ -105,6 +113,11 @@ public class Bandit {
     // В классе Bandit
     public void attack(Player player, GameView gameView) {
         Projectile projectile = new Projectile(this.x, this.y, player.getX(), player.getY(), this);
+        gameView.addProjectile(projectile);
+    }
+
+    public void attack(Building building, GameView gameView) {
+        Projectile projectile = new Projectile(this.x, this.y, building.getX(), building.getY(), this);
         gameView.addProjectile(projectile);
     }
 

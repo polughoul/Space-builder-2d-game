@@ -2,6 +2,7 @@ package main.BasicClasses;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.util.*;
 
@@ -106,14 +107,27 @@ public class Planet extends SpaceObject {
     public void addBuilding(Building building) {
         buildings.add(building);
     }
+    public void addAvailableBuilding(Building building) {
+        building.setHealth(building.getMaxHealth());
+        availableBuildings.add(building);
+    }
 
     // В классе Planet
     public void drawBuildings(GraphicsContext gc) {
         for (Building building : buildings) {
             gc.drawImage(building.getImage(), building.getX(), building.getY(), 40, 40);
+
+            gc.setFill(Color.RED);
+            gc.fillRect(building.getX(), building.getY() - 10, 40, 5);
+            gc.setFill(Color.GREEN);
+            gc.fillRect(building.getX(), building.getY() - 10, 40 * ((double) building.getHealth() / 100), 5);
         }
     }
     public void removeBandit(Bandit bandit) {
         bandits.remove(bandit);
+    }
+
+    public void removeBuilding(Building building) {
+        buildings.remove(building);
     }
 }
