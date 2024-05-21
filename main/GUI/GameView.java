@@ -1,32 +1,26 @@
 package main.GUI;
 
-import java.io.*;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import javafx.application.Platform;
+import java.util.concurrent.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.canvas.*;
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.Controller.Control;
+import main.Controller.gameStateManager;
+import main.Controller.gameRules;
+import main.Controller.ProjectileController;
 import main.BasicClasses.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class GameView extends Pane {
     private Player player;
-    private Planet planet;
     private Control control;
     private AnimationTimer timer;
     private List<SpaceObject> spaceObjects;
@@ -40,7 +34,10 @@ public class GameView extends Pane {
     private Canvas canvas;
     private List<Projectile> projectiles = new ArrayList<>();
     private ScheduledExecutorService banditSpawner;
+    private gameStateManager gameStateManager;
+    private ProjectileController projectileController;
 
+    private gameRules gameRules = new gameRules();
     private boolean gameOver = false;
 
     private Label moneyLabel;
@@ -54,10 +51,13 @@ public class GameView extends Pane {
 
     public GameView() {
         setFocusTraversable(true);
-        resetPlayer();
+        control = new Control(player, this);
+        control.resetPlayer(this);
         Galaxy galaxy = new Galaxy("My Galaxy");
         galaxy.createSpaceObjects();
         spaceObjects = galaxy.getSpaceObjects();
+        gameStateManager = new gameStateManager();
+        projectileController = new ProjectileController(projectiles, player, control, this);
 
         overlayPane = new Pane();
         overlayPane.setPickOnBounds(false);
@@ -71,9 +71,7 @@ public class GameView extends Pane {
         overlayPane.getChildren().add(collectButton);
 
         buildingsComboBox = new ComboBox<>();
-        buildingsComboBox.setOnAction(e -> {
-            this.requestFocus();
-        });
+        buildingsComboBox.setOnAction(e -> this.requestFocus());
         buildingsComboBox.setVisible(false);
         overlayPane.getChildren().add(buildingsComboBox);
 
@@ -90,7 +88,7 @@ public class GameView extends Pane {
         tradeButton.setLayoutY(150);
         tradeButton.setVisible(false);
         tradeButton.setFocusTraversable(false);
-        tradeButton.setOnAction(e -> openTradeWindow());
+        tradeButton.setOnAction(e -> control.openTradeWindow());
         overlayPane.getChildren().add(tradeButton);
 
         moneyLabel = new Label();
@@ -112,7 +110,7 @@ public class GameView extends Pane {
             public void handle(long now) {
                 control.movePlayer();
                 update();
-                update_projectiles();
+                projectileController.updateProjectiles();
                 draw();
             }
         };
@@ -133,33 +131,12 @@ public class GameView extends Pane {
         getChildren().addAll(canvas, overlayPane);
     }
 
-    public boolean checkVictory() {
+    private void spawnBandits() {
         for (SpaceObject spaceObject : spaceObjects) {
             if (spaceObject instanceof Planet) {
-                Planet planet = (Planet) spaceObject;
-                if (planet.getBuildings().size() < 3) {
-                    return false;
-                }
+                ((Planet) spaceObject).spawnBandits();
             }
         }
-        gameOver = true;
-        return true;
-    }
-
-    private void spawnBandits() {
-        Platform.runLater(() -> {
-            for (SpaceObject spaceObject : spaceObjects) {
-                if (spaceObject instanceof Planet) {
-                    Planet planet = (Planet) spaceObject;
-                    Random random = new Random();
-                    int banditX = random.nextInt(1240);
-                    int banditY = random.nextInt(900);
-                    String[] banditImages = {"main/assets/bandit.png", "main/assets/bandit1.png", "main/assets/bandit2.png", "main/assets/bandit3.png", "main/assets/bandit4.png", "main/assets/bandit5.png", "main/assets/bandit6.png", "main/assets/bandit7.png", "main/assets/bandit8.png", "main/assets/bandit9.png", "main/assets/bandit10.png" };
-                    Bandit newBandit = new Bandit(1, 100, 10, banditX, banditY, 2, banditImages);
-                    planet.addBandit(newBandit);
-                }
-            }
-        });
     }
 
     public void displayVictoryWindow() {
@@ -171,13 +148,11 @@ public class GameView extends Pane {
         Button newGameButton = new Button("Start New Game");
         newGameButton.setOnAction(e -> {
             victoryStage.close();
-            resetGame();
+            control.resetGame(this);
         });
 
         Button exitButton = new Button("Exit Game");
-        exitButton.setOnAction(e -> {
-            System.exit(0);
-        });
+        exitButton.setOnAction(e -> System.exit(0));
 
         VBox vbox = new VBox(victoryLabel, newGameButton, exitButton);
         Scene scene = new Scene(vbox, 300, 200);
@@ -185,44 +160,62 @@ public class GameView extends Pane {
 
         victoryStage.show();
     }
-
-    private void resetPlayer() {
-        player = new Player(100, 100, 10, this);
-        control = new Control(player, this);
-        this.setOnKeyPressed(control::handle);
-        this.setOnKeyReleased(control::handle);
-
-        this.setOnKeyPressed(e -> {
-            switch (e.getCode()) {
-                case SPACE:
-                    player.fire(mouseX, mouseY);
-                    break;
-            }
-        });
+    public AnimationTimer getTimer() {
+        return timer;
     }
 
-    public void resetGame() {
-        timer.stop();
+    public void setPlayer(Player player) {
+        this.player = player;
+        projectileController = new ProjectileController(projectiles, player, control, this);
+    }
 
-        resetPlayer();
-        Galaxy galaxy = new Galaxy("My Galaxy");
-        galaxy.createSpaceObjects();
-        spaceObjects = galaxy.getSpaceObjects();
-        currentSpaceObject = null;
-        isBuilding = false;
-        selectedBuilding = null;
-        gameOver = false;
+    public void setControl(Control control) {
+        this.control = control;
+        projectileController = new ProjectileController(projectiles, player, control, this);
+    }
 
-        collectButton.setVisible(false);
-        buildingsComboBox.getItems().clear();
-        buildingsComboBox.setVisible(false);
-        buildButton.setVisible(false);
-        tradeButton.setVisible(false);
-        moneyLabel.setText("");
-        resourcesLabel.setText("");
-        projectiles.clear();
-        isPlayerAlive = true;
-        timer.start();
+    public List<Projectile> getProjectiles() {
+        return projectiles;
+    }
+
+    public void setPlayerAlive(boolean isPlayerAlive) {
+        projectileController.setPlayerAlive(isPlayerAlive);
+    }
+
+    public Button getCollectButton() {
+        return collectButton;
+    }
+
+    public Button getBuildButton() {
+        return buildButton;
+    }
+
+    public Button getTradeButton() {
+        return tradeButton;
+    }
+
+    public Label getMoneyLabel() {
+        return moneyLabel;
+    }
+
+    public Label getResourcesLabel() {
+        return resourcesLabel;
+    }
+
+    public void setSpaceObjects(List<SpaceObject> spaceObjects) {
+        this.spaceObjects = spaceObjects;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public double getMouseX() {
+        return mouseX;
+    }
+
+    public double getMouseY() {
+        return mouseY;
     }
 
     public void update() {
@@ -236,27 +229,6 @@ public class GameView extends Pane {
             }
         }
         tradeButton.setVisible(false);
-    }
-
-    private void openTradeWindow() {
-        if (currentSpaceObject instanceof Planet) {
-            Planet planet = (Planet) currentSpaceObject;
-            for (Builder builder : planet.getBuilders()) {
-                if (builder.isPlayerOnBuilder(player.getX(), player.getY())) {
-                    TradeWindow tradeWindow = new TradeWindow(player, builder);
-                    tradeWindow.show();
-                    return;
-                }
-            }
-        }
-    }
-
-    public Button getCollectButton() {
-        return collectButton;
-    }
-
-    public Button getBuildButton() {
-        return buildButton;
     }
 
     public ComboBox<Building> getBuildingsComboBox() {
@@ -297,87 +269,18 @@ public class GameView extends Pane {
     public void addProjectile(Projectile projectile) {
         projectiles.add(projectile);
     }
-    private boolean isPlayerAlive = true;
-
-    public void update_projectiles() {
-        Iterator<Projectile> iterator = projectiles.iterator();
-
-        if (!isPlayerAlive) {
-            return;
-        }
-        if (player.getHealth() <= 0) {
-            isPlayerAlive = false;
-        }
-        while (iterator.hasNext()) {
-            Projectile projectile = iterator.next();
-            projectile.move();
-
-            if (currentSpaceObject instanceof Planet) {
-                Planet planet = (Planet) currentSpaceObject;
-                List<Bandit> bandits = planet.getBandits();
-                for (Bandit bandit : bandits) {
-                    if (Math.hypot(projectile.getX() - bandit.getX(), projectile.getY() - bandit.getY()) <  10) {
-                        if (projectile.getOwner() != bandit) {
-                            iterator.remove();
-                            bandit.setHealth(bandit.getHealth() - player.getDamage());
-                            System.out.println("Bandit was hit. Bandit's health: " + bandit.getHealth());
-                            break;
-                        }
-                    }
-                    if (Math.hypot(projectile.getX() - player.getX(), projectile.getY() - player.getY()) <  10) {
-                        if (projectile.getOwner() == bandit) {
-                            iterator.remove();
-                            player.setHealth(player.getHealth() - bandit.getDamage());
-                            System.out.println("You were hit. Your health: " + player.getHealth());
-                            if (player.getHealth() <= 0) {
-                                Platform.runLater(() -> {
-                                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You died! The game will now restart.", ButtonType.OK);
-                                    alert.showAndWait();
-                                    if (alert.getResult() == ButtonType.OK) {
-                                        resetGame();
-                                    }
-                                });
-                            }
-                            break;
-                        }
-                    }
-                }
-                List<Building> buildings = planet.getBuildings();
-                for (Building building : buildings) {
-                    if (Math.hypot(projectile.getX() - building.getX(), projectile.getY() - building.getY()) <  10) {
-                        if (projectile.getOwner() instanceof Bandit) {
-                            iterator.remove();
-                            building.setHealth(building.getHealth() - ((Bandit) projectile.getOwner()).getDamage());
-                            System.out.println("Building was hit. Building's health: " + building.getHealth());
-                            if (building.getHealth() <= 0) {
-                                planet.removeBuilding(building);
-                                planet.addAvailableBuilding(building);
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     public void saveGame(String filename) {
         GameState gameState = new GameState();
         gameState.setPlayer(player);
         gameState.setSpaceObjects(spaceObjects);
         gameState.setCurrentSpaceObject(currentSpaceObject);
-
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
-            oos.writeObject(gameState);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        gameStateManager.saveGame(filename, gameState);
         this.requestFocus();
     }
 
     public void loadGame(String filename) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            GameState gameState = (GameState) ois.readObject();
+        GameState gameState = gameStateManager.loadGame(filename);
+        if (gameState != null) {
             player = gameState.getPlayer();
             player.setGameView(this);
 
@@ -405,11 +308,10 @@ public class GameView extends Pane {
                     }
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
         this.requestFocus();
     }
+
     protected void draw() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -472,7 +374,7 @@ public class GameView extends Pane {
             buildButton.setVisible(false);
         }
 
-        if (!gameOver && checkVictory()) {
+        if (!gameOver && gameRules.checkVictory(spaceObjects)) {
             displayVictoryWindow();
         }
 

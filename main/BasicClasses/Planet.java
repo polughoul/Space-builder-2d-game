@@ -1,5 +1,6 @@
 package main.BasicClasses;
 
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -85,6 +86,17 @@ public class Planet extends SpaceObject {
         return bandits;
     }
 
+    public void spawnBandits() {
+        Platform.runLater(() -> {
+            Random random = new Random();
+            int banditX = random.nextInt(1240);
+            int banditY = random.nextInt(900);
+            String[] banditImages = {"main/assets/bandit.png", "main/assets/bandit1.png", "main/assets/bandit2.png", "main/assets/bandit3.png", "main/assets/bandit4.png", "main/assets/bandit5.png", "main/assets/bandit6.png", "main/assets/bandit7.png", "main/assets/bandit8.png", "main/assets/bandit9.png", "main/assets/bandit10.png" };
+            Bandit newBandit = new Bandit(1, 100, 10, banditX, banditY, 2, banditImages);
+            addBandit(newBandit);
+        });
+    }
+
     public List<Builder> getBuilders() {
         if (builders == null) {
             builders = new ArrayList<>();
@@ -109,7 +121,6 @@ public class Planet extends SpaceObject {
         availableBuildings.add(building);
     }
 
-    // В классе Planet
     public void drawBuildings(GraphicsContext gc) {
         for (Building building : buildings) {
             gc.drawImage(building.getImage(), building.getX(), building.getY(), 40, 40);
