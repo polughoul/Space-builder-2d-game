@@ -5,14 +5,17 @@ import javafx.scene.paint.Color;
 import main.GUI.GameView;
 import javafx.scene.image.Image;
 
-public class Bandit {
+import java.io.Serializable;
+
+public class Bandit implements Serializable {
     private int level;
     private int health;
     private int damage;
     private int speed;
     private int x;
     private int y;
-    private Image[] images;
+    private transient Image[] images;
+    private String[] imagePaths;
     private int currentImageIndex = 0;
 
     private int maxHealth;
@@ -29,6 +32,7 @@ public class Bandit {
         this.x = x;
         this.y = y;
         this.maxHealth = health;
+        this.imagePaths = imagePaths;
         this.images = new Image[imagePaths.length];
         for (int i = 0; i < imagePaths.length; i++) {
             this.images[i] = new Image("file:" + imagePaths[i]);
@@ -36,6 +40,9 @@ public class Bandit {
     }
 
     public void draw(GraphicsContext gc) {
+        if (images[currentImageIndex] == null) {
+            images[currentImageIndex] = new Image("file:" + imagePaths[currentImageIndex]);
+        }
         gc.drawImage(images[currentImageIndex], x - 60 / 2, y - 60 / 2, 60, 60);
         gc.setFill(Color.RED);
         gc.fillRect(x - 30, y - 40, 60, 5);
@@ -119,6 +126,13 @@ public class Bandit {
     public void attack(Building building, GameView gameView) {
         Projectile projectile = new Projectile(this.x, this.y, building.getX(), building.getY(), this);
         gameView.addProjectile(projectile);
+    }
+
+    public void reloadImages() {
+        this.images = new Image[imagePaths.length];
+        for (int i = 0; i < imagePaths.length; i++) {
+            this.images[i] = new Image("file:" + imagePaths[i]);
+        }
     }
 
 }

@@ -3,12 +3,15 @@ package main.BasicClasses;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class Resource {
+import java.io.Serializable;
+
+public class Resource implements Serializable {
     private String type;
     private int counts;
     private int x;
     private int y;
-    private Image image;
+    private transient Image image;
+    private String imagePath;
 
     public boolean isPlayerOnResource(int playerX, int playerY) {
         int dx = this.x - playerX;
@@ -17,14 +20,18 @@ public class Resource {
         return distance <= 10 / 2;
     }
 
-    public Resource(String type, int counts, int x, int y, Image image){
+    public Resource(String type, int counts, int x, int y, String imagePath){
         this.type = type;
         this.counts = counts;
         this.x = x;
         this.y = y;
-        this.image = image;
+        this.imagePath = imagePath;
+        this.image = new Image("file:" + imagePath);
     }
     public void draw(GraphicsContext gc) {
+        if (image == null) {
+            image = new Image("file:" + imagePath);
+        }
         gc.drawImage(image, x - 40 / 2, y - 40 / 2, 40, 40);
     }
     public String getType() {

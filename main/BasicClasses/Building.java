@@ -1,22 +1,23 @@
 package main.BasicClasses;
 
+import java.io.Serializable;
 import java.util.Map;
 import javafx.scene.image.Image;
 
-public class Building {
+public class Building implements Serializable {
     private String type;
     private Map<String, Integer> cost;
     private int health;
     private int maxHealth;
     int x;
     int y;
-    private Image image;
+    private String imagePath;
 
 
-    public Building(String type, Map<String, Integer> cost,  Image image, int health ) {
+    public Building(String type, Map<String, Integer> cost,  String imagePath,  int health ) {
         this.type = type;
         this.cost = cost;
-        this.image = image;
+        this.imagePath = imagePath;
         this.health = health;
         this.maxHealth = health;
 
@@ -29,17 +30,12 @@ public class Building {
         return health;
     }
 
-
     public void setHealth(int health) {
         this.health = health;
     }
 
     public Image getImage() {
-        return image;
-    }
-
-    public String getType() {
-        return type;
+        return new Image("file:" + imagePath);
     }
 
     public Map<String, Integer> getCost() {

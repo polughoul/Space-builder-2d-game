@@ -6,10 +6,12 @@ import java.util.*;
 
 public class Asteroid extends SpaceObject {
     private List<Resource> resources;
-    private Image image;
+    private transient Image image;
+    private String imagePath;
 
     public Asteroid(String name, int size, int x, int y, String imagePath) {
         super(name, size, x, y);
+        this.imagePath = imagePath;
         this.image = new Image("file:" + imagePath);
     }
 
@@ -17,6 +19,9 @@ public class Asteroid extends SpaceObject {
         resources.remove(resource);
     }
     public Image getImage() {
+        if (image == null) {
+            image = new Image("file:" + imagePath);
+        }
         return image;
     }
 
@@ -26,20 +31,12 @@ public class Asteroid extends SpaceObject {
         if (resources == null) {
             resources = new ArrayList<>();
             Random random = new Random();
-            Map<String, Image> resourceImages = new HashMap<>();
-            resourceImages.put("silver", new Image("file:main/assets/silver.png"));
-            resourceImages.put("ruby", new Image("file:main/assets/rubin.png"));
-            resourceImages.put("obsidian", new Image("file:main/assets/obsidian.png"));
-            resourceImages.put("nephrite", new Image("file:main/assets/nefrit.png"));
-            resourceImages.put("iron", new Image("file:main/assets/metal.png"));
-            resourceImages.put("gold", new Image("file:main/assets/gold.png"));
-            resourceImages.put("lazurite", new Image("file:main/assets/lazurit.png"));
-            List<String> resourceTypes = new ArrayList<>(resourceImages.keySet());
+            List<String> resourceTypes = Arrays.asList("silver", "ruby", "obsidian", "nephrite", "iron", "gold", "lazurite");
             for (int i = 0; i < 7; i++) {
                 int resourceX = random.nextInt(1240);
                 int resourceY = random.nextInt(900);
                 String resourceType = resourceTypes.get(random.nextInt(resourceTypes.size()));
-                resources.add(new Resource(resourceType, random.nextInt(100), resourceX, resourceY, resourceImages.get(resourceType)));
+                resources.add(new Resource(resourceType, random.nextInt(100), resourceX, resourceY, "main/assets/" + resourceType + ".png"));
             }
         }
         return resources;

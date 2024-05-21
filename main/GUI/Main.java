@@ -32,16 +32,18 @@ public class Main extends Application {
         HBox buttonPanel = new HBox();
 
         Button startButton = new Button("Start Game");
+        Button saveButton = new Button("Save Game");
         Button loadButton = new Button("Load Game");
         Button exitButton = new Button("Exit Game");
 
-        buttonPanel.getChildren().addAll(startButton, loadButton, exitButton);
+        buttonPanel.getChildren().addAll(startButton, loadButton, exitButton, saveButton);
 
         GameView gameGameView = new GameView();
         gameGameView.setVisible(false);
 
         Button returnButton = new Button("Return to Galaxy");
         HBox.setHgrow(startButton, Priority.ALWAYS);
+        HBox.setHgrow(saveButton, Priority.ALWAYS);
         HBox.setHgrow(loadButton, Priority.ALWAYS);
         HBox.setHgrow(exitButton, Priority.ALWAYS);
         HBox.setHgrow(returnButton, Priority.ALWAYS);
@@ -59,6 +61,15 @@ public class Main extends Application {
             gameGameView.setVisible(true);
             gameGameView.requestFocus();
         });
+
+        saveButton.setOnAction(e -> {
+            gameGameView.saveGame("savegame.ser");
+        });
+
+        loadButton.setOnAction(e -> {
+            gameGameView.loadGame("savegame.ser");
+        });
+
 
         exitButton.setOnAction(e -> {
             System.exit(0);

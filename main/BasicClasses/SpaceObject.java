@@ -1,10 +1,11 @@
 package main.BasicClasses;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class SpaceObject {
+public abstract class SpaceObject implements Serializable {
     private List<Resource> resources;
     private String name;
     private int size;

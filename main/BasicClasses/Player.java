@@ -3,6 +3,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import main.GUI.GameView;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Player {
+public class Player implements Serializable {
     private int money;
     private HashMap<String, Integer> resources;
     private int damage;
@@ -19,10 +20,13 @@ public class Player {
     private int y;
     private List<Resource> collectedResources = new ArrayList<>();
     private int speed = 2;
-    private GameView gameView;
-    private ImageView imageView;
+    private transient GameView gameView;
+    private transient ImageView imageView;
+    private String playerImagePath = "main/assets/player.png";
     private int maxHealth;
     private int health;
+
+
 
     public void moveUp() {
         if (y > 0) {
@@ -71,15 +75,14 @@ public class Player {
         this.gameView = gameView;
         this.maxHealth = health;
 
-        Image image = new Image("file:main/assets/player.png");
-
-        imageView = new ImageView(image);
-        imageView.setFitWidth(80); // Установите нужные размеры
+        imageView = new ImageView();
+        imageView.setFitWidth(80);
         imageView.setFitHeight(80);
     }
 
     public void draw(GraphicsContext gc) {
-        // Замените текущий код отрисовки на следующий:
+        Image image = new Image("file:" + playerImagePath);
+        imageView.setImage(image);
         gc.drawImage(imageView.getImage(), x - imageView.getFitWidth() / 2, y - imageView.getFitHeight()/2, imageView.getFitWidth(), imageView.getFitHeight());
         gc.setFill(Color.GREEN);
         gc.fillRect(x - 30, y - 40, 60 * ((double) health / maxHealth), 5);
@@ -147,6 +150,14 @@ public class Player {
     public void fire(double targetX, double targetY) {
         Projectile projectile = new Projectile(this.x, this.y, targetX, targetY, this);
         gameView.addProjectile(projectile);
+    }
+
+    public void setGameView(GameView gameView) {
+        this.gameView = gameView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
     }
 
     public void attackNearestBandit(Planet currentPlanet) {

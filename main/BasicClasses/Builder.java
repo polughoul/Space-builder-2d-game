@@ -2,18 +2,20 @@ package main.BasicClasses;
 
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.image.Image;
 
-public class Builder {
+public class Builder implements Serializable {
     private int money;
     private HashMap<String, Integer> resources;
     private Map<String, Map<String, Integer>> resourcePrices;
     private Map<String, Map<String, Integer>> sellPrices;
     private int x;
     private int y;
-    private Image image;
+    private String imagePath;
+    private transient Image image;
 
     public Builder(HashMap<String, Integer> resources, int x, int y, String imagePath) {
         this.resources = resources;
@@ -22,6 +24,7 @@ public class Builder {
         this.resourcePrices = new HashMap<>();
         this.money = 15;
         this.sellPrices = new HashMap<>();
+        this.imagePath = imagePath;
         this.image = new Image("file:" + imagePath);
 
         Map<String, Integer> woodPrice = new HashMap<>();
@@ -40,6 +43,9 @@ public class Builder {
 
     }
     public void draw(GraphicsContext gc) {
+        if (image == null) {
+            image = new Image("file:" + imagePath);
+        }
         gc.drawImage(image, x - 60 / 2, y - 60 / 2, 60, 60);
     }
 

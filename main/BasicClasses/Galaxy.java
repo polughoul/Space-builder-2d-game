@@ -1,7 +1,4 @@
 package main.BasicClasses;
-
-import javafx.scene.image.Image;
-
 import java.util.*;
 
 public class Galaxy {
@@ -40,9 +37,9 @@ public class Galaxy {
 
         for (int i = 0; i < 3; i++) {
             List<Building> buildings = new ArrayList<>();
-            buildings.add(new Building("building1", createBuilding1Cost(), new Image("file:" + buildingImages.get(0)), 100));
-            buildings.add(new Building("building2", createBuilding2Cost(), new Image("file:" + buildingImages.get(1)), 100));
-            buildings.add(new Building("building3", createBuilding3Cost(), new Image("file:" + buildingImages.get(2)), 100));
+            buildings.add(new Building("building1", createBuilding1Cost(), buildingImages.get(0), 100));
+            buildings.add(new Building("building2", createBuilding2Cost(), buildingImages.get(1), 100));
+            buildings.add(new Building("building3", createBuilding3Cost(), buildingImages.get(2), 100));
 
             String planetImage = planetImages.get(i);
 

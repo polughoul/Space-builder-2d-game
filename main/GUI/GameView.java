@@ -1,5 +1,6 @@
 package main.GUI;
 
+import java.io.*;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -7,6 +8,8 @@ import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,6 +26,7 @@ import java.util.List;
 
 public class GameView extends Pane {
     private Player player;
+    private Planet planet;
     private Control control;
     private AnimationTimer timer;
     private List<SpaceObject> spaceObjects;
@@ -67,12 +71,18 @@ public class GameView extends Pane {
         overlayPane.getChildren().add(collectButton);
 
         buildingsComboBox = new ComboBox<>();
+        buildingsComboBox.setOnAction(e -> {
+            this.requestFocus();
+        });
         buildingsComboBox.setVisible(false);
         overlayPane.getChildren().add(buildingsComboBox);
 
         buildButton = new Button("Construct a building");
         buildButton.setVisible(false);
-        buildButton.setOnAction(e -> control.buildBuilding());
+        buildButton.setOnAction(e -> {
+            control.buildBuilding();
+            this.requestFocus();
+        });
         overlayPane.getChildren().add(buildButton);
 
         tradeButton = new Button("Trade");
@@ -351,6 +361,55 @@ public class GameView extends Pane {
         }
     }
 
+    public void saveGame(String filename) {
+        GameState gameState = new GameState();
+        gameState.setPlayer(player);
+        gameState.setSpaceObjects(spaceObjects);
+        gameState.setCurrentSpaceObject(currentSpaceObject);
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(gameState);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.requestFocus();
+    }
+
+    public void loadGame(String filename) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            GameState gameState = (GameState) ois.readObject();
+            player = gameState.getPlayer();
+            player.setGameView(this);
+
+            ImageView imageView = new ImageView();
+            imageView.setFitWidth(80);
+            imageView.setFitHeight(80);
+            player.setImageView(imageView);
+            spaceObjects = gameState.getSpaceObjects();
+            currentSpaceObject = gameState.getCurrentSpaceObject();
+            control = new Control(player, this);
+            this.setOnKeyPressed(control::handle);
+            this.setOnKeyReleased(control::handle);
+            this.setOnKeyPressed(e -> {
+                switch (e.getCode()) {
+                    case SPACE:
+                        player.fire(mouseX, mouseY);
+                        break;
+                }
+            });
+            for (SpaceObject spaceObject : spaceObjects) {
+                if (spaceObject instanceof Planet) {
+                    Planet planet = (Planet) spaceObject;
+                    for (Bandit bandit : planet.getBandits()) {
+                        bandit.reloadImages();
+                    }
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        this.requestFocus();
+    }
     protected void draw() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
