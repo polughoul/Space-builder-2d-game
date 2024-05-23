@@ -5,6 +5,10 @@ import main.BasicClasses.SpaceObject;
 
 import java.util.List;
 
+/**
+ * The gameRules class represents the rules of the game.
+ * It contains methods to check if the player has won the game.
+ */
 public class gameRules {
     public boolean checkVictory(List<SpaceObject> spaceObjects) {
         for (SpaceObject spaceObject : spaceObjects) {

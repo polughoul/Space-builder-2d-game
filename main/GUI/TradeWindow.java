@@ -9,10 +9,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.util.Map;
 
+/**
+ * The TradeWindow class represents a window for trading resources.
+ */
 public class TradeWindow {
     private Player player;
     private Builder builder;
 
+    /**
+     * Constructs a new TradeWindow with the given parameters.
+     *
+     * @param player The player.
+     * @param builder The builder.
+     */
     public TradeWindow(Player player, Builder builder) {
         this.player = player;
         this.builder = builder;

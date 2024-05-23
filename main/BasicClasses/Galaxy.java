@@ -1,10 +1,20 @@
 package main.BasicClasses;
 import java.util.*;
 
+/**
+ * The Galaxy class represents a galaxy in the game.
+ * It contains properties and methods specific to a galaxy.
+ */
+
 public class Galaxy {
     private String name;
     private List<SpaceObject> spaceObjects;
 
+    /**
+     * Constructs a new Galaxy with the given name.
+     *
+     * @param name The name of the Galaxy.
+     */
     public Galaxy(String name) {
         this.name = name;
         this.spaceObjects = new ArrayList<>();
@@ -26,6 +36,9 @@ public class Galaxy {
         this.spaceObjects = spaceObjects;
     }
 
+    /**
+     * Creates and adds SpaceObjects to the Galaxy.
+     */
     public void createSpaceObjects() {
         Random random = new Random();
         for (int i = 0; i < 3; i++) {
@@ -47,6 +60,11 @@ public class Galaxy {
         }
     }
 
+    /**
+     * Creates the cost for building 1.
+     *
+     * @return The cost for building 1.
+     */
     private Map<String, Integer> createBuilding1Cost() {
         Map<String, Integer> building1Cost = new HashMap<>();
         building1Cost.put("iron", 10);
@@ -54,6 +72,11 @@ public class Galaxy {
         return building1Cost;
     }
 
+    /**
+     * Creates the cost for building 2.
+     *
+     * @return The cost for building 2.
+     */
     private Map<String, Integer> createBuilding2Cost() {
         Map<String, Integer> building2Cost = new HashMap<>();
         building2Cost.put("gold", 10);
@@ -61,6 +84,11 @@ public class Galaxy {
         return building2Cost;
     }
 
+    /**
+     * Creates the cost for building 3.
+     *
+     * @return The cost for building 3.
+     */
     private Map<String, Integer> createBuilding3Cost() {
         Map<String, Integer> building3Cost = new HashMap<>();
         building3Cost.put("silver", 10);

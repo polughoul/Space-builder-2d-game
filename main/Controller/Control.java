@@ -10,11 +10,20 @@ import javafx.scene.input.KeyEvent;
 
 import java.util.List;
 
+/**
+ * The Control class is responsible for controlling the player and the game.
+ */
 public class Control {
     private Player player;
     private GameView gameGameView;
     private boolean moveUp, moveDown, moveLeft, moveRight;
 
+    /**
+     * Constructs a new Control with the given parameters.
+     *
+     * @param player The player.
+     * @param gameGameView The game view.
+     */
     public Control(Player player, GameView gameGameView) {
         this.player = player;
         this.gameGameView = gameGameView;
@@ -23,6 +32,10 @@ public class Control {
         gameGameView.addEventHandler(KeyEvent.KEY_RELEASED, this::keyReleased);
 
     }
+
+    /**
+     * Collects a resource if the player is on a resource.
+     */
     public void collectResource() {
         if (gameGameView.getCurrentSpaceObject() instanceof Asteroid || gameGameView.getCurrentSpaceObject() instanceof Planet) {
             for (Resource resource : gameGameView.getCurrentSpaceObject().getResources()) {
@@ -36,6 +49,9 @@ public class Control {
         }
     }
 
+    /**
+     * Builds a building if the player has enough resources.
+     */
     public void buildBuilding() {
         Building selectedBuilding = gameGameView.getBuildingsComboBox().getSelectionModel().getSelectedItem();
         if (player.hasEnoughResources(selectedBuilding) && gameGameView.getCurrentSpaceObject() instanceof Planet) {
@@ -53,6 +69,9 @@ public class Control {
         }
     }
 
+    /**
+     * Opens a trade window if the player is on a builder.
+     */
     public void openTradeWindow() {
         if (gameGameView.getCurrentSpaceObject() instanceof Planet) {
             Planet planet = (Planet) gameGameView.getCurrentSpaceObject();
@@ -66,6 +85,11 @@ public class Control {
         }
     }
 
+    /**
+     * Resets the player.
+     *
+     * @param gameView The game view.
+     */
     public void resetPlayer(GameView gameView) {
         Player player = new Player(100, 100, 10, gameView);
         this.player = player;
@@ -83,6 +107,11 @@ public class Control {
         });
     }
 
+    /**
+     * Resets the game.
+     *
+     * @param gameView The game view.
+     */
     public void resetGame(GameView gameView) {
         gameView.getTimer().stop();
 
@@ -108,8 +137,11 @@ public class Control {
         gameView.getTimer().start();
     }
 
-
-
+    /**
+     * Handles a key event.
+     *
+     * @param e The key event.
+     */
     public void handle(KeyEvent e) {
         if (e.getEventType() == KeyEvent.KEY_PRESSED) {
             keyPressed(e);

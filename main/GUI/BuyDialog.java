@@ -11,12 +11,24 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 
+/**
+ * The BuyDialog class represents a dialog for buying resources.
+ */
 public class BuyDialog {
     private Builder builder;
     private Player player;
     private String resourceToTrade;
     private Map<String, Integer> prices;
 
+
+    /**
+     * Constructs a new BuyDialog with the given parameters.
+     *
+     * @param player The player.
+     * @param resourceToTrade The resource to trade.
+     * @param prices The prices of the resources.
+     * @param builder The builder.
+     */
     public BuyDialog(Player player, String resourceToTrade, Map<String, Integer> prices, Builder builder) {
         this.player = player;
         this.resourceToTrade = resourceToTrade;

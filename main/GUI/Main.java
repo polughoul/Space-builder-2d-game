@@ -10,11 +10,20 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * The Main class is the entry point of the application.
+ * It extends the Application class from JavaFX.
+ */
 public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * The start method that is called after the application is launched.
+     *
+     * @param primaryStage The primary stage for this application.
+     */
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Kosmický stavitel");

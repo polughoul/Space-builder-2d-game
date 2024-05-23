@@ -3,12 +3,25 @@ package main.BasicClasses;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * The Projectile class represents a projectile in the game.
+ * It contains properties and methods specific to a projectile.
+ */
 public class Projectile {
     private double x, y;
     private double directionX, directionY;
     private double speed = 4;
     private Object owner;
 
+    /**
+     * Constructs a new Projectile with the given parameters.
+     *
+     * @param startX The x-coordinate of the starting point of the Projectile.
+     * @param startY The y-coordinate of the starting point of the Projectile.
+     * @param targetX The x-coordinate of the target point of the Projectile.
+     * @param targetY The y-coordinate of the target point of the Projectile.
+     * @param owner The owner of the Projectile.
+     */
     public Projectile(double startX, double startY, double targetX, double targetY, Object owner) {
         this.x = startX;
         this.y = startY;

@@ -7,6 +7,10 @@ import javafx.scene.image.Image;
 
 import java.io.Serializable;
 
+/**
+ * The Bandit class represents a bandit in the game.
+ * It implements the Serializable interface and contains properties and methods specific to a bandit.
+ */
 public class Bandit implements Serializable {
     private int level;
     private int health;
@@ -17,7 +21,6 @@ public class Bandit implements Serializable {
     private transient Image[] images;
     private String[] imagePaths;
     private int currentImageIndex = 0;
-    private String typeBandit;
 
     private int maxHealth;
 
@@ -25,6 +28,17 @@ public class Bandit implements Serializable {
     private long lastAttackTime = 0;
     private long attackDelay = 1000;
 
+    /**
+     * Constructs a new Bandit with the given parameters.
+     *
+     * @param level The level of the Bandit.
+     * @param health The health of the Bandit.
+     * @param damage The damage of the Bandit.
+     * @param x The x-coordinate of the Bandit.
+     * @param y The y-coordinate of the Bandit.
+     * @param speed The speed of the Bandit.
+     * @param imagePaths The paths to the images representing the Bandit.
+     */
     public Bandit(int level, int health, int damage, int x, int y, int speed, String[] imagePaths) {
         this.level = level;
         this.health = health;
@@ -40,6 +54,12 @@ public class Bandit implements Serializable {
         }
     }
 
+    /**
+     * Draws the Bandit on the game canvas.
+     *
+     * @param gc The GraphicsContext object used for drawing.
+     */
+
     public void draw(GraphicsContext gc) {
         if (images[currentImageIndex] == null) {
             images[currentImageIndex] = new Image("file:" + imagePaths[currentImageIndex]);
@@ -50,6 +70,14 @@ public class Bandit implements Serializable {
         gc.setFill(Color.GREEN);
         gc.fillRect(x - 30, y - 40, 60 * ((double) health / maxHealth), 5);
     }
+
+    /**
+     * Moves the Bandit towards the Player or attacks the Player or a Building.
+     *
+     * @param player The Player object.
+     * @param currentPlanet The current Planet object.
+     * @param gameView The GameView object.
+     */
 
     public void move(Player player, Planet currentPlanet, GameView gameView) {
         if (currentPlanet.getBandits().contains(this)) {
@@ -114,16 +142,31 @@ public class Bandit implements Serializable {
         return y;
     }
 
-    // В классе Bandit
+    /**
+     * Attacks the Player.
+     *
+     * @param player The Player object.
+     * @param gameView The GameView object.
+     */
     public void attack(Player player, GameView gameView) {
         Projectile projectile = new Projectile(this.x, this.y, player.getX(), player.getY(), this);
         gameView.addProjectile(projectile);
     }
 
+    /**
+     * Attacks a Building.
+     *
+     * @param building The Building object.
+     * @param gameView The GameView object.
+     */
     public void attack(Building building, GameView gameView) {
         Projectile projectile = new Projectile(this.x, this.y, building.getX(), building.getY(), this);
         gameView.addProjectile(projectile);
     }
+
+    /**
+     * Reloads the images representing the Bandit.
+     */
 
     public void reloadImages() {
         this.images = new Image[imagePaths.length];

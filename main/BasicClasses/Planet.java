@@ -7,6 +7,10 @@ import javafx.scene.paint.Color;
 
 import java.util.*;
 
+/**
+ * The Planet class represents a planet in the game.
+ * It extends the SpaceObject class and contains properties and methods specific to a planet.
+ */
 public class Planet extends SpaceObject {
     private List<Resource> resources;
     private List<Bandit> bandits;
@@ -14,10 +18,13 @@ public class Planet extends SpaceObject {
     private List<Building> buildings = new ArrayList<>();
     private transient Image image;
     private String imagePath;
-
-
     private List<Building> availableBuildings = new ArrayList<>();
 
+    /**
+     * Adds a Bandit to the Planet.
+     *
+     * @param bandit The Bandit to add.
+     */
     public void addBandit(Bandit bandit) {
         bandits.add(bandit);
     }
@@ -33,10 +40,26 @@ public class Planet extends SpaceObject {
         this.availableBuildings = availableBuildings;
     }
 
+    /**
+     * Removes an available Building from the Planet.
+     *
+     * @param building The Building to remove.
+     */
+
     public void removeAvailableBuilding(Building building) {
         availableBuildings.remove(building);
     }
 
+    /**
+     * Constructs a new Planet with the given parameters.
+     *
+     * @param name The name of the Planet.
+     * @param size The size of the Planet.
+     * @param x The x-coordinate of the Planet.
+     * @param y The y-coordinate of the Planet.
+     * @param buildings The list of buildings on the Planet.
+     * @param imagePath The path to the image representing the Planet.
+     */
     public Planet(String name, int size, int x, int y, List<Building> buildings, String imagePath)
     {
         super(name, size, x, y);
@@ -58,6 +81,12 @@ public class Planet extends SpaceObject {
         resources.remove(resource);
     }
 
+    /**
+     * Returns the list of resources available on the Planet.
+     * If the resources list is null, it creates a new list of resources.
+     *
+     * @return The list of resources available on the Planet.
+     */
     public List<Resource> getResources() {
         if (resources == null) {
             resources = new ArrayList<>();
@@ -73,6 +102,12 @@ public class Planet extends SpaceObject {
         return Collections.unmodifiableList(resources);
     }
 
+    /**
+     * Returns the list of Bandits on the Planet.
+     * If the bandits list is null, it creates a new list of Bandits.
+     *
+     * @return The list of Bandits on the Planet.
+     */
     public List<Bandit> getBandits() {
         if (bandits == null) {
             bandits = new LinkedList<>();
@@ -87,6 +122,9 @@ public class Planet extends SpaceObject {
         return bandits;
     }
 
+    /**
+     * Spawns a new Bandit every minute on the Planet.
+     */
     public void spawnBandits() {
         Platform.runLater(() -> {
             Random random = new Random();
@@ -98,6 +136,12 @@ public class Planet extends SpaceObject {
         });
     }
 
+    /**
+     * Returns the list of Builders on the Planet.
+     * If the builders list is null, it creates a new list of Builders.
+     *
+     * @return The list of Builders on the Planet.
+     */
     public List<Builder> getBuilders() {
         if (builders == null) {
             builders = new LinkedList<>();
@@ -114,14 +158,30 @@ public class Planet extends SpaceObject {
         return builders;
     }
 
+    /**
+     * Adds a Building to the Planet.
+     *
+     * @param building The Building to add.
+     */
     public void addBuilding(Building building) {
         buildings.add(building);
     }
+
+    /**
+     * Adds an available Building to the Planet.
+     *
+     * @param building The Building to add.
+     */
     public void addAvailableBuilding(Building building) {
         building.setHealth(building.getMaxHealth());
         availableBuildings.add(building);
     }
 
+    /**
+     * Draws the Planet on the game canvas.
+     *
+     * @param gc The GraphicsContext object used for drawing.
+     */
     public void drawBuildings(GraphicsContext gc) {
         for (Building building : buildings) {
             gc.drawImage(building.getImage(), building.getX(), building.getY(), 40, 40);
@@ -132,10 +192,21 @@ public class Planet extends SpaceObject {
             gc.fillRect(building.getX(), building.getY() - 10, 40 * ((double) building.getHealth() / 100), 5);
         }
     }
+
+    /**
+     * Removes a Bandit from the Planet.
+     *
+     * @param bandit The Bandit to remove.
+     */
     public void removeBandit(Bandit bandit) {
         bandits.remove(bandit);
     }
 
+    /**
+     * Removes a Building from the Planet.
+     *
+     * @param building The Building to remove.
+     */
     public void removeBuilding(Building building) {
         buildings.remove(building);
     }

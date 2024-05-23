@@ -19,6 +19,9 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The GameView class represents the game view.
+ */
 public class GameView extends Pane {
     private Player player;
     private Control control;
@@ -49,6 +52,9 @@ public class GameView extends Pane {
 
     private Pane overlayPane;
 
+    /**
+     * Constructs a new GameView.
+     */
     public GameView() {
         setFocusTraversable(true);
         control = new Control(player, this);
@@ -131,6 +137,9 @@ public class GameView extends Pane {
         getChildren().addAll(canvas, overlayPane);
     }
 
+    /**
+     * Spawns bandits on the planet.
+     */
     private void spawnBandits() {
         for (SpaceObject spaceObject : spaceObjects) {
             if (spaceObject instanceof Planet) {
@@ -139,6 +148,9 @@ public class GameView extends Pane {
         }
     }
 
+    /**
+     * Displays the victory window after player construct all buildings in each planet.
+     */
     public void displayVictoryWindow() {
         Stage victoryStage = new Stage();
         victoryStage.setTitle("Victory!");
@@ -160,6 +172,8 @@ public class GameView extends Pane {
 
         victoryStage.show();
     }
+
+
     public AnimationTimer getTimer() {
         return timer;
     }
@@ -218,6 +232,9 @@ public class GameView extends Pane {
         return mouseY;
     }
 
+    /**
+     * Updates the visibility of tradeButton when player step on builder.
+     */
     public void update() {
         if (currentSpaceObject instanceof Planet) {
             Planet planet = (Planet) currentSpaceObject;
@@ -231,6 +248,11 @@ public class GameView extends Pane {
         tradeButton.setVisible(false);
     }
 
+    /**
+     * Returns the list of buildings.
+     *
+     * @return The buildings combo box.
+     */
     public ComboBox<Building> getBuildingsComboBox() {
         return buildingsComboBox;
     }
@@ -244,6 +266,9 @@ public class GameView extends Pane {
         this.selectedBuilding = building;
     }
 
+    /**
+     * Updates the buildings list.
+     */
     private void updateBuildingsComboBox() {
         buildingsComboBox.getItems().clear();
         if (currentSpaceObject instanceof Planet) {
@@ -269,6 +294,12 @@ public class GameView extends Pane {
     public void addProjectile(Projectile projectile) {
         projectiles.add(projectile);
     }
+
+    /**
+     * Saves the game.
+     *
+     * @param filename The filename.
+     */
     public void saveGame(String filename) {
         GameState gameState = new GameState();
         gameState.setPlayer(player);
@@ -278,6 +309,11 @@ public class GameView extends Pane {
         this.requestFocus();
     }
 
+    /**
+     * Loads the game.
+     *
+     * @param filename The filename.
+     */
     public void loadGame(String filename) {
         GameState gameState = gameStateManager.loadGame(filename);
         if (gameState != null) {

@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * The Player class represents a player in the game.
+ * It implements the Serializable interface and contains properties and methods specific to a player.
+ */
 public class Player implements Serializable {
     private int money;
     private HashMap<String, Integer> resources;
@@ -67,6 +71,14 @@ public class Player implements Serializable {
         return y;
     }
 
+    /**
+     * Constructs a new Player with the given parameters.
+     *
+     * @param money The money of the Player.
+     * @param health The health of the Player.
+     * @param damage The damage of the Player.
+     * @param gameView The GameView object.
+     */
     public Player(int money, int health, int damage, GameView gameView) {
         this.money = money;
         this.resources = new HashMap<>();
@@ -118,6 +130,11 @@ public class Player implements Serializable {
         this.health = health;
     }
 
+    /**
+     * Collects a Resource.
+     *
+     * @param resource The Resource to collect.
+     */
     public void collectResource(Resource resource) {
         collectedResources.add(resource);
         String resourceType = resource.getType();
@@ -129,6 +146,12 @@ public class Player implements Serializable {
         return collectedResources;
     }
 
+    /**
+     * Builds a Building on a Planet.
+     *
+     * @param building The Building to build.
+     * @param planet The Planet on which to build the Building.
+     */
     public void buildBuilding(Building building, Planet planet) {
         if (hasEnoughResources(building)) {
             planet.addBuilding(building);
@@ -138,6 +161,12 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * Checks if the Player has enough resources to build a Building.
+     *
+     * @param building The Building to check.
+     * @return True if the Player has enough resources, false otherwise.
+     */
     public boolean hasEnoughResources(Building building) {
         for (Map.Entry<String, Integer> entry : building.getCost().entrySet()) {
             if (!resources.containsKey(entry.getKey()) || resources.get(entry.getKey()) < entry.getValue()) {
@@ -147,6 +176,12 @@ public class Player implements Serializable {
         return true;
     }
 
+    /**
+     * Fires a Projectile.
+     *
+     * @param targetX The x-coordinate of the target.
+     * @param targetY The y-coordinate of the target.
+     */
     public void fire(double targetX, double targetY) {
         Projectile projectile = new Projectile(this.x, this.y, targetX, targetY, this);
         gameView.addProjectile(projectile);

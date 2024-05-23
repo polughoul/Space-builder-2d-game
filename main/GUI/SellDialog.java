@@ -11,11 +11,24 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 
+/**
+ * The SellDialog class represents a dialog for selling resources.
+ */
+
 public class SellDialog {
     private Builder builder;
     private Player player;
     private String resourceToTrade;
     private Map<String, Integer> prices;
+
+    /**
+     * Constructs a new SellDialog with the given parameters.
+     *
+     * @param player The player.
+     * @param resourceToTrade The resource to trade.
+     * @param prices The prices of the resources.
+     * @param builder The builder.
+     */
 
     public SellDialog(Player player, String resourceToTrade, Map<String, Integer> prices, Builder builder) {
         this.player = player;
