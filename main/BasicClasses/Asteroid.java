@@ -15,6 +15,7 @@ public class Asteroid extends SpaceObject {
         this.image = new Image("file:" + imagePath);
     }
 
+    @Override
     public void removeResource(Resource resource) {
         resources.remove(resource);
     }
@@ -32,7 +33,7 @@ public class Asteroid extends SpaceObject {
             resources = new ArrayList<>();
             Random random = new Random();
             List<String> resourceTypes = Arrays.asList("silver", "ruby", "obsidian", "nephrite", "iron", "gold", "lazurite");
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < resourceTypes.size(); i++) {
                 int resourceX = random.nextInt(1240);
                 int resourceY = random.nextInt(900);
                 String resourceType = resourceTypes.get(random.nextInt(resourceTypes.size()));

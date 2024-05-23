@@ -28,11 +28,7 @@ public class Control {
             for (Resource resource : gameGameView.getCurrentSpaceObject().getResources()) {
                 if (resource.isPlayerOnResource(player.getX(), player.getY())) {
                     player.collectResource(resource);
-                    if (gameGameView.getCurrentSpaceObject() instanceof Planet) {
-                        ((Planet) gameGameView.getCurrentSpaceObject()).removeResource(resource);
-                    } else if (gameGameView.getCurrentSpaceObject() instanceof Asteroid) {
-                        ((Asteroid) gameGameView.getCurrentSpaceObject()).removeResource(resource);
-                    }
+                    gameGameView.getCurrentSpaceObject().removeResource(resource);
                     System.out.println("Collected resources: " + player.getCollectedResources());
                     break;
                 }

@@ -9,7 +9,6 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import main.BasicClasses.NullSpaceObject;
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -49,7 +48,7 @@ public class Main extends Application {
         HBox.setHgrow(exitButton, Priority.ALWAYS);
         HBox.setHgrow(returnButton, Priority.ALWAYS);
         returnButton.setOnAction(e -> {
-            gameGameView.setCurrentSpaceObject(new NullSpaceObject());
+            gameGameView.setCurrentSpaceObject(null);
             gameGameView.requestFocus();
         });
 

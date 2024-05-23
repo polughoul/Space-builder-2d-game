@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javafx.scene.image.Image;
 
 public abstract class SpaceObject implements Serializable {
     private List<Resource> resources;
@@ -18,6 +19,9 @@ public abstract class SpaceObject implements Serializable {
         this.x = x;
         this.y = y;
         this.resources = new ArrayList<>();
+    }
+
+    public void removeResource(Resource resource) {
     }
 
     public List<Resource> getResources() {
@@ -35,6 +39,8 @@ public abstract class SpaceObject implements Serializable {
     public int getY() {
         return y;
     }
+
+    public abstract Image getImage();
 
     public boolean isPlayerOnObject(int playerX, int playerY) {
         int dx = this.x - playerX;

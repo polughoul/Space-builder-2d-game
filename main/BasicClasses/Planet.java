@@ -43,7 +43,7 @@ public class Planet extends SpaceObject {
         availableBuildings.addAll(buildings);
         this.image = new Image("file:" + imagePath);
         this.imagePath = imagePath;
-        this.bandits = new ArrayList<>();
+        this.bandits = new LinkedList<>();
 
     }
     public Image getImage() {
@@ -53,6 +53,7 @@ public class Planet extends SpaceObject {
         return image;
     }
 
+    @Override
     public void removeResource(Resource resource) {
         resources.remove(resource);
     }
@@ -62,7 +63,7 @@ public class Planet extends SpaceObject {
             resources = new ArrayList<>();
             Random random = new Random();
             List<String> resourceTypes = Arrays.asList("silver", "ruby", "obsidian", "nephrite", "iron", "gold", "lazurite");
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < resourceTypes.size(); i++) {
                 int resourceX = random.nextInt(1240);
                 int resourceY = random.nextInt(900);
                 String resourceType = resourceTypes.get(random.nextInt(resourceTypes.size()));
@@ -74,7 +75,7 @@ public class Planet extends SpaceObject {
 
     public List<Bandit> getBandits() {
         if (bandits == null) {
-            bandits = new ArrayList<>();
+            bandits = new LinkedList<>();
             Random random = new Random();
             String[] banditImages = {"main/assets/bandit.png", "main/assets/bandit1.png", "main/assets/bandit2.png", "main/assets/bandit3.png", "main/assets/bandit4.png", "main/assets/bandit5.png", "main/assets/bandit6.png", "main/assets/bandit7.png", "main/assets/bandit8.png", "main/assets/bandit9.png", "main/assets/bandit10.png" };
             for (int i = 0; i < 1; i++) {
@@ -99,7 +100,7 @@ public class Planet extends SpaceObject {
 
     public List<Builder> getBuilders() {
         if (builders == null) {
-            builders = new ArrayList<>();
+            builders = new LinkedList<>();
             Random random = new Random();
             for (int i = 0; i < 5; i++) {
                 int builderX = random.nextInt(1240);
