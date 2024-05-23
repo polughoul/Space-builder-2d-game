@@ -37,7 +37,6 @@ public class Projectile {
         gc.fillOval(x - 5, y - 5, 10, 10);
     }
 
-    // геттеры для x и y
     public double getX() {
         return x;
     }

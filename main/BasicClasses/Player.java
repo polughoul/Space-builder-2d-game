@@ -160,23 +160,4 @@ public class Player implements Serializable {
         this.imageView = imageView;
     }
 
-    public void attackNearestBandit(Planet currentPlanet) {
-        Bandit nearestBandit = null;
-        double nearestDistance = Double.MAX_VALUE;
-
-        for (Bandit bandit : currentPlanet.getBandits()) {
-            double dx = this.x - bandit.getX();
-            double dy = this.y - bandit.getY();
-            double distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < nearestDistance) {
-                nearestBandit = bandit;
-                nearestDistance = distance;
-            }
-        }
-
-        if (nearestBandit != null && nearestDistance <= 20) {
-            this.fire(nearestBandit.getX(), nearestBandit.getY());
-        }
-    }
 }

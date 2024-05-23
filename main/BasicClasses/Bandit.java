@@ -17,6 +17,7 @@ public class Bandit implements Serializable {
     private transient Image[] images;
     private String[] imagePaths;
     private int currentImageIndex = 0;
+    private String typeBandit;
 
     private int maxHealth;
 
@@ -95,10 +96,6 @@ public class Bandit implements Serializable {
         } else if (currentImageIndex < images.length - 1) {
             currentImageIndex++;
         }
-    }
-
-    public int getLevel() {
-        return level;
     }
 
     public int getDamage() {

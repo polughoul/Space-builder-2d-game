@@ -375,6 +375,7 @@ public class GameView extends Pane {
         }
 
         if (!gameOver && gameRules.checkVictory(spaceObjects)) {
+            gameOver = true;
             displayVictoryWindow();
         }
 

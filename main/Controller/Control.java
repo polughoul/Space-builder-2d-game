@@ -130,10 +130,6 @@ public class Control {
             moveDown = true;
         } else if (e.getCode() == KeyCode.D) {
             moveRight = true;
-        } else if (e.getCode() == KeyCode.SPACE) {
-            if (gameGameView.getCurrentSpaceObject() instanceof Planet) {
-                player.attackNearestBandit((Planet) gameGameView.getCurrentSpaceObject());
-            }
         }
     }
 

@@ -39,6 +39,6 @@ public class Asteroid extends SpaceObject {
                 resources.add(new Resource(resourceType, random.nextInt(100), resourceX, resourceY, "main/assets/" + resourceType + ".png"));
             }
         }
-        return resources;
+        return Collections.unmodifiableList(resources);
     }
 }
