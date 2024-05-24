@@ -36,6 +36,10 @@ public class Building implements Serializable {
         this.maxHealth = health;
 
     }
+
+    public String getType() {
+        return type;
+    }
     public int getMaxHealth() {
         return maxHealth;
     }

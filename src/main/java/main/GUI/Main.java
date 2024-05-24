@@ -9,13 +9,19 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * The Main class is the entry point of the application.
  * It extends the Application class from JavaFX.
  */
 public class Main extends Application {
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    private static String[] launchArgs;
+
     public static void main(String[] args) {
+        launchArgs = args;
         launch(args);
     }
 
@@ -26,9 +32,25 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+        boolean loggingEnabled = true;
+
+        // Проверяем аргументы командной строки
+        for (String arg : launchArgs) {
+            if ("nologging".equals(arg)) {
+                loggingEnabled = false;
+                break;
+            }
+        }
+
+        Logger rootLogger = Logger.getLogger("");
+        if (loggingEnabled) {
+            rootLogger.setLevel(Level.ALL);
+        } else {
+            rootLogger.setLevel(Level.OFF);
+        }
         primaryStage.setTitle("Kosmický stavitel");
         BorderPane root = new BorderPane();
-        Image image = new Image("file:main/assets/BG.png");
+        Image image = new Image("file:src/main/java/main/assets/BG.png");
 
         ImageView imageView = new ImageView(image);
 
@@ -87,5 +109,6 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
+        logger.info("Application started");
     }
 }

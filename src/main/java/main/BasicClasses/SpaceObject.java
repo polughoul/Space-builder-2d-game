@@ -3,7 +3,7 @@ package main.BasicClasses;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 import javafx.scene.image.Image;
 
 /**
@@ -35,6 +35,10 @@ public abstract class SpaceObject implements Serializable {
     }
 
     public void removeResource(Resource resource) {
+    }
+
+    public String getName() {
+        return name;
     }
 
     public List<Resource> getResources() {

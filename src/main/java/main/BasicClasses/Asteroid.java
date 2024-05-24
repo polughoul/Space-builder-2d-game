@@ -66,7 +66,7 @@ public class Asteroid extends SpaceObject {
                 int resourceX = random.nextInt(1240);
                 int resourceY = random.nextInt(900);
                 String resourceType = resourceTypes.get(random.nextInt(resourceTypes.size()));
-                resources.add(new Resource(resourceType, random.nextInt(100), resourceX, resourceY, "main/assets/" + resourceType + ".png"));
+                resources.add(new Resource(resourceType, random.nextInt(100), resourceX, resourceY, "src/main/java/main/assets/" + resourceType + ".png"));
             }
         }
         return Collections.unmodifiableList(resources);

@@ -5,10 +5,12 @@ import main.BasicClasses.*;
 import main.GUI.GameView;
 import main.GUI.TradeWindow;
 
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * The Control class is responsible for controlling the player and the game.
@@ -17,6 +19,8 @@ public class Control {
     private Player player;
     private GameView gameGameView;
     private boolean moveUp, moveDown, moveLeft, moveRight;
+
+    private static final Logger logger = Logger.getLogger(Control.class.getName());
 
     /**
      * Constructs a new Control with the given parameters.
@@ -42,7 +46,7 @@ public class Control {
                 if (resource.isPlayerOnResource(player.getX(), player.getY())) {
                     player.collectResource(resource);
                     gameGameView.getCurrentSpaceObject().removeResource(resource);
-                    System.out.println("Collected resources: " + player.getCollectedResources());
+                    logger.info("Collected resources: " + player.getCollectedResources());
                     break;
                 }
             }

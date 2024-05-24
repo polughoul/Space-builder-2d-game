@@ -3,7 +3,8 @@ package main.GUI;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import main.BasicClasses.*;
+import main.BasicClasses.Builder;
+import main.BasicClasses.Player;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
@@ -12,25 +13,24 @@ import javafx.stage.Stage;
 import java.util.Map;
 
 /**
- * The SellDialog class represents a dialog for selling resources.
+ * The BuyDialog class represents a dialog for buying resources.
  */
-
-public class SellDialog {
+public class BuyDialog {
     private Builder builder;
     private Player player;
     private String resourceToTrade;
     private Map<String, Integer> prices;
 
+
     /**
-     * Constructs a new SellDialog with the given parameters.
+     * Constructs a new BuyDialog with the given parameters.
      *
      * @param player The player.
      * @param resourceToTrade The resource to trade.
      * @param prices The prices of the resources.
      * @param builder The builder.
      */
-
-    public SellDialog(Player player, String resourceToTrade, Map<String, Integer> prices, Builder builder) {
+    public BuyDialog(Player player, String resourceToTrade, Map<String, Integer> prices, Builder builder) {
         this.player = player;
         this.resourceToTrade = resourceToTrade;
         this.prices = prices;
@@ -39,7 +39,7 @@ public class SellDialog {
 
     public void show() {
         Stage stage = new Stage();
-        stage.setTitle("Sell " + resourceToTrade);
+        stage.setTitle("Buy " + resourceToTrade);
 
         Label playerMoneyLabel = new Label("You have " + player.getMoney() + " coins");
         Label builderMoneyLabel = new Label("Builder has " + builder.getMoney() + " coins");
@@ -49,31 +49,30 @@ public class SellDialog {
             playerResources.getItems().add(entry.getKey() + ": " + entry.getValue());
         }
 
-        Button tradeButton = new Button("Sell");
+        Button tradeButton = new Button("Buy");
         tradeButton.setOnAction(e -> {
             String selectedCurrency = playerResources.getSelectionModel().getSelectedItem().split(": ")[0];
             int price = prices.get(selectedCurrency);
-            int playerResourceCount = player.getResources().get(resourceToTrade);
+            int playerResourceCount = selectedCurrency.equals("coins") ? player.getMoney() : player.getResources().getOrDefault(selectedCurrency, 0);
 
-            if (playerResourceCount > 0 && builder.getMoney() >= price) {
-                player.getResources().put(resourceToTrade, playerResourceCount - 1);
-                player.setMoney(player.getMoney() + price);
-                builder.getResources().put(resourceToTrade, builder.getResources().getOrDefault(resourceToTrade, 0) + 1);
-                builder.setMoney(builder.getMoney() - price);
+            if (playerResourceCount >= price) {
+                if (selectedCurrency.equals("coins")) {
+                    player.setMoney(playerResourceCount - price);
+                } else {
+                    player.getResources().put(selectedCurrency, playerResourceCount - price);
+                }
+                player.getResources().put(resourceToTrade, player.getResources().getOrDefault(resourceToTrade, 0) + 1);
+                builder.getResources().put(resourceToTrade, builder.getResources().get(resourceToTrade) - 1);
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
-                if (playerResourceCount <= 0) {
-                    alert.setContentText("You do not have any " + resourceToTrade + " to sell.");
-                } else {
-                    alert.setContentText("The builder does not have enough money to buy " + resourceToTrade + ".");
-                }
+                alert.setContentText("You do not have enough " + selectedCurrency + ".");
                 alert.showAndWait();
             }
         });
 
-        VBox vbox = new VBox(new Label("Select a resource to sell for " + resourceToTrade), playerMoneyLabel, builderMoneyLabel, playerResources, tradeButton);
+        VBox vbox = new VBox(new Label("Select a resource to buy for " + resourceToTrade), playerMoneyLabel, builderMoneyLabel, playerResources, tradeButton);
 
         Scene scene = new Scene(vbox, 300, 200);
         stage.setScene(scene);

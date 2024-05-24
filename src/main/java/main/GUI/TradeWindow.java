@@ -1,5 +1,6 @@
 package main.GUI;
-import main.BasicClasses.*;
+import main.BasicClasses.Builder;
+import main.BasicClasses.Player;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;

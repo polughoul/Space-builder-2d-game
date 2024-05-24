@@ -96,7 +96,7 @@ public class Planet extends SpaceObject {
                 int resourceX = random.nextInt(1240);
                 int resourceY = random.nextInt(900);
                 String resourceType = resourceTypes.get(random.nextInt(resourceTypes.size()));
-                resources.add(new Resource(resourceType, random.nextInt(100), resourceX, resourceY, "main/assets/" + resourceType + ".png"));
+                resources.add(new Resource(resourceType, random.nextInt(100), resourceX, resourceY, "src/main/java/main/assets/" + resourceType + ".png"));
             }
         }
         return Collections.unmodifiableList(resources);
@@ -112,7 +112,7 @@ public class Planet extends SpaceObject {
         if (bandits == null) {
             bandits = new LinkedList<>();
             Random random = new Random();
-            String[] banditImages = {"main/assets/bandit.png", "main/assets/bandit1.png", "main/assets/bandit2.png", "main/assets/bandit3.png", "main/assets/bandit4.png", "main/assets/bandit5.png", "main/assets/bandit6.png", "main/assets/bandit7.png", "main/assets/bandit8.png", "main/assets/bandit9.png", "main/assets/bandit10.png" };
+            String[] banditImages = {"src/main/java/main/assets/bandit.png", "src/main/java/main/assets/bandit1.png", "src/main/java/main/assets/bandit2.png", "src/main/java/main/assets/bandit3.png", "src/main/java/main/assets/bandit4.png", "src/main/java/main/assets/bandit5.png", "src/main/java/main/assets/bandit6.png", "src/main/java/main/assets/bandit7.png", "src/main/java/main/assets/bandit8.png", "src/main/java/main/assets/bandit9.png", "src/main/java/main/assets/bandit10.png"};
             for (int i = 0; i < 1; i++) {
                 int banditX = random.nextInt(1240);
                 int banditY = random.nextInt(900);
@@ -130,7 +130,7 @@ public class Planet extends SpaceObject {
             Random random = new Random();
             int banditX = random.nextInt(1240);
             int banditY = random.nextInt(900);
-            String[] banditImages = {"main/assets/bandit.png", "main/assets/bandit1.png", "main/assets/bandit2.png", "main/assets/bandit3.png", "main/assets/bandit4.png", "main/assets/bandit5.png", "main/assets/bandit6.png", "main/assets/bandit7.png", "main/assets/bandit8.png", "main/assets/bandit9.png", "main/assets/bandit10.png" };
+            String[] banditImages = {"src/main/java/main/assets/bandit.png", "src/main/java/main/assets/bandit1.png", "src/main/java/main/assets/bandit2.png", "src/main/java/main/assets/bandit3.png", "src/main/java/main/assets/bandit4.png", "src/main/java/main/assets/bandit5.png", "src/main/java/main/assets/bandit6.png", "src/main/java/main/assets/bandit7.png", "src/main/java/main/assets/bandit8.png", "src/main/java/main/assets/bandit9.png", "src/main/java/main/assets/bandit10.png"};
             Bandit newBandit = new Bandit(1, 100, 10, banditX, banditY, 2, banditImages);
             addBandit(newBandit);
         });
@@ -152,7 +152,7 @@ public class Planet extends SpaceObject {
                 HashMap<String, Integer> builderResources = new HashMap<>();
                 builderResources.put("wood", 10);
                 builderResources.put("Resource1", 10);
-                builders.add(new Builder( builderResources, builderX, builderY, "main/assets/builder.png"));
+                builders.add(new Builder( builderResources, builderX, builderY, "src/main/java/main/assets/builder.png"));
             }
         }
         return builders;

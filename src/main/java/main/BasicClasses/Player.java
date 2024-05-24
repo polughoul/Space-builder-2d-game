@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,17 +27,16 @@ public class Player implements Serializable {
     private int speed = 2;
     private transient GameView gameView;
     private transient ImageView imageView;
-    private String playerImagePath = "main/assets/player.png";
+    private String playerImagePath = "src/main/java/main/assets/player.png";
     private int maxHealth;
     private int health;
 
-
+    private static final Logger logger = Logger.getLogger(Player.class.getName());
 
     public void moveUp() {
         if (y > 0) {
             y -= speed;
             imageView.setRotate(270);
-            System.out.println("Move up");
         }
     }
 
@@ -44,7 +44,6 @@ public class Player implements Serializable {
         if (y < 900) {
             y += speed;
             imageView.setRotate(90);
-            System.out.println("Move down");
         }
     }
 
@@ -52,7 +51,6 @@ public class Player implements Serializable {
         if (x > 0) {
             x -= speed;
             imageView.setRotate(180);
-            System.out.println("Move left");
         }
     }
 
@@ -60,7 +58,6 @@ public class Player implements Serializable {
         if (x < 1240) {
             x += speed;
             imageView.setRotate(0);
-            System.out.println("Move right");
         }
     }
     public int getX() {
@@ -140,7 +137,7 @@ public class Player implements Serializable {
         String resourceType = resource.getType();
         int resourceAmount = resource.getCounts();
         resources.put(resourceType, resources.getOrDefault(resourceType, 0) + resourceAmount);
-        System.out.println("Collected resource: " + resource.getType());
+        logger.info("Collected resource: " + resource.getType());
     }
     public List<Resource> getCollectedResources() {
         return collectedResources;
@@ -159,6 +156,7 @@ public class Player implements Serializable {
                 resources.put(entry.getKey(), resources.get(entry.getKey()) - entry.getValue());
             }
         }
+        logger.info("Building " + building.getType() + " was succesfully constructed on" + planet.getName());
     }
 
     /**
