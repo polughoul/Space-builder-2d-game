@@ -18,7 +18,10 @@ import java.util.logging.Logger;
 public class Control {
     private Player player;
     private GameView gameGameView;
-    private boolean moveUp, moveDown, moveLeft, moveRight;
+    public boolean moveUp;
+    public boolean moveDown;
+    public boolean moveLeft;
+    public boolean moveRight;
 
     private static final Logger logger = Logger.getLogger(Control.class.getName());
 

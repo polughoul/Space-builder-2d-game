@@ -1,15 +1,13 @@
 package main.Controller;
 
 import javafx.application.Platform;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
-
+import java.util.ArrayList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import main.BasicClasses.*;
 import main.GUI.GameView;
-
 
 /**
  * The ProjectileController class is responsible for controlling the projectiles in the game.
@@ -56,16 +54,16 @@ public class ProjectileController {
             return;
         }
 
-        Iterator<Projectile> iterator = projectiles.iterator();
-        while (iterator.hasNext()) {
-            Projectile projectile = iterator.next();
+        List<Projectile> projectilesToRemove = new ArrayList<>();
+        for (Projectile projectile : projectiles) {
             projectile.move();
 
             SpaceObject currentSpaceObject = gameView.getCurrentSpaceObject();
             if (currentSpaceObject instanceof Planet) {
-                handlePlanetProjectiles((Planet) currentSpaceObject, projectile, iterator);
+                handlePlanetProjectiles((Planet) currentSpaceObject, projectile, projectilesToRemove);
             }
         }
+        projectiles.removeAll(projectilesToRemove);
     }
 
     /**
@@ -73,14 +71,14 @@ public class ProjectileController {
      *
      * @param planet The planet.
      * @param projectile The projectile.
-     * @param iterator The iterator of the projectiles.
+     * @param projectilesToRemove The list of projectiles to remove.
      */
-    private void handlePlanetProjectiles(Planet planet, Projectile projectile, Iterator<Projectile> iterator) {
-        boolean isProjectileRemoved = handleBanditProjectiles(planet.getBandits(), projectile, iterator);
+    private void handlePlanetProjectiles(Planet planet, Projectile projectile, List<Projectile> projectilesToRemove) {
+        boolean isProjectileRemoved = handleBanditProjectiles(planet.getBandits(), projectile, projectilesToRemove);
         if (!isProjectileRemoved) {
-            handlePlayerProjectiles(planet.getBandits(), projectile, iterator);
+            handlePlayerProjectiles(planet.getBandits(), projectile, projectilesToRemove);
         }
-        handleBuildingProjectiles(planet.getBuildings(), projectile, iterator);
+        handleBuildingProjectiles(planet.getBuildings(), projectile, projectilesToRemove);
     }
 
     /**
@@ -88,14 +86,14 @@ public class ProjectileController {
      *
      * @param bandits The list of bandits.
      * @param projectile The projectile.
-     * @param iterator The iterator of the projectiles.
+     * @param projectilesToRemove The list of projectiles to remove.
      * @return True if the projectile was removed, false otherwise.
      */
-    private boolean handleBanditProjectiles(List<Bandit> bandits, Projectile projectile, Iterator<Projectile> iterator) {
+    private boolean handleBanditProjectiles(List<Bandit> bandits, Projectile projectile, List<Projectile> projectilesToRemove) {
         for (Bandit bandit : bandits) {
             if (Math.hypot(projectile.getX() - bandit.getX(), projectile.getY() - bandit.getY()) < 10) {
                 if (projectile.getOwner() != bandit) {
-                    iterator.remove();
+                    projectilesToRemove.add(projectile);
                     bandit.setHealth(bandit.getHealth() - player.getDamage());
                     logger.info("Bandit was hit. Bandit's health: " + bandit.getHealth());
                     return true;
@@ -110,13 +108,13 @@ public class ProjectileController {
      *
      * @param bandits The list of bandits.
      * @param projectile The projectile.
-     * @param iterator The iterator of the projectiles.
+     * @param projectilesToRemove The list of projectiles to remove.
      */
-    private void handlePlayerProjectiles(List<Bandit> bandits, Projectile projectile, Iterator<Projectile> iterator) {
+    private void handlePlayerProjectiles(List<Bandit> bandits, Projectile projectile, List<Projectile> projectilesToRemove) {
         for (Bandit bandit : bandits) {
             if (Math.hypot(projectile.getX() - player.getX(), projectile.getY() - player.getY()) < 10) {
                 if (projectile.getOwner() == bandit) {
-                    iterator.remove();
+                    projectilesToRemove.add(projectile);
                     player.setHealth(player.getHealth() - bandit.getDamage());
                     logger.info("You were hit. Your health: " + player.getHealth());
                     if (player.getHealth() <= 0) {
@@ -139,13 +137,13 @@ public class ProjectileController {
      *
      * @param buildings The list of buildings.
      * @param projectile The projectile.
-     * @param iterator The iterator of the projectiles.
+     * @param projectilesToRemove The list of projectiles to remove.
      */
-    private void handleBuildingProjectiles(List<Building> buildings, Projectile projectile, Iterator<Projectile> iterator) {
+    private void handleBuildingProjectiles(List<Building> buildings, Projectile projectile, List<Projectile> projectilesToRemove) {
         for (Building building : buildings) {
             if (Math.hypot(projectile.getX() - building.getX(), projectile.getY() - building.getY()) < 10) {
                 if (projectile.getOwner() instanceof Bandit) {
-                    iterator.remove();
+                    projectilesToRemove.add(projectile);
                     building.setHealth(building.getHealth() - ((Bandit) projectile.getOwner()).getDamage());
                     logger.info("Building was hit. Building's health: " + building.getHealth());
                     if (building.getHealth() <= 0) {
