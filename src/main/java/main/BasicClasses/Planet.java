@@ -150,8 +150,13 @@ public class Planet extends SpaceObject {
                 int builderX = random.nextInt(1240);
                 int builderY = random.nextInt(900);
                 HashMap<String, Integer> builderResources = new HashMap<>();
-                builderResources.put("wood", 10);
-                builderResources.put("Resource1", 10);
+                builderResources.put("gold", 30);
+                builderResources.put("ruby", 30);
+                builderResources.put("iron", 30);
+                builderResources.put("silver", 30);
+                builderResources.put("nephrite", 30);
+                builderResources.put("lazurite", 30);
+                builderResources.put("obsidian", 30);
                 builders.add(new Builder( builderResources, builderX, builderY, "src/main/java/main/assets/builder.png"));
             }
         }

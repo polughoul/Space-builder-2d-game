@@ -9,6 +9,22 @@
       "imagePath": "src/main/java/main/assets/11.png"
     },
     {
+      "type": "Asteroid",
+      "name": "Asteroid1",
+      "size": 40,
+      "x": 600,
+      "y": 600,
+      "imagePath": "src/main/java/main/assets/11.png"
+    },
+    {
+      "type": "Asteroid",
+      "name": "Asteroid2",
+      "size": 40,
+      "x": 700,
+      "y": 700,
+      "imagePath": "src/main/java/main/assets/11.png"
+    },
+    {
       "type": "Planet",
       "name": "Planet0",
       "size": 60,
@@ -16,6 +32,80 @@
       "y": 200,
       "imagePath": "src/main/java/main/assets/14.png",
       "buildings": [
+        {
+          "name": "building1",
+          "cost": {
+            "iron": 10,
+            "lazurite": 10
+          },
+          "imagePath": "src/main/java/main/assets/Building1.png",
+          "health": 100
+        },
+        {
+          "name": "building2",
+          "cost": {
+            "gold": 10,
+            "ruby": 10
+          },
+          "imagePath": "src/main/java/main/assets/Building2.png",
+          "health": 100
+        },
+        {
+          "name": "building3",
+          "cost": {
+            "silver": 10,
+            "nephrite": 10
+          },
+          "imagePath": "src/main/java/main/assets/Building3.png",
+          "health": 100
+        }
+      ]
+    },
+    {
+      "type": "Planet",
+      "name": "Planet1",
+      "size": 60,
+      "x": 300,
+      "y": 300,
+      "imagePath": "src/main/java/main/assets/16.png",
+      "buildings" : [
+        {
+          "name": "building1",
+          "cost": {
+            "iron": 10,
+            "lazurite": 10
+          },
+          "imagePath": "src/main/java/main/assets/Building1.png",
+          "health": 100
+        },
+        {
+          "name": "building2",
+          "cost": {
+            "gold": 10,
+            "ruby": 10
+          },
+          "imagePath": "src/main/java/main/assets/Building2.png",
+          "health": 100
+        },
+        {
+          "name": "building3",
+          "cost": {
+            "silver": 10,
+            "nephrite": 10
+          },
+          "imagePath": "src/main/java/main/assets/Building3.png",
+          "health": 100
+        }
+      ]
+    },
+    {
+"type": "Planet",
+      "name": "Planet2",
+      "size": 60,
+      "x": 400,
+      "y": 400,
+      "imagePath": "src/main/java/main/assets/17.png",
+      "buildings" : [
         {
           "name": "building1",
           "cost": {

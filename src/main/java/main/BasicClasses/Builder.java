@@ -36,25 +36,73 @@ public class Builder implements Serializable {
         this.x = x;
         this.y = y;
         this.resourcePrices = new HashMap<>();
-        this.money = 15;
+        this.money = 100;
         this.sellPrices = new HashMap<>();
         this.imagePath = imagePath;
         this.image = new Image("file:" + imagePath);
 
-        Map<String, Integer> woodPrice = new HashMap<>();
-        woodPrice.put("coins", 20);
-        woodPrice.put("Resource1", 50);
-        this.resourcePrices.put("wood", woodPrice);
+        Map<String, Integer> goldPrice = new HashMap<>();
+        goldPrice.put("coins", 20);
+        goldPrice.put("obsidian", 2);
+        this.resourcePrices.put("gold", goldPrice);
 
-        Map<String, Integer> Resource1Price = new HashMap<>();
-        Resource1Price.put("coins", 20);
-        Resource1Price.put("wood", 50);
-        this.resourcePrices.put("Resource1", Resource1Price);
+        Map<String, Integer> rubyPrice = new HashMap<>();
+        rubyPrice.put("coins", 15);
+        rubyPrice.put("gold", 1);
+        this.resourcePrices.put("ruby", rubyPrice);
 
-        Map<String, Integer> Resource1SellPrice = new HashMap<>();
-        Resource1SellPrice.put("coins", 15);
-        this.sellPrices.put("Resource1", Resource1SellPrice);
+        Map<String, Integer> ironPrice = new HashMap<>();
+        ironPrice.put("coins", 25);
+        ironPrice.put("lazurite", 2);
+        this.resourcePrices.put("iron", ironPrice);
 
+        Map<String, Integer> silverPrice = new HashMap<>();
+        silverPrice.put("coins", 10);
+        silverPrice.put("ruby", 3);
+        this.resourcePrices.put("silver", silverPrice);
+
+        Map<String, Integer> nephritePrice = new HashMap<>();
+        nephritePrice.put("coins", 15);
+        nephritePrice.put("iron", 1);
+        this.resourcePrices.put("nephrite", nephritePrice);
+
+        Map<String, Integer> lazuritePrice = new HashMap<>();
+        lazuritePrice.put("coins", 20);
+        lazuritePrice.put("obsidian", 3);
+        this.resourcePrices.put("lazurite", lazuritePrice);
+
+        Map<String, Integer> obsidianPrice = new HashMap<>();
+        obsidianPrice.put("coins", 25);
+        obsidianPrice.put("silver", 4);
+        this.resourcePrices.put("obsidian", obsidianPrice);
+
+        Map<String, Integer> goldSellPrice = new HashMap<>();
+        goldSellPrice.put("coins", 15);
+        this.sellPrices.put("gold", goldSellPrice);
+
+        Map<String, Integer> rubySellPrice = new HashMap<>();
+        rubySellPrice.put("coins", 5);
+        this.sellPrices.put("ruby", rubySellPrice);
+
+        Map<String, Integer> ironSellPrice = new HashMap<>();
+        ironSellPrice.put("coins", 15);
+        this.sellPrices.put("iron", ironSellPrice);
+
+        Map<String, Integer> silverSellPrice = new HashMap<>();
+        silverSellPrice.put("coins", 20);
+        this.sellPrices.put("silver", silverSellPrice);
+
+        Map<String, Integer> nephriteSellPrice = new HashMap<>();
+        nephriteSellPrice.put("coins", 25);
+        this.sellPrices.put("nephrite", nephriteSellPrice);
+
+        Map<String, Integer> lazuriteSellPrice = new HashMap<>();
+        lazuriteSellPrice.put("coins", 10);
+        this.sellPrices.put("lazurite", lazuriteSellPrice);
+
+        Map<String, Integer> obsidianSellPrice = new HashMap<>();
+        obsidianSellPrice.put("coins", 20);
+        this.sellPrices.put("obsidian", obsidianSellPrice);
     }
 
     /**
