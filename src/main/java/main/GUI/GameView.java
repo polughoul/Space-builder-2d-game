@@ -327,6 +327,7 @@ public class GameView extends Pane {
             spaceObjects = gameState.getSpaceObjects();
             currentSpaceObject = gameState.getCurrentSpaceObject();
             control = new Control(player, this);
+            projectileController = new ProjectileController(projectiles, player, control, this);
             this.setOnKeyPressed(control::handle);
             this.setOnKeyReleased(control::handle);
             this.setOnKeyPressed(e -> {
