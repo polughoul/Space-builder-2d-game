@@ -1,0 +1,49 @@
+{
+  "spaceObjects": [
+    {
+      "type": "Asteroid",
+      "name": "Asteroid0",
+      "size": 40,
+      "x": 500,
+      "y": 500,
+      "imagePath": "src/main/java/main/assets/11.png"
+    },
+    {
+      "type": "Planet",
+      "name": "Planet0",
+      "size": 60,
+      "x": 200,
+      "y": 200,
+      "imagePath": "src/main/java/main/assets/14.png",
+      "buildings": [
+        {
+          "name": "building1",
+          "cost": {
+            "iron": 10,
+            "lazurite": 10
+          },
+          "imagePath": "src/main/java/main/assets/Building1.png",
+          "health": 100
+        },
+        {
+          "name": "building2",
+          "cost": {
+            "gold": 10,
+            "ruby": 10
+          },
+          "imagePath": "src/main/java/main/assets/Building2.png",
+          "health": 100
+        },
+        {
+          "name": "building3",
+          "cost": {
+            "silver": 10,
+            "nephrite": 10
+          },
+          "imagePath": "src/main/java/main/assets/Building3.png",
+          "health": 100
+        }
+      ]
+    }
+  ]
+}

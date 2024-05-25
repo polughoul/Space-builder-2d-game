@@ -1,5 +1,14 @@
 package main.BasicClasses;
+import com.google.gson.Gson;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.*;
+
+import main.data.BuildingData;
+import main.data.GalaxyData;
+import main.data.SpaceObjectData;
 
 /**
  * The Galaxy class represents a galaxy in the game.
@@ -40,23 +49,24 @@ public class Galaxy {
      * Creates and adds SpaceObjects to the Galaxy.
      */
     public void createSpaceObjects() {
-        Random random = new Random();
-        for (int i = 0; i < 3; i++) {
-            spaceObjects.add(new Asteroid( "Asteroid" + i, 40, random.nextInt(1024), random.nextInt(724), "src/main/java/main/assets/11.png"));
-        }
+        Gson gson = new Gson();
+        try {
+            Reader reader = new FileReader("map.json");
+            GalaxyData galaxyData = gson.fromJson(reader, GalaxyData.class);
 
-        List<String> planetImages = Arrays.asList("src/main/java/main/assets/14.png", "src/main/java/main/assets/16.png", "src/main/java/main/assets/17.png");
-        List<String> buildingImages = Arrays.asList("src/main/java/main/assets/Building1.png", "src/main/java/main/assets/Building2.png", "src/main/java/main/assets/Building3.png");
-
-        for (int i = 0; i < 3; i++) {
-            List<Building> buildings = new ArrayList<>();
-            buildings.add(new Building("building1", createBuilding1Cost(), buildingImages.get(0), 100));
-            buildings.add(new Building("building2", createBuilding2Cost(), buildingImages.get(1), 100));
-            buildings.add(new Building("building3", createBuilding3Cost(), buildingImages.get(2), 100));
-
-            String planetImage = planetImages.get(i);
-
-            spaceObjects.add(new Planet("Planet" + i, 60,random.nextInt(1024), random.nextInt(724), new ArrayList<>(buildings), planetImage));
+            for (SpaceObjectData spaceObjectData : galaxyData.spaceObjects) {
+                if (spaceObjectData.type.equals("Asteroid")) {
+                    spaceObjects.add(new Asteroid(spaceObjectData.name, spaceObjectData.size, spaceObjectData.x, spaceObjectData.y, spaceObjectData.imagePath));
+                } else if (spaceObjectData.type.equals("Planet")) {
+                    List<Building> buildings = new ArrayList<>();
+                    for (BuildingData buildingData : spaceObjectData.buildings) {
+                        buildings.add(new Building(buildingData.name, buildingData.cost, buildingData.imagePath, buildingData.health));
+                    }
+                    spaceObjects.add(new Planet(spaceObjectData.name, spaceObjectData.size, spaceObjectData.x, spaceObjectData.y, buildings, spaceObjectData.imagePath));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
