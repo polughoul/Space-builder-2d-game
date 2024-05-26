@@ -41,6 +41,10 @@ public class Builder implements Serializable {
         this.imagePath = imagePath;
         this.image = new Image("file:" + imagePath);
 
+        // Initialize the resource prices and sell prices
+        // Each resource has a price in coins and another resource
+        // Each resource has a sell price in coins
+
         Map<String, Integer> goldPrice = new HashMap<>();
         goldPrice.put("coins", 20);
         goldPrice.put("obsidian", 2);
@@ -125,6 +129,7 @@ public class Builder implements Serializable {
      * @return True if the Player is on the Builder, false otherwise.
      */
     public boolean isPlayerOnBuilder(int playerX, int playerY) {
+        // Calculate the distance between the player and the builder
         double distance = Math.sqrt(Math.pow(playerX - this.x, 2) + Math.pow(playerY - this.y, 2));
         return distance <= 5;
     }

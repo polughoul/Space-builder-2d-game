@@ -59,6 +59,8 @@ public class GameView extends Pane {
         setFocusTraversable(true);
         control = new Control(player, this);
         control.resetPlayer(this);
+
+        // Create a new galaxy and get its space objects
         Galaxy galaxy = new Galaxy("My Galaxy");
         galaxy.createSpaceObjects();
         spaceObjects = galaxy.getSpaceObjects();
@@ -68,6 +70,7 @@ public class GameView extends Pane {
         overlayPane = new Pane();
         overlayPane.setPickOnBounds(false);
 
+        // Initialize collectButton and add it to overlayPane
         collectButton = new Button("Collect Resource");
         collectButton.setLayoutX(100);
         collectButton.setLayoutY(100);
@@ -76,11 +79,13 @@ public class GameView extends Pane {
         collectButton.setOnAction(e -> control.collectResource());
         overlayPane.getChildren().add(collectButton);
 
+        // Initialize buildingsComboBox, set its visibility to false, and add it to overlayPane
         buildingsComboBox = new ComboBox<>();
         buildingsComboBox.setOnAction(e -> this.requestFocus());
         buildingsComboBox.setVisible(false);
         overlayPane.getChildren().add(buildingsComboBox);
 
+        // Initialize buildButton, set its visibility to false, and add it to overlayPane
         buildButton = new Button("Construct a building");
         buildButton.setVisible(false);
         buildButton.setOnAction(e -> {
@@ -89,6 +94,7 @@ public class GameView extends Pane {
         });
         overlayPane.getChildren().add(buildButton);
 
+        // Initialize tradeButton, set its layout, visibility, and focus traversable properties, and add it to overlayPane
         tradeButton = new Button("Trade");
         tradeButton.setLayoutX(100);
         tradeButton.setLayoutY(150);
@@ -97,12 +103,14 @@ public class GameView extends Pane {
         tradeButton.setOnAction(e -> control.openTradeWindow());
         overlayPane.getChildren().add(tradeButton);
 
+        // Initialize moneyLabel, resourcesLabel, and healthLabel, and add them to overlayPane
         moneyLabel = new Label();
         resourcesLabel = new Label();
         healthLabel = new Label();
 
         overlayPane.getChildren().addAll(moneyLabel, resourcesLabel, healthLabel);
 
+        // Initialize banditSpawner and schedule it to spawn bandits every minute
         banditSpawner = Executors.newSingleThreadScheduledExecutor();
         banditSpawner.scheduleAtFixedRate(this::spawnBandits, 0, 1, TimeUnit.MINUTES);
 
@@ -133,7 +141,6 @@ public class GameView extends Pane {
         });
 
         canvas = new Canvas(1280, 960);
-
         getChildren().addAll(canvas, overlayPane);
     }
 

@@ -36,10 +36,6 @@ public class Planet extends SpaceObject {
         return buildings;
     }
 
-    public void setAvailableBuildings(List<Building> availableBuildings) {
-        this.availableBuildings = availableBuildings;
-    }
-
     /**
      * Removes an available Building from the Planet.
      *
@@ -63,6 +59,7 @@ public class Planet extends SpaceObject {
     public Planet(String name, int size, int x, int y, List<Building> buildings, String imagePath)
     {
         super(name, size, x, y);
+        // Add all the buildings to the list of available buildings
         availableBuildings.addAll(buildings);
         this.image = new Image("file:" + imagePath);
         this.imagePath = imagePath;
@@ -111,12 +108,13 @@ public class Planet extends SpaceObject {
     public List<Bandit> getBandits() {
         if (bandits == null) {
             bandits = new LinkedList<>();
+            // Generate random coordinates for the bandit
             Random random = new Random();
             String[] banditImages = {"src/main/java/main/assets/bandit.png", "src/main/java/main/assets/bandit1.png", "src/main/java/main/assets/bandit2.png", "src/main/java/main/assets/bandit3.png", "src/main/java/main/assets/bandit4.png", "src/main/java/main/assets/bandit5.png", "src/main/java/main/assets/bandit6.png", "src/main/java/main/assets/bandit7.png", "src/main/java/main/assets/bandit8.png", "src/main/java/main/assets/bandit9.png", "src/main/java/main/assets/bandit10.png"};
             for (int i = 0; i < 1; i++) {
                 int banditX = random.nextInt(1240);
                 int banditY = random.nextInt(900);
-                bandits.add(new Bandit(1, 100, 10, banditX, banditY, 2, banditImages));
+                bandits.add(new Bandit(100, 10, banditX, banditY, 2, banditImages));
             }
         }
         return bandits;
@@ -127,11 +125,12 @@ public class Planet extends SpaceObject {
      */
     public void spawnBandits() {
         Platform.runLater(() -> {
+            // Generate random coordinates for the bandit
             Random random = new Random();
             int banditX = random.nextInt(1240);
             int banditY = random.nextInt(900);
             String[] banditImages = {"src/main/java/main/assets/bandit.png", "src/main/java/main/assets/bandit1.png", "src/main/java/main/assets/bandit2.png", "src/main/java/main/assets/bandit3.png", "src/main/java/main/assets/bandit4.png", "src/main/java/main/assets/bandit5.png", "src/main/java/main/assets/bandit6.png", "src/main/java/main/assets/bandit7.png", "src/main/java/main/assets/bandit8.png", "src/main/java/main/assets/bandit9.png", "src/main/java/main/assets/bandit10.png"};
-            Bandit newBandit = new Bandit(1, 100, 10, banditX, banditY, 2, banditImages);
+            Bandit newBandit = new Bandit(100, 10, banditX, banditY, 2, banditImages);
             addBandit(newBandit);
         });
     }
@@ -146,7 +145,7 @@ public class Planet extends SpaceObject {
         if (builders == null) {
             builders = new LinkedList<>();
             Random random = new Random();
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 2; i++) {
                 int builderX = random.nextInt(1240);
                 int builderY = random.nextInt(900);
                 HashMap<String, Integer> builderResources = new HashMap<>();

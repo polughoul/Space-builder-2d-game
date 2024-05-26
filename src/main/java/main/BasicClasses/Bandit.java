@@ -11,8 +11,7 @@ import java.io.Serializable;
  * The Bandit class represents a bandit in the game.
  * It implements the Serializable interface and contains properties and methods specific to a bandit.
  */
-public class Bandit implements Serializable {
-    private int level;
+public class Bandit implements Serializable { ;
     private int health;
     private int damage;
     private int speed;
@@ -31,7 +30,6 @@ public class Bandit implements Serializable {
     /**
      * Constructs a new Bandit with the given parameters.
      *
-     * @param level The level of the Bandit.
      * @param health The health of the Bandit.
      * @param damage The damage of the Bandit.
      * @param x The x-coordinate of the Bandit.
@@ -39,8 +37,7 @@ public class Bandit implements Serializable {
      * @param speed The speed of the Bandit.
      * @param imagePaths The paths to the images representing the Bandit.
      */
-    public Bandit(int level, int health, int damage, int x, int y, int speed, String[] imagePaths) {
-        this.level = level;
+    public Bandit(int health, int damage, int x, int y, int speed, String[] imagePaths) {
         this.health = health;
         this.damage = damage;
         this.speed = speed;
@@ -82,15 +79,19 @@ public class Bandit implements Serializable {
     public void move(Player player, Planet currentPlanet, GameView gameView) {
         if (currentPlanet.getBandits().contains(this)) {
             long currentTime = System.currentTimeMillis();
+            // If there are buildings on the planet and enough time has passed since the last attack
             if (currentPlanet.getBuildings().size() > 0 && currentTime - lastAttackTime >= attackDelay) {
+                // Attack the first building
                 Building targetBuilding = currentPlanet.getBuildings().get(0);
                 this.attack(targetBuilding, gameView);
+                // If the building's health drops to 0, remove it from the planet and add it to the available buildings
                 if (targetBuilding.getHealth() <= 0) {
                     currentPlanet.removeBuilding(targetBuilding);
                     currentPlanet.addAvailableBuilding(targetBuilding);
                 }
                 lastAttackTime = currentTime;
             } else {
+                // Calculate the direction towards the player
                 double dx = player.getX() - this.x;
                 double dy = player.getY() - this.y;
                 double distance = Math.sqrt(dx * dx + dy * dy);
@@ -98,15 +99,18 @@ public class Bandit implements Serializable {
                 double directionX = dx / distance;
                 double directionY = dy / distance;
 
+                // Move in the direction of the player
                 this.x += directionX * speed;
                 this.y += directionY * speed;
 
+                // If enough time has passed since the last attack, attack the player
                 if (currentTime - lastAttackTime >= attackDelay) {
                     this.attack(player, gameView);
                     lastAttackTime = currentTime;
                 }
             }
 
+            // If the bandit's health drops to 0, remove it from the planet
             if (this.health <= 0) {
                 currentImageIndex = images.length - 1;
                 currentPlanet.removeBandit(this);
@@ -128,10 +132,6 @@ public class Bandit implements Serializable {
 
     public int getDamage() {
         return damage;
-    }
-
-    public int getSpeed() {
-        return speed;
     }
 
     public int getX() {
@@ -174,5 +174,4 @@ public class Bandit implements Serializable {
             this.images[i] = new Image("file:" + imagePaths[i]);
         }
     }
-
 }

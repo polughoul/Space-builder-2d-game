@@ -61,16 +61,7 @@ public class Resource implements Serializable {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public int getCounts() {
         return counts;
     }
-
-    public void setCounts(int counts) {
-        this.counts = counts;
-    }
-
 }

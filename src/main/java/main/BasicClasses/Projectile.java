@@ -27,6 +27,7 @@ public class Projectile {
         this.y = startY;
         this.owner = owner;
 
+        // Calculate the direction of the projectile
         double dx = targetX - startX;
         double dy = targetY - startY;
         double distance = Math.sqrt(dx * dx + dy * dy);
@@ -41,6 +42,7 @@ public class Projectile {
 
 
     public void move() {
+        // Update the position of the projectile based on its direction and speed
         x += directionX * speed;
         y += directionY * speed;
     }

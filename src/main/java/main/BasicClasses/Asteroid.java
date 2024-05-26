@@ -58,6 +58,7 @@ public class Asteroid extends SpaceObject {
      */
     @Override
     public List<Resource> getResources() {
+        // If the resources list is not initialized yet, create and populate it
         if (resources == null) {
             resources = new ArrayList<>();
             Random random = new Random();
@@ -66,9 +67,11 @@ public class Asteroid extends SpaceObject {
                 int resourceX = random.nextInt(1240);
                 int resourceY = random.nextInt(900);
                 String resourceType = resourceTypes.get(random.nextInt(resourceTypes.size()));
+                // Create a new resource with random properties and add it to the list
                 resources.add(new Resource(resourceType, random.nextInt(100), resourceX, resourceY, "src/main/java/main/assets/" + resourceType + ".png"));
             }
         }
+        // Return an unmodifiable view of the resources list to prevent external modifications
         return Collections.unmodifiableList(resources);
     }
 }

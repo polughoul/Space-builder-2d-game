@@ -34,7 +34,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         boolean loggingEnabled = true;
 
-        // Проверяем аргументы командной строки
         for (String arg : launchArgs) {
             if ("nologging".equals(arg)) {
                 loggingEnabled = false;

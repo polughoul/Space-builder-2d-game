@@ -49,16 +49,19 @@ public class ProjectileController {
      * Updates the projectiles in the game.
      */
     public void updateProjectiles() {
+        // If the player is not alive or has no health, set isPlayerAlive to false and return
         if (!isPlayerAlive || player.getHealth() <= 0) {
             isPlayerAlive = false;
             return;
         }
-
+        // Create a list to store projectiles to remove
         List<Projectile> projectilesToRemove = new ArrayList<>();
+        // Iterate over the projectiles
         for (Projectile projectile : projectiles) {
             projectile.move();
 
             SpaceObject currentSpaceObject = gameView.getCurrentSpaceObject();
+            // If the current space object is a planet, handle the projectiles on the planet
             if (currentSpaceObject instanceof Planet) {
                 handlePlanetProjectiles((Planet) currentSpaceObject, projectile, projectilesToRemove);
             }

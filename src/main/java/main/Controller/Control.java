@@ -44,8 +44,11 @@ public class Control {
      * Collects a resource if the player is on a resource.
      */
     public void collectResource() {
+        // Check if the current space object is an Asteroid or a Planet
         if (gameGameView.getCurrentSpaceObject() instanceof Asteroid || gameGameView.getCurrentSpaceObject() instanceof Planet) {
+            // Iterate over the resources of the current space object
             for (Resource resource : gameGameView.getCurrentSpaceObject().getResources()) {
+                // If the player is on a resource, collect it
                 if (resource.isPlayerOnResource(player.getX(), player.getY())) {
                     player.collectResource(resource);
                     gameGameView.getCurrentSpaceObject().removeResource(resource);

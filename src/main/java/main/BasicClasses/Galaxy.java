@@ -43,13 +43,20 @@ public class Galaxy {
     public void createSpaceObjects() {
         Gson gson = new Gson();
         try {
+            // Read the JSON file
             Reader reader = new FileReader("map.json");
+            // Convert the JSON file to GalaxyData object
             GalaxyData galaxyData = gson.fromJson(reader, GalaxyData.class);
 
+            // Iterate over each SpaceObjectData in the GalaxyData
             for (SpaceObjectData spaceObjectData : galaxyData.spaceObjects) {
+                // If the SpaceObjectData is of type "Asteroid"
                 if (spaceObjectData.type.equals("Asteroid")) {
+                    // Create a new Asteroid and add it to the spaceObjects list
                     spaceObjects.add(new Asteroid(spaceObjectData.name, spaceObjectData.size, spaceObjectData.x, spaceObjectData.y, spaceObjectData.imagePath));
-                } else if (spaceObjectData.type.equals("Planet")) {
+                }
+                // If the SpaceObjectData is of type "Planet"
+                else if (spaceObjectData.type.equals("Planet")) {
                     List<Building> buildings = new ArrayList<>();
                     for (BuildingData buildingData : spaceObjectData.buildings) {
                         buildings.add(new Building(buildingData.name, buildingData.cost, buildingData.imagePath, buildingData.health));
@@ -58,6 +65,7 @@ public class Galaxy {
                 }
             }
         } catch (FileNotFoundException e) {
+            // Print the stack trace if the file is not found
             e.printStackTrace();
         }
     }

@@ -115,10 +115,6 @@ public class Player implements Serializable {
         return resources;
     }
 
-    public void setResources(HashMap<String, Integer> resources) {
-        this.resources = resources;
-    }
-
     public int getHealth() {
         return health;
     }
@@ -133,9 +129,12 @@ public class Player implements Serializable {
      * @param resource The Resource to collect.
      */
     public void collectResource(Resource resource) {
+        // Add the resource to the list of collected resources
         collectedResources.add(resource);
+        // Get the type and amount of the resource
         String resourceType = resource.getType();
         int resourceAmount = resource.getCounts();
+        // Add the resource to the player's resources
         resources.put(resourceType, resources.getOrDefault(resourceType, 0) + resourceAmount);
         logger.info("Collected resource: " + resource.getType());
     }
@@ -181,7 +180,9 @@ public class Player implements Serializable {
      * @param targetY The y-coordinate of the target.
      */
     public void fire(double targetX, double targetY) {
+        // Create a new projectile with the player's position and the target's position
         Projectile projectile = new Projectile(this.x, this.y, targetX, targetY, this);
+        // Add the projectile to the game view
         gameView.addProjectile(projectile);
     }
 
